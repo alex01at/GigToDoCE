@@ -22,11 +22,14 @@ if(isset($_POST['paystack'])){
 	
 	$payment = new Payment();
 
+	$reference_no = mt_rand();
+
 	$data = [];
 	$data['type'] = "orderTip";
 	$data['content_id'] = $_SESSION['tipOrderId'];
-	$reference_no = mt_rand();
 	$data['reference_no'] = $reference_no;
+	$data['price'] = $amount;
+	$data['qty'] = 1;
 	$data['sub_total'] = $amount;
 	$data['total'] = $amount+$processing_fee;
 

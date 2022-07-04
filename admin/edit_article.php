@@ -114,7 +114,7 @@ if(!isset($_SESSION['admin_email'])){
                         while($row_cats = $get_cats->fetch()){
                           $article_cat_id = $row_cats->article_cat_id;
                           $article_cat_title = $row_cats->article_cat_title;
-                          echo "<option value='$cat_article_id'>$article_cat_title</option>";
+                          echo "<option value='$article_cat_id'>$article_cat_title</option>";
                         }
                       ?>
                     </select>

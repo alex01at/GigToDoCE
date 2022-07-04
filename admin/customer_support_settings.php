@@ -9,22 +9,14 @@ echo "<script>window.open('login','_self');</script>";
 	
 }else{
     
-    
 $get_contact_support = $db->select("contact_support");
-
 $row_contact_support = $get_contact_support->fetch();
-
 $contact_email = $row_contact_support->contact_email;
-    	
 	
 $get_meta = $db->select("contact_support_meta",array('language_id' => $adminLanguage));
-
 $row_meta = $get_meta->fetch();
-
 $count_meta = $get_meta->rowCount();
-
 $contact_heading = $row_meta->contact_heading;
-
 $contact_desc = $row_meta->contact_desc;
 	
 ?>

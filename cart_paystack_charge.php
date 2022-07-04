@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include("includes/db.php");
 include("functions/payment.php");
@@ -89,7 +90,7 @@ if(isset($_POST['paystack'])){
 	$payment->paystack($data);
 
 }else{
-
-	echo "<script>window.open('index','_self')</script>";
+	
+   echo "<script>window.open('index','_self')</script>";
 
 }

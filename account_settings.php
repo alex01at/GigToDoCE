@@ -52,6 +52,9 @@ if($paymentGateway == 1){
 } 
 
 ?>
+
+<?php if($enable_payoneer == 1){ ?>
+
 <hr>
 <h5 class="mb-4"> <?= $lang['settings']['payoneer_heading']; ?> </h5>
 <form method="post" class="clearfix mb-3">
@@ -86,6 +89,8 @@ if(isset($_POST['submit_payoneer_email'])){
 }
 ?>
 
+<?php } ?>
+
 <?php if($enable_dusupay == 1){ ?>
 
 <hr>
@@ -115,12 +120,12 @@ if(isset($_POST['submit_payoneer_email'])){
     if($update_seller){
       echo "<script>
       swal({
-      type: 'success',
-      text: 'Mobile Money Updated Successfully!',
-      timer: 3000,
-      onOpen: function(){
-      swal.showLoading()
-      }
+        type: 'success',
+        text: 'Mobile Money Updated Successfully!',
+        timer: 3000,
+        onOpen: function(){
+          swal.showLoading()
+        }
       }).then(function(){
         window.open('settings?account_settings','_self')
       });
@@ -156,11 +161,11 @@ if(isset($_POST['submit_payoneer_email'])){
       text: 'Wallet Address updated successfully!',
       timer: 3000,
       onOpen: function(){
-      swal.showLoading()
+        swal.showLoading()
       }
-      }).then(function(){
-      window.open('settings?account_settings','_self')
-      });
+    }).then(function(){
+        window.open('settings?account_settings','_self')
+    });
   </script>";
   }
   }
@@ -367,6 +372,12 @@ if(isset($_POST['deactivate_account'])){
       $notification_date =  date("F d, Y");
       $purchase_date = date("F d, Y");
       $insert_notification = $db->insert("notifications",array("receiver_id" => $buyer_id,"sender_id" => $seller_id,"order_id" => $order_id,"reason" => "order_cancelled","date" => $notification_date,"status" => "unread"));
+
+      /// sendPushMessage Starts
+      $notification_id = $db->lastInsertId();
+      sendPushMessage($notification_id);
+      /// sendPushMessage Ends
+
       $insert_purchase = $db->insert("purchases",array("seller_id" => $buyer_id,"order_id" => $order_id,"amount" => $order_price,"date" => $purchase_date,"method" => "order_cancellation"));
       $update_balance = $db->update("seller_accounts",array("used_purchases" => "used_purchases-$order_price","current_balance" => "current_balance+$order_price"),array("seller_id" => $buyer_id));
       $update_orders = $db->update("orders",array("order_status" => 'cancelled',"order_active" => 'no'),array("order_id" => $order_id));

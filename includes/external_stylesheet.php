@@ -59,6 +59,12 @@
     background: <?= $site_color; ?> !important;
     box-shadow: unset !important;
   }
+/*  #order-status-bar{
+      background: <?= $site_color; ?> !important;
+  }*/
+  .order-page .order-review-box{
+      background: <?= $site_color; ?> !important;
+  }
 
   <?php if($page == "create_proposal" or $page == "edit_proposal"){ ?>
 

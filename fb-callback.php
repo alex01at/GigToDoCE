@@ -1,6 +1,8 @@
 <?php
-  session_start();
+	
+	session_start();
 	require_once "fb-config.php";
+
 	try {
 		$accessToken = $helper->getAccessToken();
 	} catch (\Facebook\Exceptions\FacebookResponseException $e) {
@@ -24,5 +26,7 @@
 	$_SESSION['userData'] = $userData;
 	$_SESSION['access_token'] = (string) $accessToken;
 	$email = $_SESSION['userData']['email'];
+
 	echo "<script> window.open('fb-register','_self'); </script>";
+	
 	exit();

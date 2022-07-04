@@ -49,6 +49,8 @@
           echo "<script>window.open('my_referrals','_self');</script>";
         }elseif($reason == "proposal_referral_approved"){
           echo "<script>window.open('proposal_referrals','_self');</script>";
+        }elseif($reason == "ticket_reply"){
+          echo "<script>window.open('support?view_conversation&ticket_id=$order_id','_self');</script>";
         }else{
           echo "<script>window.open('order_details?order_id=$order_id','_self');</script>";
         }

@@ -71,17 +71,17 @@ function send_proposal_email($seller_user_name,$proposal_title,$cat_title,$statu
 		$admin_name = $row_admins->admin_name;
 		$admin_email = $row_admins->admin_email;
 
-	   $data = [];
-      $data['template'] = "new_proposal";
-      $data['to'] = $admin_email;
-      $data['subject'] = "$site_name - $seller_user_name Has Just Created A New Proposal.";
-      $data['user_name'] = $admin_name;
-      $data['seller_user_name'] = $seller_user_name;
-      $data['proposal_title'] = $proposal_title;
-      $data['cat_title'] = $cat_title;
-      $data['proposal_status'] = ucfirst($status);
-      
-      send_mail($data);
+		$data = [];
+		$data['template'] = "new_proposal";
+		$data['to'] = $admin_email;
+		$data['subject'] = "$site_name - $seller_user_name Has Just Created A New Proposal.";
+		$data['user_name'] = $admin_name;
+		$data['seller_user_name'] = $seller_user_name;
+		$data['proposal_title'] = $proposal_title;
+		$data['cat_title'] = $cat_title;
+		$data['proposal_status'] = ucfirst($status);
+
+		send_mail($data);
 
    }
 

@@ -32,9 +32,11 @@
       <a class="dropdown-item" href="<?= $site_url; ?>/requests/buyer_requests">
       <?= $lang["menu"]['buyer_requests']; ?>
       </a>
+      <?php } ?>
       <a class="dropdown-item" href="<?= $site_url; ?>/revenue">
       <?= $lang["menu"]['revenues']; ?>
       </a>
+      <?php if($count_active_proposals > 0){ ?>
       <a class="dropdown-item" href="<?= $site_url; ?>/withdrawal_requests">
       <?= $lang["menu"]['withdrawal_requests']; ?>
       </a>
@@ -106,6 +108,19 @@
       <?= $lang["menu"]['account_settings']; ?>
       </a>
    </div>
+
+   <a class="dropdown-item dropdown-toggle" href="#" data-toggle="collapse" data-target="#support">
+   <?= $lang["menu"]['customer_support']; ?>
+   </a>
+   <div id="support" class="dropdown-submenu collapse">
+      <a class="dropdown-item" href="<?= $site_url; ?>/support?view_tickets">
+      <?= $lang["menu"]['my_tickets']; ?>
+      </a>
+      <a class="dropdown-item" href="<?= $site_url; ?>/customer_support">
+      <?= $lang["menu"]['support_new']; ?>
+      </a>      
+   </div>
+
    <div class="dropdown-divider"></div>
    <a class="dropdown-item" href="<?= $site_url; ?>/logout">
    <?= $lang["menu"]['logout']; ?>

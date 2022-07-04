@@ -15,24 +15,27 @@ $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
 
 $total = 0;
-$select_cart = $db->select("cart",array("seller_id" => $login_seller_id));
+$select_cart = $db->select("cart",["seller_id" => $login_seller_id]);
 while($row_cart = $select_cart->fetch()){
 	$proposal_price = $row_cart->proposal_price;
 	$proposal_qty = $row_cart->proposal_qty;
-	$cart_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$row_cart->proposal_id));
-	while($extra = $cart_extras->fetch()){
-	  $proposal_price += $extra->price;
+
+	$get_extras = $db->select("cart_extras",["seller_id"=>$login_seller_id,"proposal_id"=>$row_cart->proposal_id]);
+	while($extra = $get_extras->fetch()){
+		$proposal_price += $extra->price;
 	}
+
 	$sub_total = $proposal_price * $proposal_qty;
 	$total += $sub_total;
+
 }
 $processing_fee = processing_fee($total);
 
 $count_cart = $select_cart->rowCount();
 if(isset($_GET['remove_proposal'])){
 	$proposal_id = $input->get('remove_proposal');
-	$delete_cart_proposal = $db->delete("cart",array("proposal_id"=>$proposal_id,"seller_id"=>$login_seller_id));
-	$delete_cart_extras = $db->delete("cart_extras",array("proposal_id"=>$proposal_id,"seller_id"=>$login_seller_id));
+	$delete_cart_proposal = $db->delete("cart",["proposal_id"=>$proposal_id,"seller_id"=>$login_seller_id]);
+	$delete_cart_extras = $db->delete("cart_extras",["proposal_id"=>$proposal_id,"seller_id"=>$login_seller_id]);
 	if($delete_cart_extras){
 		echo "<script>window.open('cart','_self');</script>";	
 	}
@@ -153,7 +156,9 @@ if(isset($_GET['remove_proposal'])){
 		<div class="col-md-5">
 			<div class="card">
 				<div class="card-body cart-order-details">
-					<p><?= $lang['cart']['subtotal']; ?> <span class="float-right"><?= showPrice($total); ?></span></p>
+					<p>
+						<?= $lang['cart']['subtotal']; ?> <span class="float-right"><?= showPrice($total); ?></span>
+					</p>
 					<hr>
 					<p><?= $lang['cart']['apply_coupon_code']; ?></p>
 					<form class="input-group" method="post">

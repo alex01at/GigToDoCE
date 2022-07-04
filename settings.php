@@ -11,6 +11,7 @@ $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 $login_seller_name = $row_login_seller->seller_name;
 $login_seller_email = $row_login_seller->seller_email;
+$login_seller_phone = $row_login_seller->seller_phone;
 $login_seller_paypal_email = $row_login_seller->seller_paypal_email;
 $login_seller_payoneer_email = $row_login_seller->seller_payoneer_email;
 $login_seller_image = $row_login_seller->seller_image;
@@ -38,6 +39,7 @@ $current_balance = $row_seller_accounts->current_balance;
 
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
+$enable_payoneer = $row_payment_settings->enable_payoneer;
 $enable_paypal = $row_payment_settings->enable_paypal;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
 
@@ -59,18 +61,18 @@ if($lang_dir == "right"){
 	<meta name="author" content="<?= $site_author; ?>">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+   	<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/user_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="styles/owl.carousel.css" rel="stylesheet">
 	<link href="styles/owl.theme.default.css" rel="stylesheet">
-   <link href="styles/sweat_alert.css" rel="stylesheet">
-   <link href="styles/animate.css" rel="stylesheet">
+   	<link href="styles/sweat_alert.css" rel="stylesheet">
+   	<link href="styles/animate.css" rel="stylesheet">
 	<link href="styles/croppie.css" rel="stylesheet">
 	<!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-   <script src="js/ie.js"></script>
-   <script type="text/javascript" src="js/sweat_alert.js"></script>
+   	<script src="js/ie.js"></script>
+   	<script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/croppie.js"></script>
 	<?php if($paymentGateway == 1){ ?>

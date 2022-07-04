@@ -1,6 +1,5 @@
 <?php
 
-
 @session_start();
 
 if(!isset($_SESSION['admin_email'])){
@@ -10,6 +9,7 @@ echo "<script>window.open('login','_self');</script>";
 }else{
     
 $proposal_id = $input->get('feature_proposal');
+$page = (isset($_GET['page']))?"=".$input->get('page'):"";
 $select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
 $row_proposals = $select_proposals->fetch();
 $proposal_title = $row_proposals->proposal_title;
@@ -142,7 +142,7 @@ $proposal_seller_id = $row_proposals->proposal_seller_id;
 
   echo "<script>alert('Congrats, This Proposal Has Been Feature Listed On The Website Successfully.')</script>";
 
-  echo "<script>window.open('index?view_proposals','_self');</script>";
+  echo "<script>window.open('index?view_proposals$page','_self');</script>";
 
   }
 

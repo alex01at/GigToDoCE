@@ -72,11 +72,7 @@ echo "<script>window.open('login','_self');</script>";
 
       <div class="card-header">
 
-        <h4 class="h4">
-
-          Insert New Article
-
-        </h4>
+        <h4 class="h4">Insert New Article</h4>
 
       </div>
 
@@ -99,40 +95,37 @@ echo "<script>window.open('login','_self');</script>";
             </div>
           </div>
 
+          <div class="form-group row"><!--- form-group row Starts --->
 
-              <div class="form-group row">
-                           <!--- form-group row Starts --->
+               <label class="col-md-3 control-label"> Select Article's Category : </label>
 
-                           <label class="col-md-3 control-label"> Select Article's Category : </label>
+               <div class="col-md-6">
 
-                           <div class="col-md-6">
+                   <select name="cat_id" class="form-control" required>
 
-                               <select name="cat_id" class="form-control" required>
+                      <option value=""> Select Article Category </option>
 
-                                  <option value=""> Select Article Category </option>
+                      <?php
 
-                                  <?php
+                      $get_cats = $db->select("article_cat",array("language_id" => $adminLanguage));
 
-                                  $get_cats = $db->select("article_cat",array("language_id" => $adminLanguage));
+                      while($row_cats = $get_cats->fetch()){
 
-                                  while($row_cats = $get_cats->fetch()){
+                      $article_cat_id = $row_cats->article_cat_id;
 
-                                  $article_cat_id = $row_cats->article_cat_id;
+                      $article_cat_title = $row_cats->article_cat_title;
 
-                                  $article_cat_title = $row_cats->article_cat_title;
+                      echo "<option value='$article_cat_id'>$article_cat_title</option>";
 
-                                  echo "<option value='$article_cat_id'>$article_cat_title</option>";
+                      }
 
-                                  }
+                      ?>
 
-                                  ?>
+                    </select>
 
-                                </select>
+              </div>
 
-                           </div>
-
-                       </div>
-                       <!--- form-group row Ends --->
+          </div><!--- form-group row Ends --->
 
 
           <div class="row form-group">
@@ -142,7 +135,7 @@ echo "<script>window.open('login','_self');</script>";
             <div class="col-12 col-md-9"><textarea name="article_body" id="textarea-input" rows="9" placeholder="Start Typing Here..." class="form-control"></textarea></div>
           </div>
       
-      <div class="row form-group">
+          <div class="row form-group">
             <div class="col col-md-3"><label for="file-input" class=" form-control-label">Right Image (optional)</label></div>
             <div class="col-12 col-md-9"><input type="file" id="file-input" name="right_image" class="form-control-file"></div>
           </div>
@@ -180,15 +173,17 @@ echo "<script>window.open('login','_self');</script>";
 <script>
 
 $('textarea').summernote({
-        placeholder: 'Start Typing Here...',
-        height: 150
-      });
+    placeholder: 'Start Typing Here...',
+    height: 150
+});
 
 </script>
 
 <?php
 
 require_once("includes/removeJava.php");
+
+include("includes/sanitize_url.php");
 
 if(isset($_POST['submit'])){
 
@@ -211,37 +206,7 @@ if(isset($_POST['submit'])){
 
     $article_heading = $input->post('article_heading');
 
-    function sanitizeUrl($string, $space="-"){
-      if(preg_match('/[اأإء-ي]/ui', $string)){
-        return urlencode($string);
-      }else{
-
-        $turkcefrom = array("/Ğ/","/Ü/","/Ş/","/İ/","/Ö/","/Ç/","/ğ/","/ü/","/ş/","/ı/","/ö/","/ç/");
-        $turkceto = array("G","U","S","I","O","C","g","u","s","i","o","c");
-
-        $string = utf8_encode($string);
-        if (function_exists('iconv')) {
-          // $string = iconv('UTF-8', 'ASCII//TRANSLIT', mb_strtolower($string));
-        }
-
-        $string = preg_replace("/[^a-zA-Z0-9 \-]/", "", $string);
-        $string = trim(preg_replace("/\\s+/", " ", $string));
-        $string = strtolower($string);
-        $string = str_replace(" ", $space, $string);
-
-        $string = preg_replace("/[^0-9a-zA-ZÄzÜŞİÖÇğüşıöç]/"," ",$string);
-        $string = preg_replace($turkcefrom,$turkceto,$string);
-        $string = preg_replace("/ +/"," ",$string);
-        $string = preg_replace("/ /","-",$string);
-        $string = preg_replace("/\s/","",$string);
-        $string = strtolower($string);
-        $string = preg_replace("/^-/","",$string);
-        $string = preg_replace("/-$/","",$string);
-        return $string;
-     }
-    } 
-
-    $article_url = sanitizeUrl($article_heading);
+    $article_url = slug($article_heading);
 
     $cat_id = $input->post('cat_id');
     $article_status = $input->post('article_status');
@@ -270,19 +235,19 @@ if(isset($_POST['submit'])){
 
       if(!empty($right_image)){
         $right_image = pathinfo($right_image, PATHINFO_FILENAME);
-        $right_image = $right_image."_".time().".$file_extension";
+        $right_image = $right_image."_".time().".$right_extension";
         uploadToS3("article_images/$right_image",$right_image_tmp);
       }
 
       if(!empty($top_image)){
         $top_image = pathinfo($top_image, PATHINFO_FILENAME);
-        $top_image = $top_image."_".time().".$file_extension";
+        $top_image = $top_image."_".time().".$top_extension";
         uploadToS3("article_images/$top_image",$top_image_tmp);
       }
 
       if(!empty($bottom_image)){
         $bottom_image = pathinfo($bottom_image, PATHINFO_FILENAME);
-        $bottom_image = $bottom_image."_".time().".$file_extension";
+        $bottom_image = $bottom_image."_".time().".$bottom_extension";
         uploadToS3("article_images/$bottom_image",$bottom_image_tmp);
       }
 

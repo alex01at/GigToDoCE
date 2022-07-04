@@ -3,9 +3,9 @@
 @session_start();
 
 if(!isset($_SESSION['admin_email'])){
-	
+   
 echo "<script>window.open('login','_self');</script>";
-	
+   
 }else{
 
 ?>
@@ -140,13 +140,46 @@ echo "<script>window.open('login','_self');</script>";
     </div>
     <!--- 2 row Ends --->
 
-	</div>
-
+   </div>
 
 <?php
 
+function custom_copy($src,$dst){
+  
+   // open the source directory 
+   $dir = opendir($src);  
+  
+   // Make the destination directory if not exist 
+   @mkdir($dst);  
+  
+   // Loop through the files in source directory 
+   while($file = readdir($dir)){
+  
+      if (($file != '.') && ($file != '..' )){
+         if (is_dir($src.'/'.$file)){  
+  
+            // Recursively calling custom copy function 
+            // for sub directory  
+            custom_copy($src.'/'.$file,$dst.'/'.$file);  
+   
+         }else{  
+            copy($src.'/'.$file,$dst.'/'.$file);  
+         }  
+      }  
+   }  
+  
+   closedir($dir); 
+
+}
+  
+//$src = "C:/xampp/htdocs/geeks"; 
+  
+//$dst = "C:/xampp/htdocs/gfg"; 
+  
+//custom_copy($src,$dst); 
+
 if(isset($_POST['submit'])){
-	
+   
    $rules = array(
    "title" => "required",
    "image" => "required");
@@ -168,7 +201,7 @@ if(isset($_POST['submit'])){
       $tmp_image = $_FILES['image']['tmp_name'];
 
       $allowed = array('jpeg','jpg','gif','png','tif','ico','webp');
-      $file_extension = pathinfo($image, PATHINFO_EXTENSION);
+      $file_extension = pathinfo($image,PATHINFO_EXTENSION);
       if(!in_array($file_extension,$allowed)){
          echo "<script>alert('Your File Format Extension Is Not Supported.')</script>";
       }else{
@@ -181,7 +214,7 @@ if(isset($_POST['submit'])){
             echo "<script>window.open('index?insert_language','_self');</script>";
          }else{
 
-            $insert_language = $db->insert("languages",array("title"=>$title,"image"=>$image,"isS3"=>$enable_s3));
+            $insert_language = $db->insert("languages",array("title"=>$title,"image"=>$image,"isS3"=>$enable_s3,"template_folder" => substr(strtolower($title),0,2)));
 
             if($insert_language){
                 
@@ -200,20 +233,41 @@ if(isset($_POST['submit'])){
                   $insert = $db->insert("child_cats_meta",array("child_id"=>$child_id,"child_parent_id"=>$child_parent_id,"language_id"=>$insert_id));
                }
 
+               $selPages = $db->query("select * from pages");
+               while($page = $selPages->fetch()){
+                  $page_id = $page->id;
+                  $insert = $db->insert("pages_meta",array("page_id"=>$page_id,"language_id"=>$insert_id));
+               }
+
+               $posts = $db->select("posts");
+               while($post = $posts->fetch()){
+                  $post_id = $post->id;
+                  $insert = $db->insert("posts_meta",array("post_id"=>$post_id,"language_id"=>$insert_id));
+               }
+
+               $categories = $db->select("post_categories");
+               while($cat = $categories->fetch()){
+                  $cat_id = $cat->id;
+                  $insert = $db->insert("post_categories_meta",array("cat_id"=>$cat_id,"language_id"=>$insert_id));
+               }
+
                $insert_log = $db->insert_log($admin_id,"language",$insert_id,"inserted");
                $file = strtolower($title);
 
+               $template_folder = substr($file,0,2);
+
                if(!is_file("../language/{$file}.php")){
-                   
-                  if(copy("../languages/english.php", "../languages/{$file}.php")){
+                  copy("../languages/english.php","../languages/{$file}.php");
+                  custom_copy($dir."/emails/templates/en",$dir."/emails/templates/$template_folder");
+                  if(file_exists($dir."/emails/templates/$template_folder")){
                      echo "<script>alert('One Language Has Been Inserted.');</script>";
                      echo "<script>window.open('index?view_languages','_self');</script>";
                   }
 
                }
-                
+               
             }
-         	
+            
          }
 
       }

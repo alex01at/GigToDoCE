@@ -41,6 +41,11 @@
   if(!isset($_COOKIE['close_announcement'])){
     include("comp/announcement_bar.php");
   }
+$get_general_settings = $db->select("general_settings");
+$row_general_settings = $get_general_settings->fetch();
+$site_color = $row_general_settings->site_color;
+$site_hover_color = $row_general_settings->site_hover_color;
+$site_border_color = $row_general_settings->site_border_color;
 ?>
 
 <link href="<?= $site_url; ?>/styles/scoped_responsive_and_nav.css" rel="stylesheet">
@@ -83,7 +88,12 @@
                   placeholder="<?= $lang['search']['placeholder']; ?>" value="<?= @$_SESSION["search_query"]; ?>"  autocomplete="off">
               </div>
               <div class="search-button-wrapper hide">
-                <button class="btn btn-primary" name="search" type="submit" value="Search">
+                <button class="btn" name="search" type="submit" value="Search" style="background-color: <?= $site_color ?>;border-top-left-radius: 0;
+                        border-bottom-left-radius: 0;
+                        line-height: 17px;
+                        height: 34px;
+                        padding: 7px 15px 8px;
+                        color: #FFF;">
                 <?= $lang['search']['button']; ?>
                 </button>
               </div>

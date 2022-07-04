@@ -12,7 +12,6 @@ if(isset($_POST['dusupay'])){
 	$featured_fee = $row_payment_settings->featured_fee;
 	$processing_fee = processing_fee($featured_fee);
 
-	$payment = new Payment();
 	$data = [];
 	$data['type'] = "featured_listing";
 
@@ -31,6 +30,8 @@ if(isset($_POST['dusupay'])){
 	$data['price'] = $featured_fee;
 	$data['amount'] = $featured_fee+$processing_fee;
 	$data['redirect_url'] = "$site_url/dusupay_order?proposal_id={$_SESSION['f_proposal_id']}&featured_listing=1&";
+
+	$payment = new Payment();
 	$payment->dusupay($data);
 
 }else{

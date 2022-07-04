@@ -22,10 +22,19 @@
 
   }else{
 
-  $data = $input->post();
+	  $data = $input->post();
 
-  $insert_extra = $db->insert("proposals_faq",$data);
+	  unset($data['change_status']);
 
-  $data['id'] = $db->lastInsertId();
+	  $insert_extra = $db->insert("proposals_faq",$data);
 
+	  $data['id'] = $db->lastInsertId();
+
+	  if(isset($_POST["proposal_id"])){
+	    $status = $_POST['change_status'];
+	    $proposal_id = $_POST['proposal_id'];
+	    if($status == 'true'){
+	      $update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+	    }
+	  }
   }

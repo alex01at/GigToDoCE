@@ -19,9 +19,9 @@ echo "<script>window.open('login','_self');</script>";
    $password = $row_smtp_settings->password;
 
    function get_file($file){
-      echo file_get_contents("../emails/templates/$file");
+      global $template_folder;
+      echo file_get_contents("../emails/templates/$template_folder/$file");
    }
-
 ?>
 
 <div class="breadcrumbs">
@@ -56,7 +56,7 @@ echo "<script>window.open('login','_self');</script>";
                <ul class="nav nav-tabs card-header-tabs">
                  
                  <li class="nav-item">
-                   <a class="nav-link" data-toggle="tab" href="#forgot">Forgot Password</a>
+                   <a class="nav-link active" data-toggle="tab" href="#forgot">Forgot Password</a>
                  </li>
 
                  <li class="nav-item">
@@ -73,6 +73,10 @@ echo "<script>window.open('login','_self');</script>";
 
                  <li class="nav-item">
                    <a class="nav-link" data-toggle="tab" href="#ticket-closed">Ticket Closed Email</a>
+                 </li>
+
+                 <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#ticket-reply">Ticket Reply Email</a>
                  </li>
 
                  <li class="nav-item">
@@ -128,6 +132,10 @@ echo "<script>window.open('login','_self');</script>";
                  </li>
 
                  <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#new-user">Admin New Seller</a>
+                 </li>
+
+                 <li class="nav-item">
                    <a class="nav-link" data-toggle="tab" href="#ban-seller">Admin Ban Seller</a>
                  </li>
 
@@ -144,7 +152,7 @@ echo "<script>window.open('login','_self');</script>";
                  </li>
                 
                  <li class="nav-item">
-                   <a class="nav-link active" data-toggle="tab" href="#header">Email Header</a>
+                   <a class="nav-link" data-toggle="tab" href="#header">Email Header</a>
                  </li>
 
                  <li class="nav-item">
@@ -157,7 +165,7 @@ echo "<script>window.open('login','_self');</script>";
                <div class="card-body tab-content"><!--- card-body Starts --->
 
                
-               <div class="tab-pane fade show active" id="header"><!--- tab-pane fade show active Starts --->
+               <div class="tab-pane fade" id="header"><!--- tab-pane fade show active Starts --->
 
                <?php include("email_content/header.php"); ?>
 
@@ -171,7 +179,7 @@ echo "<script>window.open('login','_self');</script>";
                </div><!--- tab-pane fade show active Ends --->
 
 
-               <div class="tab-pane fade" id="forgot"><!--- tab-pane fade show active Starts --->
+               <div class="tab-pane fade show active" id="forgot"><!--- tab-pane fade show active Starts --->
 
                <?php include("email_content/forgot_pass.php"); ?>
 
@@ -201,6 +209,12 @@ echo "<script>window.open('login','_self');</script>";
                <div class="tab-pane fade" id="ticket-closed"><!--- tab-pane fade Starts --->
 
                <?php include("email_content/ticket_closed.php"); ?>
+
+               </div><!--- tab-pane fade Ends --->
+
+               <div class="tab-pane fade" id="ticket-reply"><!--- tab-pane fade Starts --->
+
+               <?php include("email_content/ticket_reply.php"); ?>
 
                </div><!--- tab-pane fade Ends --->            
 
@@ -299,6 +313,12 @@ echo "<script>window.open('login','_self');</script>";
 
                </div><!--- tab-pane fade Ends --->
 
+               <div class="tab-pane fade" id="new-user"><!--- tab-pane fade Starts --->
+
+               <?php include("email_content/new_user.php"); ?>
+
+               </div><!--- tab-pane fade Ends --->
+
     
                <div class="tab-pane fade" id="ban-seller"><!--- tab-pane fade Starts --->
 
@@ -342,14 +362,16 @@ echo "<script>window.open('login','_self');</script>";
   
   $(document).ready(function(){
       
-    $(".preview-email").click(function(event) {
+   $(".preview-email").click(function(event) {
       
       var template = $(this).parent().parent().find('input').val().replace('.php','');
-      window.open("template_preview?template="+template+"","_blank");
 
-      // alert(template);
-
-    });
+      console.log(template);
+      var template_address = "template_preview?template="+template+"&lang=<?= $template_folder ?>";
+      console.log(template_address);
+      window.open(template_address,"_blank");
+      
+   });
 
   });
 
@@ -358,9 +380,8 @@ echo "<script>window.open('login','_self');</script>";
 <?php
 
 if(isset($_POST['update'])){
-     
-   $file = "../emails/templates/".$input->post('file_name');
-   $content = $_POST['content'];
+   $file = "../emails/templates/$template_folder/".$input->post('file_name');
+   $content = $_POST['content'];   
    $handle = fopen($file, "w");
 
    if($handle){
@@ -368,7 +389,7 @@ if(isset($_POST['update'])){
       fclose($handle);
       echo "<script>alert_success('Changes Has Been Saved Successfully.','index?email_templates');</script>";
    }
-    
+
 }
 
 ?>

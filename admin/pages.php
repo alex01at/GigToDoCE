@@ -50,11 +50,15 @@ if(!isset($_SESSION['admin_email'])){
 	<?php
 	$selPages = $db->query("select * from pages");
 	while($page = $selPages->fetch()){
-	$language = $db->select("languages",array("id"=>$page->language_id));
+
+	$page_meta = $db->select("pages_meta",array("page_id"=>$page->id,"language_id"=>$adminLanguage))->fetch();
+
+	$language = $db->select("languages",array("id"=>$page_meta->language_id));
 	$language_title = $language->fetch()->title;
+
 	?>
 	<tr>
-	<td><?= $page->title; ?></td>
+	<td><?= $page_meta->title; ?></td>
 	<td><?= $language_title; ?></td>
 	<td><?= $page->date; ?></td>
 	<td>

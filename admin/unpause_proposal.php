@@ -13,7 +13,7 @@ echo "<script>window.open('login','_self');</script>";
     if(isset($_GET['unpause_proposal'])){
         
         $unpause_id = $input->get('unpause_proposal');
-        
+        $page = (isset($_GET['page']))?"=".$input->get('page'):"";
         $update_proposal = $db->update("proposals",array("proposal_status"=>'active'),array("proposal_id"=>$unpause_id));
 
         if($update_proposal){

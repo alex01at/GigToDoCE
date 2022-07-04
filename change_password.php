@@ -13,11 +13,13 @@ $code = $input->get('code');
 $select_seller = $db->select("sellers",array("seller_user_name" => $username,"seller_pass" => $code));
 $count_seller = $select_seller->rowCount();
 if($count_seller == 0){
+	// exit();
 	echo "
-	<script>
-	  	alert('Your Change-Password Link Is Invalid.');
-		window.open('index.php','_self');
-	</script>";
+		<script>
+			alert('Your Change-Password Link Is Invalid.');
+			window.open('index.php','_self');
+		</script>
+	";
    exit();
 }
 

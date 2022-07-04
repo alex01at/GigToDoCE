@@ -9,7 +9,13 @@ if(isset($_GET['edit_post'])){
 	  echo "<script>window.open('index?dashboard','_self');</script>";
 	}
 
-	$post = $edit_post->fetch();
+	$post = $edit_post->fetch();	
+	$query = $db->select('posts_meta', array('post_id' => $edit_id, 'language_id' => $adminLanguage));
+	$post_meta = $query->fetch();
+	
+	$title = !empty($post_meta->title) ? $post_meta->title: '';
+	$author = !empty($post_meta->author) ? $post_meta->author: '';
+	$content = !empty($post_meta->content) ? $post_meta->content: '';	
 
 }
 
@@ -52,7 +58,7 @@ if(isset($_GET['edit_post'])){
 				<div class="form-group row"><!--- form-group row Starts --->
 					<label class="col-md-3 control-label"> Title: </label>
 					<div class="col-md-7">
-						<input type="text" name="title" class="form-control" value="<?= $post->title; ?>" required="">
+						<input type="text" name="title" class="form-control" value="<?= $title; ?>" required="">
 					</div>
 				</div><!--- form-group row Ends --->
 				<div class="form-group row"><!--- form-group row Starts --->
@@ -60,12 +66,13 @@ if(isset($_GET['edit_post'])){
 					<div class="col-md-7">
 					<select class="form-control" name="cat_id" required="">
 					<?php
-						$get_cats = $db->select("post_categories");
+						$get_cats = $db->select("post_categories_meta", array('language_id' => $adminLanguage));						
+						//print_r($get_cats->fetchAll());
 						while($cat = $get_cats->fetch()){
-							if($cat->id == $post->cat_id) {
-								echo "<option value='$cat->id' selected>$cat->cat_name</option>";
+							if($cat->cat_id == $post->cat_id) {
+								echo "<option value='$cat->cat_id' selected>$cat->cat_name</option>";
 							}else{
-								echo "<option value='$cat->id'>$cat->cat_name</option>";
+								echo "<option value='$cat->cat_id'>$cat->cat_name</option>";
 							}
 						}
 					?>
@@ -76,7 +83,7 @@ if(isset($_GET['edit_post'])){
 				<div class="form-group row"><!--- form-group row Starts --->
 					<label class="col-md-3 control-label"> Author: </label>
 					<div class="col-md-7">
-						<input type="text" name="author" class="form-control" value="<?= $post->author; ?>" required=""/>
+						<input type="text" name="author" class="form-control" value="<?= $author; ?>" required=""/>
 					</div>
 				</div><!--- form-group row Ends --->
 
@@ -96,7 +103,7 @@ if(isset($_GET['edit_post'])){
 				<div class="form-group row"><!--- form-group row Starts --->
 				<label class="col-md-3 control-label"> Content: </label>
 				<div class="col-md-7">
-					<textarea name="content" class="form-control" rows="4"><?= $post->content; ?></textarea>
+					<textarea name="content" class="form-control" rows="4"><?= $content; ?></textarea>
 				</div>
 				</div><!--- form-group row Ends --->
 				<div class="form-group row"><!--- form-group row Starts --->
@@ -133,13 +140,24 @@ if(isset($_GET['edit_post'])){
 <?php
 
 if(isset($_POST['update'])){
+
   
 	require_once("includes/removeJava.php");
 
 	$data = $input->post();
 	$data['content'] = removeJava($_POST['content']);
 	$data['date_time'] = date("F d, Y");
+
+
+	$post_meta_data['author'] = $data['author'];
+	$post_meta_data['title'] = $data['title'];
+	$post_meta_data['content'] = $data['content'];	
+
+
 	unset($data['update']);
+	unset($data['author']);
+	unset($data['title']);
+	unset($data['content']);
 
 	$image = $_FILES['image']['name'];
 	$tmp_image = $_FILES['image']['tmp_name'];
@@ -164,12 +182,11 @@ if(isset($_POST['update'])){
 		$data['status'] = 1;
 		$update = $db->update("posts",$data,["id"=>$post->id]);
 		if($update){
+			$update_post_meta = $db->update("posts_meta", $post_meta_data,["post_id" => $edit_id, "language_id" => $adminLanguage]);
 			$insert_log = $db->insert_log($admin_id,"post",$post->id,"updated");
 			echo "<script>alert_success('One Post has been Updated Successfully.','index?posts');</script>";
 		}
-
 	}
-
 }
 
 ?>

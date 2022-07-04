@@ -26,19 +26,19 @@ if(isset($_SESSION['seller_user_name'])){
 
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+	<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/categories_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="styles/sweat_alert.css" rel="stylesheet">
 	<link href="styles/animate.css" rel="stylesheet">
-   <script type="text/javascript" src="js/ie.js"></script>
-   <script type="text/javascript" src="js/sweat_alert.js"></script>
+	<script type="text/javascript" src="js/ie.js"></script>
+	<script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
-
+	
 	<?php if(!empty($site_favicon)){ ?>
-   	<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-   <?php } ?>
+   		<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+	<?php } ?>
 
 </head>
 
@@ -87,13 +87,13 @@ if(isset($_SESSION['seller_user_name'])){
 
 	            <div class="form-group">
 
-						<input type="password" name="seller_pass" class="form-control" placeholder="<?= $lang['placeholder']['password']; ?>" required>
+					<input type="password" name="seller_pass" class="form-control" placeholder="<?= $lang['placeholder']['password']; ?>" required>
 				
 	            </div>
 
 	            <div class="form-group">
 
-						<input type="submit" name="access" class="btn btn-success btn-block" value="<?= $lang['button']['login']; ?>" required>
+					<input type="submit" name="access" class="btn btn-success btn-block" value="<?= $lang['button']['login']; ?>" required>
 				
 	            </div>
 
@@ -173,7 +173,11 @@ if(isset($_SESSION['seller_user_name'])){
 
 		$seller_user_name = $input->post('seller_user_name');
 		$seller_pass = $input->post('seller_pass');
-		$select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+		
+		// $select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+
+		$select_seller = $db->query("select * from sellers where binary seller_user_name like :u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+
 		$row_seller = $select_seller->fetch();
 		@$hashed_password = $row_seller->seller_pass;
 		@$seller_status = $row_seller->seller_status;
@@ -231,7 +235,8 @@ if(isset($_SESSION['seller_user_name'])){
 				if($select_seller){
 					
 					$update_seller = $db->update("sellers",array("seller_status"=>'online',"seller_ip"=>$ip),array("seller_id"=>$row_seller->seller_id,"seller_pass"=>$hashed_password));
-					$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
+//					$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
+					$seller_user_name = ucfirst($row_seller->seller_user_name);
 					$_SESSION['sessionStart'] = $row_seller->seller_user_name;
 
 					echo "

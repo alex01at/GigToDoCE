@@ -15,7 +15,6 @@
    // proposal
    $processing_fee = processing_fee($amount);
 
-   $payment = new Payment();
    $data = [];
    $data['type'] = "orderTip";
    $data['content_id'] = $_SESSION['tipOrderId'];
@@ -30,4 +29,5 @@
    $data['redirect_url'] = "$site_url/orderIncludes/charge/order/stripe";
    $data['cancel_url'] = "$site_url/cancel_payment";
 
+   $payment = new Payment();
    $payment->stripe($data);

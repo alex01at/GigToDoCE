@@ -20,9 +20,6 @@ echo "<script>window.open('login','_self');</script>";
       $a_pass = $row_edit->admin_pass;
       $a_image = $row_edit->admin_image;
       $showImage = $row_edit->admin_image;
-      if (empty($showImage)) {
-         $showImage = "empty-image.png";
-      }
       $a_country = $row_edit->admin_country;
       $a_job = $row_edit->admin_job;
       $a_contact = $row_edit->admin_contact;

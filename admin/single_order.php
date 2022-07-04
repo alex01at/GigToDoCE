@@ -92,8 +92,7 @@ if(isset($_GET['single_order'])){
 
             </div><!--- col-md-2 Ends --->
 
-            <div class="col-md-10">
-                <!--- col-md-10 Starts --->
+            <div class="col-md-10"><!--- col-md-10 Starts --->
 
                 <h1 class="float-right"><?= $s_currency; ?><?= $order_price; ?></h1>
 
@@ -102,9 +101,7 @@ if(isset($_GET['single_order'])){
                     <?= $proposal_title; ?>
 
                     <small class="h6">
-
-                    <a href="../proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" target="_blank" class="text-success">View Proposal/Service</a>
-
+                        <a href="../proposals/<?= $seller_user_name; ?>/<?= $proposal_url; ?>" target="_blank" class="text-success">View Proposal/Service</a>
                     </small>
 
                 </h4>
@@ -114,9 +111,7 @@ if(isset($_GET['single_order'])){
                     Seller :
 
                     <a href="index?single_seller=<?= $seller_id; ?>" target="_blank">
-
                         <?= ucfirst($seller_user_name); ?>
-
                     </a>
 
                     &nbsp; | &nbsp; Buyer :
@@ -125,7 +120,7 @@ if(isset($_GET['single_order'])){
                         <?= ucfirst($buyer_user_name); ?>
                     </a>
 
-                    &nbsp; | &nbsp; Date : #<?= $order_date; ?>
+                    &nbsp; | &nbsp; Date : <?= $order_date; ?>
 
                 </p>
 

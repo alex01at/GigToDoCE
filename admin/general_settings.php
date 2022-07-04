@@ -74,6 +74,9 @@ $site_color = $row_general_settings->site_color;
 $site_hover_color = $row_general_settings->site_hover_color;
 $site_border_color = $row_general_settings->site_border_color;
 $google_analytics = $row_general_settings->google_analytics;
+$enable_websocket = $row_general_settings->enable_websocket;
+$websocket_address = $row_general_settings->websocket_address;
+$make_phone_number_required = $row_general_settings->make_phone_number_required;
 
 require 'updateHtaccess.php';
 require 'timezones.php';
@@ -568,6 +571,27 @@ No of days required for order to automatically completed. <br>
 
 <div class="form-group row">
 <!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Make phone number required : </label>
+<div class="col-md-6">
+<select name="make_phone_number_required" class="form-control" required="">
+<?php if($make_phone_number_required == "1"){ ?>
+<option value="1"> Yes </option>
+<option value="0"> No </option>
+<?php }elseif($make_phone_number_required == "0"){ ?>
+<option value="0"> No </option>
+<option value="1"> Yes </option>
+<?php } ?>
+</select>
+<small class="form-text text-muted">
+Users are either required or not required to enter a phone number
+</small>
+</div>
+</div>
+<!--- form-group row Ends --->
+
+
+<div class="form-group row">
+<!--- form-group row Starts --->
 <label class="col-md-3 control-label"> Enable Maintenance Mode : </label>
 <div class="col-md-6">
 <select name="enable_maintenance_mode" class="form-control" required="">
@@ -585,6 +609,38 @@ Enable or Disable Maintenance Mode on the website.
 </div>
 </div>
 <!--- form-group row Ends --->
+
+<div class="form-group row"><!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Enable Websocket : </label>
+  <div class="col-md-6">
+    <select name="enable_websocket" class="form-control" required="">
+      <?php if($enable_websocket == "1"){ ?>
+        <option value="1"> Yes </option>
+        <option value="0"> No </option>
+      <?php }elseif($enable_websocket == "0"){ ?>
+        <option value="0"> No </option>
+        <option value="1"> Yes </option>
+      <?php } ?>
+    </select>
+
+    <small class="form-text text-muted">
+      Enable or Disable Websocket functionality on the website for inbox messages.
+    </small>
+
+  </div>
+</div>
+<!--- form-group row Ends --->
+
+<div class="form-group row"><!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Websocket Address : </label>
+  <div class="col-md-6">
+
+    <input type="url" name="websocket_address" class="form-control" placeholder="Websocket Address" value="<?= $websocket_address; ?>">
+
+    <small class="form-text text-muted">Address should be look like this : ws://127.0.0.1:8080</small>
+
+  </div>
+</div>
 
 <div class="form-group row">
 <!--- form-group row Starts --->
@@ -740,7 +796,7 @@ No. of orders required to be completed to become top rated seller.
   </div>
 </div><!--- form-group row Ends --->
 
-<div class="form-group row d-none"><!--- form-group row Starts --->
+<div class="form-group row"><!--- form-group row Starts --->
   <label class="col-md-3 control-label"> Enable edited proposals to be submitted for approval : </label>
   <div class="col-md-6">
     <select name="edited_proposals" class="form-control" required="">
@@ -1015,13 +1071,17 @@ if(isset($_POST['general_settings_update'])){
 	$enable_referrals = $input->post('enable_referrals');
 	$knowledge_bank = $input->post('knowledge_bank');
 	$referral_money = $input->post('referral_money');
-	$enable_maintenance_mode = $input->post('enable_maintenance_mode');
+	$make_phone_number_required = $input->post('make_phone_number_required');
+  $enable_maintenance_mode = $input->post('enable_maintenance_mode');
 	$order_auto_complete = $input->post('order_auto_complete');
   $site_color = $input->post('site_color');
   $site_hover_color = $input->post('site_hover_color');
   $site_border_color = $input->post('site_border_color');
   $google_analytics = $input->post('google_analytics');
 	
+  $enable_websocket = $input->post('enable_websocket');
+  $websocket_address = $input->post('websocket_address');
+
   $site_favicon = $_FILES['site_favicon']['name'];
 	$site_favicon_tmp = $_FILES['site_favicon']['tmp_name'];
 	
@@ -1118,13 +1178,16 @@ if(isset($_POST['general_settings_update'])){
       "enable_referrals" => $enable_referrals,
       "knowledge_bank" => $knowledge_bank,
       "referral_money" => $referral_money,
+      "make_phone_number_required"=>$make_phone_number_required,
       "enable_maintenance_mode"=>$enable_maintenance_mode,
       "order_auto_complete" => $order_auto_complete,
       "wish_do_manual_payouts"=>$wish_do_manual_payouts,
       "site_color"=>$site_color,
       "site_hover_color"=>$site_hover_color,
       "site_border_color"=>$site_border_color,
-      "google_analytics"=>$google_analytics
+      "google_analytics"=>$google_analytics,
+      'enable_websocket' => $enable_websocket,
+      'websocket_address' => $websocket_address
     ));
 
 		if($update_general_settings){

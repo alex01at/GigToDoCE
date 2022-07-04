@@ -1,6 +1,6 @@
 <div class="mp-box mp-box-white notop d-lg-block d-none">
 
-<div class="container">
+	<div class="container">
 
 	<div class="box-row">
 
@@ -23,38 +23,32 @@
 						<?php if($count_active_proposals > 0){ ?>
 
 						<li>
-							
 							<a href="<?= $site_url; ?>/selling_orders"><?= $lang["menu"]['orders']; ?></a>
-
 						</li>
 						
 						<?php } ?>
 
 						<li>
-							
 							<a href="<?= $site_url; ?>/proposals/view_proposals"><?= $lang["menu"]['my_proposals']; ?></a>
-
-
 						</li>
 
 						<li>
-							
 							<a href="<?= $site_url; ?>/proposals/create_coupon"><?= $lang["menu"]['create_coupon']; ?></a>
-
-
 						</li>
 
 						<?php if($count_active_proposals > 0){ ?>
 
 						<li>
-							
 							<a href="<?= $site_url; ?>/requests/buyer_requests"><?= $lang["menu"]['buyer_requests']; ?></a>
-
 						</li>
+
+						<?php } ?>
 
 						<li>
 							<a href="<?= $site_url; ?>/revenue"><?= $lang["menu"]['revenues']; ?></a>
 						</li>
+
+						<?php if($count_active_proposals > 0){ ?>
 
 						<li>
 							<a href="<?= $site_url; ?>/withdrawal_requests"><?= $lang["menu"]['withdrawal_requests']; ?></a>
@@ -82,32 +76,19 @@
 
 						<li>
 							
-							<a href="<?= $site_url; ?>/buying_orders">
-
-								<?= $lang["menu"]['orders']; ?>
-
-							</a>
+							<a href="<?= $site_url; ?>/buying_orders"><?= $lang["menu"]['orders']; ?></a>
 
 						</li>
 						
-
 						<li>
 							
-							<a href="<?= $site_url; ?>/purchases">
-
-								<?= $lang["menu"]['purchases']; ?>
-								
-							</a>
+							<a href="<?= $site_url; ?>/purchases"><?= $lang["menu"]['purchases']; ?></a>
 
 						</li>
 
 						<li>
 							
-							<a href="<?= $site_url; ?>/favorites">
-
-								<?= $lang["menu"]['favorites']; ?>
-
-							</a>
+							<a href="<?= $site_url; ?>/favorites"><?= $lang["menu"]['favorites']; ?></a>
 
 						</li>
 
@@ -116,8 +97,6 @@
 				</div>
 				
 			</li>
-
-
 
 
 

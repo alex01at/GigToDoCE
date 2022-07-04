@@ -10,7 +10,9 @@ require_once("functions/functions.php");
 <html lang="en" class="ui-toolkit">
 
 <head>
+
   <title> <?= $site_name; ?> - <?= $lang['featured_proposals']['title']; ?> </title>
+
   <meta name="description" content="">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +21,9 @@ require_once("functions/functions.php");
   <link href="styles/bootstrap.css" rel="stylesheet">
   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
   <link href="styles/styles.css" rel="stylesheet">
+
   <link href="styles/categories_nav_styles.css" rel="stylesheet">
+
   <link href="font_awesome/css/font-awesome.css" rel="stylesheet">
   <link href="styles/sweat_alert.css" rel="stylesheet">
   <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
@@ -252,15 +256,19 @@ function get_featured_proposals(){
   $('.get_cat_id').click(function(){ 
   get_featured_proposals(); 
   });
+  
   $('.get_delivery_time').click(function(){ 
   get_featured_proposals(); 
   });
+  
   $('.get_seller_level').click(function(){ 
   get_featured_proposals(); 
   });
+  
   $('.get_seller_language').click(function(){ 
   get_featured_proposals(); 
   });
+
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -319,6 +327,7 @@ $(document).ready(function(){
       $(".clear_cat_id").hide();
     }
   });
+  
   $(".get_delivery_time").click(function(){
     if($(".get_delivery_time:checked").length > 0 ) {
       $(".clear_delivery_time").show();
@@ -327,6 +336,7 @@ $(document).ready(function(){
       $(".clear_delivery_time").hide();
     }
   });
+  
   $(".get_seller_level").click(function(){
     if($(".get_seller_level:checked").length > 0 ) {
       $(".clear_seller_level").show();
@@ -335,6 +345,7 @@ $(document).ready(function(){
       $(".clear_seller_level").hide();
     }
   });
+  
   $(".get_seller_language").click(function(){
     if($(".get_seller_language:checked").length > 0 ) {
       $(".clear_seller_language").show();
@@ -347,6 +358,7 @@ $(document).ready(function(){
   $(".clear_seller_country").click(function(){
     $(".clear_seller_country").hide();
   });
+  
   $(".clear_seller_city").click(function(){
     $(".clear_seller_city").hide();
   });
@@ -354,12 +366,15 @@ $(document).ready(function(){
   $(".clear_cat_id").click(function(){
     $(".clear_cat_id").hide();
   });
+  
   $(".clear_delivery_time").click(function(){
     $(".clear_delivery_time").hide();
   });
+  
   $(".clear_seller_level").click(function(){
     $(".clear_seller_level").hide();
   });
+
   $(".clear_seller_language").click(function(){
     $(".clear_seller_language").hide();
   });
@@ -393,6 +408,8 @@ function clearLanguage(){
   $('.get_seller_language').prop('checked',false);
   get_featured_proposals(); 
 }
+
 </script>
+
 </body>
 </html>

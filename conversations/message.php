@@ -49,7 +49,6 @@ $message_status = "empty";
 
 $new_message_group_id = mt_rand();
 
-
 $insert_inbox_seller = $db->insert("inbox_sellers",array("message_group_id" => $new_message_group_id,"offer_id" => $offer_id,"sender_id" => $login_seller_id,"receiver_id" => $get_receiver_id,"message_status" => $message_status));
 
 if($insert_inbox_seller){

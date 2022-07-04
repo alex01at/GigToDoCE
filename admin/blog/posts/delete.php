@@ -13,6 +13,8 @@ if(isset($_GET['delete_post'])){
     
     if($delete_post){
 
+        $delete_meta = $db->delete("posts_meta",array('post_id' => $delete_id));;
+
         $insert_log = $db->insert_log($admin_id,"post",$delete_id,"deleted");
         echo "<script>
 

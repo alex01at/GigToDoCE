@@ -22,7 +22,7 @@ if(isset($_FILES["file"]["name"])){
 		$file = pathinfo($file, PATHINFO_FILENAME);
 		$file = $file."_".time().".$file_extension";
    
-      uploadToS3("proposal_files/$file",$file_tmp);
+    	uploadToS3("proposal_files/$file",$file_tmp);
 	
 		$data = array();
 		$data['name'] = $file;

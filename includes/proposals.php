@@ -21,10 +21,12 @@
 				<img src="<?= $seller_image; ?>" class="rounded-circle" width="32" height="32">
 			</span>
 			<div class="seller-info-wrapper">
-		    <a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="seller-name"><?= $seller_user_name; ?></a>
-		    <div class="gig-seller-tooltip">
-		    	<?= $seller_level; ?>
-		    </div>
+		    	<a href="<?= $site_url; ?>/<?= $seller_user_name; ?>" class="seller-name">
+		    		<?= $seller_user_name; ?>
+		    	</a>
+			    <div class="gig-seller-tooltip">
+			    	<?= $seller_level; ?>
+			    </div>
 			</div>
 			<div class="favoriteIcon">
 				<?php if(isset($_SESSION['seller_user_name'])){ ?>

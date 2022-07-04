@@ -16,6 +16,12 @@ $(document).on('click', '.closeMsg', function(e){
 
 $(document).on('click', '.message-recipients', function(e){
   var message_group_id = $(this).data("id");
+  
+  if($("#msgHeader").html() != ""){
+    websocket.close();
+    console.log("connected closed");
+  }
+
   addRemoveSelected(this);
   msgHeader(message_group_id);
 });
@@ -23,13 +29,13 @@ $(document).on('click', '.message-recipients', function(e){
 function msgHeader(message_group_id){
   $("#wait").addClass("loader");
   $.ajax({
-  method:'POST',
-  url: "includes/msgHeader",
-  data: {message_group_id:message_group_id},
-  success: function(data){
-    $("#msgHeader").html(data);
-    showSingle(message_group_id);
-  }
+    method:'POST',
+    url: "includes/msgHeader",
+    data: {message_group_id:message_group_id},
+    success: function(data){
+      $("#msgHeader").html(data);
+      showSingle(message_group_id);
+    }
   });
 }
 

@@ -1,5 +1,6 @@
 <?php
 
+
 @session_start();
 
 if(isset($_POST['proposal_id'])){
@@ -57,7 +58,7 @@ $d_delivery_id = $row_proposal->delivery_id;
     <span class="input-group-addon font-weight-bold">
     <?= $s_currency; ?>
     </span>
-    <input type="number" class="form-control" form="pricing-form" name="proposal_price" min="<?= $min_proposal_price; ?>" value="<?= $d_proposal_price; ?>">
+    <input type="number" class="form-control" form="pricing-form" name="proposal_price" value="<?= $d_proposal_price; ?>">
     </div>
     <small><?= $lang['edit_proposal']['pricing']['warning1']; ?></small>
   </div>
@@ -167,18 +168,59 @@ $('.back-to-instant').click(function(){
   <?php } ?>
 });
 
-$("table").on('click','.delete-attribute',function(event){
+function processDeleteAttribute(attribute_name, tr, status){
+  var proposal_id = <?= $proposal_id; ?>;
+  $(tr).remove();
+  //$(this).parent().parent().remove();
+  $.ajax({
+    method: "POST",
+    url: "ajax/delete_attribute",
+    data: { proposal_id : proposal_id, attribute_name: attribute_name, change_status: status },
+    success:function(data){
+      $('#wait').removeClass("loader");
+    }
+  });
+}
+
+function deleteAttribute(attribute_name, tr, status){  
+   if(status == true){
+     swal({
+         title: "Are you sure?",
+         text: "You have made some changes, your porposal would be set as pending state!",
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "Yes, I understand continue.",
+         closeOnConfirm: false
+       }).then(function (isConfirm) {
+           if(isConfirm.dismiss == 'cancel'){            
+             return;
+           }else if (isConfirm.value == true){
+             processDeleteAttribute(attribute_name, tr, status);
+           }
+       });
+    }
+}
+
+
+$("table").on('click','.delete-attribute',function(event){  
   $('#wait').addClass("loader");
   event.preventDefault();
   var attribute_name = $(this).data("attribute");
   var proposal_id = <?= $proposal_id; ?>;
-  $(this).parent().parent().remove();
+  var tr = $(this).closest('tr');
   $.ajax({
     method: "POST",
-    url: "ajax/delete_attribute",
-    data: { proposal_id : proposal_id, attribute_name: attribute_name },
-    success:function(data){
-      $('#wait').removeClass("loader");
+    url: "ajax/check/delete_attribute",
+    dataType: 'json',
+    data: { proposal_id : proposal_id },
+    success:function(data){      
+      if(data === true){
+        $('#wait').removeClass("loader");        
+        deleteAttribute(attribute_name, tr, data);        
+      }else{
+        processDeleteAttribute(attribute_name, tr , data);
+      }      
     }
   });
 });
@@ -198,18 +240,34 @@ $(document).on('click','.edit-attribute',function(event){
 
 });
 
-$(".update-attribute").submit(function(event){
-  event.preventDefault();
-  $('#wait').addClass("loader");
+function updateAttribute(name, new_name, status=false){
+   if(status == true){
+     swal({
+         title: "Are you sure?",
+         text: "You have made some changes, your porposal would be set as pending state!",
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "Yes, I understand continue.",
+         closeOnConfirm: false
+       }).then(function (isConfirm) {
+           if(isConfirm.dismiss == 'cancel'){            
+             return;
+           }else if (isConfirm.value == true){
+             processUpdateAttribute(name, new_name, status);
+           }
+       });
+  }
+  
+}
 
+
+function processUpdateAttribute(name, new_name, status){
   var proposal_id = <?= $proposal_id; ?>;
-  var name = $("#edit-modal input[name='name']").val();
-  var new_name = $("#edit-modal input[name='new_name']").val();
-
   $.ajax({
     method: "POST",
     url: "ajax/edit_attribute",
-    data: { proposal_id: proposal_id,name: name,new_name: new_name },
+    data: { proposal_id: proposal_id,name: name,new_name: new_name, change_status:status },
     success:function(data){
       
       $('#wait').removeClass("loader");
@@ -227,20 +285,51 @@ $(".update-attribute").submit(function(event){
       //     $("#pricing").html(show_data);
       //   }
       // });
+    }
+  });
+
+}
+
+$(".update-attribute").submit(function(event){
+  event.preventDefault();
+  var proposal_id = <?= $proposal_id; ?>;
+  var name = $("#edit-modal input[name='name']").val();
+  var new_name = $("#edit-modal input[name='new_name']").val();
+  if(name == new_name) return false;
+  $('#wait').addClass("loader");
+  $.ajax({
+    method: "POST",
+    url: "ajax/check/update_attribute",
+    dataType: 'json',
+    data: { proposal_id: proposal_id },
+    success:function(data){
+      if(data === true){          
+        $('#wait').removeClass("loader");        
+        updateAttribute(name, new_name, data);        
+      }else{
+        processUpdateAttribute(name, new_name, data);
+      }
+
+      // // this code makes problem
+      // $.ajax({
+      //   method: "POST",
+      //   url: "sections/edit/pricing",
+      //   data: { proposal_id: <?= $proposal_id; ?>,fixedPriceOff:1 },
+      //   success:function(show_data){
+      //     $("#pricing").html(show_data);
+      //   }
+      // });
 
     }
   });
 
 });
 
-$(".insert-attribute").on('click', function(event){
-  $('#wait').addClass("loader");
-  event.preventDefault();
-  var attribute_name = $('.attribute-name').val();
+function processAttributeRequest(attribute_name, status){
   $.ajax({
   method: "POST",
   url: "ajax/insert_attribute",
-  data: { attribute_name : attribute_name, proposal_id: <?= $proposal_id; ?> },
+  data: { attribute_name : attribute_name, proposal_id: <?= $proposal_id; ?>, change_status: status },
   success:function(data){
     if(data == "error"){
       $('#wait').removeClass("loader");
@@ -271,41 +360,126 @@ $(".insert-attribute").on('click', function(event){
   }
   });
 
+}
+
+function attributeRequest(attribute_name, status=false){
+   if(status == true){
+     swal({
+         title: "Are you sure?",
+         text: "You have made some changes, your porposal would be set as pending state!",
+         type: "warning",
+         showCancelButton: true,
+         confirmButtonColor: "#DD6B55",
+         confirmButtonText: "Yes, I understand continue.",
+         closeOnConfirm: false
+       }).then(function (isConfirm) {
+           if(isConfirm.dismiss == 'cancel'){            
+             return;
+           }else if (isConfirm.value == true){
+             processAttributeRequest(attribute_name, status);
+           }
+       });
+  }
+
+}
+
+$(".insert-attribute").on('click', function(event){  
+  $('#wait').addClass("loader");
+  event.preventDefault();
+  var attribute_name = $('.attribute-name').val();
+
+  $.ajax({
+    method: "POST",
+    url: "ajax/check/attribute",
+    dataType: 'json',
+    data: { attribute_name : attribute_name, proposal_id: <?= $proposal_id; ?> },
+    success:function(data){      
+      if(data === true){
+        $('#wait').removeClass("loader");        
+        attributeRequest(attribute_name, data);        
+      }else{
+        processAttributeRequest(attribute_name, data);
+      }
+    }
+  });
 });
+
+
+function processPricingForm(form_data, status){
+	form_data.append('change_status', status);
+	$.ajax({
+	method: "POST",
+	url: "ajax/save_pricing",
+	data: form_data,
+	async: false,cache: false,contentType: false,processData: false
+	}).done(function(data){    
+	  $('#wait').removeClass("loader");
+	  console.log(data);
+	  if(data == "error"){
+	    swal({type: 'warning',text: 'You Must Need To Fill Out All Fields Before Updating The Details.'});
+	  }else{
+	    swal({
+	      type: 'success',
+	      text: 'Details Saved.',
+	      timer: 1000,
+	      onOpen: function(){
+	          swal.showLoading()
+	      }
+	    }).then(function(){
+	      $("input[type='hidden'][name='section']").val("description");
+	      <?php if($d_proposal_status == "draft"){ ?>
+	        $('#pricing').removeClass('show active');
+	        $('#description').addClass('show active');
+	        $('#tabs a[href="#description"]').addClass('active');
+	      <?php }else{ ?> $('.nav a[href="#description"]').tab('show'); <?php } ?>
+	    });
+	  }
+	});
+}
+
+function pricingForm(form_data, status=false){
+	 if(status == true){
+	   swal({
+	       title: "Are you sure?",
+	       text: "You have made some changes, your porposal would be set as pending state!",
+	       type: "warning",
+	       showCancelButton: true,
+	       confirmButtonColor: "#DD6B55",
+	       confirmButtonText: "Yes, I understand continue.",
+	       closeOnConfirm: false
+	     }).then(function (isConfirm) {
+	         if(isConfirm.dismiss == 'cancel'){            
+	           return;
+	         }else if (isConfirm.value == true){
+	           processPricingForm(form_data, status);
+	         }
+	     });
+	}
+}
 
 $(".pricing-form").submit(function(event){
   event.preventDefault();
-  var form_data = new FormData(this);
+  var form_data = new FormData(this);  
   form_data.append('proposal_id',<?= $proposal_id; ?>);
   $('#wait').addClass("loader");
   $.ajax({
   method: "POST",
-  url: "ajax/save_pricing",
+  url: "ajax/check/pricing",
   data: form_data,
+  dataType: 'json',
   async: false,cache: false,contentType: false,processData: false
-  }).done(function(data){
-    $('#wait').removeClass("loader");
-    if(data == "error"){
-      swal({type: 'warning',text: 'You Must Need To Fill Out All Fields Before Updating The Details.'});
-    }else{
-      swal({
-        type: 'success',
-        text: 'Details Saved.',
-        timer: 1000,
-        onOpen: function(){
-            swal.showLoading()
-        }
-      }).then(function(){
-        $("input[type='hidden'][name='section']").val("description");
-        <?php if($d_proposal_status == "draft"){ ?>
-          $('#pricing').removeClass('show active');
-          $('#description').addClass('show active');
-          $('#tabs a[href="#description"]').addClass('active');
-        <?php }else{ ?> $('.nav a[href="#description"]').tab('show'); <?php } ?>
-      });
-    }
-  });
+  }).done(function(data){    
+      console.log(data);
+      if(data === true){
+        $('#wait').removeClass("loader");        
+        pricingForm(form_data, data);        
+      }else{
+        processPricingForm(form_data, data);
+      }
+  });  
+  
 });
+
 
 });
 </script>

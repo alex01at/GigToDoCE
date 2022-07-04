@@ -62,11 +62,16 @@ paypal.Buttons({
     // Call your server to finalize the transaction
     onApprove: function(data, actions) {
         
+        $('#wait').addClass("loader");
+
         return fetch(base_url+'/paypal_capture?order_id='+data.orderID,{
             method: 'post'
         }).then(function(res) {
             return res.json();
         }).then(function(orderData) {
+            
+            $('#wait').removeClass("loader");
+
             // Three cases to handle:
             //   (1) Recoverable INSTRUMENT_DECLINED -> call actions.restart()
             //   (2) Other non-recoverable errors -> Show a failure message
@@ -90,16 +95,16 @@ paypal.Buttons({
             }
 
             // Show a success message to the buyer
+
+            alert('Transaction Successfully Completed Now Redirecting.');
             
             if(payment_type == 'orderTip'){
-                window.open(base_url+'/orderIncludes/charge/order/paypal?reference_no='+orderData.id+'&orderTip=1','_blank');
+                window.open(base_url+'/orderIncludes/charge/order/paypal?reference_no='+orderData.id+'&orderTip=1','_self');
             }else if(payment_type == 'orderExtendTime'){
                 window.open(base_url+'/plugins/videoPlugin/extendTime/charge/order/paypal?reference_no='+orderData.id+'&extendTime=1','_blank');
             }else{
-                window.open(base_url+'/paypal_order?reference_no='+orderData.id,'_blank');
+                window.open(base_url+'/paypal_order?reference_no='+orderData.id,'_self');
             }
-
-            alert('Transaction completed by ' + orderData.payer.name.given_name);
 
         });
     }

@@ -45,21 +45,25 @@ $site_title = $row_general_settings->site_title;
 <?php
 
 	require_once("includes/header.php");
+
 	if(!isset($_SESSION['seller_user_name'])){
 		require_once("home.php");
 	}else{
 		require_once("user_home.php");
 	}
+
 	require_once("includes/footer.php"); 
 
 ?>
 <?php if($row_general_settings->knowledge_bank == 'yes'): ?>
 <div class="sm popup-support-wrap">
 	<div class="popup-support">
-		<header class="hero-container" style="background-color: rgb(29, 191, 115); color: rgb(255, 255, 255);">
+		<header class="hero-container" style="background-color: rgb(29,191,115); color: rgb(255,255,255);">
 			<div class="hero">
 				<h1 class="main-title">
-					<a href="#" class="sm-back"><i class="pull-left fa fa-angle-left"></i></a> 
+					<a href="#" class="sm-back">
+						<i class="pull-left fa fa-angle-left"></i>
+					</a> 
 					<?= $lang["popup"]['knowledge_bank']['title']; ?>
 				</h1>
 				<a class="support-nav" href="#"><?= $lang["popup"]['knowledge_bank']['heading']; ?></a>
@@ -67,11 +71,11 @@ $site_title = $row_general_settings->site_title;
 				<div class="search-box">
 					<div class="search-placeholder">
 						<span class="svg-icon search-magnifier"><i class="fa fa-search"></i></span>
-				  </div>
-			    <input type="text" id="sm-search" value="">
-		  	</div>
-	  	</div>
-  	</header>
+					</div>
+			    	<input type="text" id="sm-search" value="">
+		  		</div>
+	  		</div>
+  		</header>
 		<div class="search-results">
 			<div class="pull-left search-articles">
 				<h3></h3>

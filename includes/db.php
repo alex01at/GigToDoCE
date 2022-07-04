@@ -26,6 +26,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$core = new Core;
 	$paymentGateway = $core->checkPlugin("paymentGateway","site");
 	$videoPlugin = $core->checkPlugin("videoPlugin","site");
+	$notifierPlugin = $core->checkPlugin("notifierPlugin","site");
 
 	$db->query("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
 
@@ -34,6 +35,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	}
 
 	$siteLanguage = $_SESSION['siteLanguage'];
+	
 	$get_general_settings = $db->select("general_settings");   
 	$row_general_settings = $get_general_settings->fetch();
 	$site_url = $row_general_settings->site_url;
@@ -60,12 +62,16 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$site_currency = $row_general_settings->site_currency;
 	$currency_position = $row_general_settings->currency_position;
 	$currency_format = $row_general_settings->currency_format;
+	$make_phone_number_required = $row_general_settings->make_phone_number_required;
 	$enable_maintenance_mode = $row_general_settings->enable_maintenance_mode;
 	$enable_referrals = $row_general_settings->enable_referrals;
 	$language_switcher = $row_general_settings->language_switcher;
 	$google_analytics = $row_general_settings->google_analytics;
 	$site_watermark = $row_general_settings->site_watermark;
 	$jwplayer_code = $row_general_settings->jwplayer_code;
+	$edited_proposals = $row_general_settings->edited_proposals;
+	$enable_websocket = $row_general_settings->enable_websocket;
+	$websocket_address = $row_general_settings->websocket_address;
 
 	$get_currencies = $db->select("currencies",array("id" => $site_currency));
 	$row_currencies = $get_currencies->fetch();
@@ -101,11 +107,13 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$get_payment_settings = $db->select("payment_settings");
 	$row_payment_settings = $get_payment_settings->fetch();
 	$paypal_client_id = $row_payment_settings->paypal_app_client_id;
+	$paypal_currency_code = $row_payment_settings->paypal_currency_code;
 
 	date_default_timezone_set($site_timezone);
 
 	$row_language = $db->select("languages",array("id"=>$siteLanguage))->fetch();
 	$lang_dir = $row_language->direction;
+	$template_folder = $row_language->template_folder;
 	require($dir."languages/".strtolower($row_language->title).".php");
 
 	require_once "$dir/screens/detect.php";

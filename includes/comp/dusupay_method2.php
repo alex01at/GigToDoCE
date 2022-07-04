@@ -1,26 +1,8 @@
-<?php if($dusupay_method != "MOBILE_MONEY"){ ?>
-   <form method="post" action="<?= $form_action; ?>" id="mobile-money-form">
-      <input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-success">
-   </form>
-<?php }else{ ?>
+   
+<form method="post" action="#" id="mobile-money-form">
 
-   <form method="post" action="#" id="mobile-money-form">
-      <button type="button" class="btn btn-success open-modal">
-         <?= $lang['button']['pay_with_dusupay']; ?>
-      </button>
-   </form>
+   <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#payment-modal-1" data class="btn btn-success">
+      <?= $lang['button']['pay_with_dusupay']; ?>
+   </button>
 
-   <script>
-
-   $(document).ready(function(){
-
-      $(".open-modal").click(function(event) {
-         $("#<?= $main_modal; ?>").modal("hide");
-         $("#mobile-payment-modal").modal("show");
-      });
-
-   });
-
-   </script>
-
-<?php } ?>
+</form>

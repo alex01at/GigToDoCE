@@ -191,16 +191,16 @@ $(document).ready(function(){
 
 	if(seller_id != 0){
 		
-	 setInterval(function(){
-      update_last_activity();
-    }, 5000);
+		setInterval(function(){
+	    	update_last_activity();
+	    }, 5000);
 
 		function update_last_activity(){
 			$.ajax({
 				url:base_url+"/includes/update_activity",
 				success:function(){}
 			});
-    }
+    	}
 
 		$(document).on("click", ".proposal-favorite", function(event){
 			var proposal_id = $(this).attr("data-id");
@@ -244,179 +244,180 @@ $(document).ready(function(){
 		});
 
 		//// Ajax Requests Code Starts ////
-	  play = new Audio(base_url+"/images/sound.mp3");
-	  play.volume = 0.1;
-	  var stop_audio = function(){
-	  	play.pause();
-	  }
+		play = new Audio(base_url+"/images/sound.mp3");
+		play.volume = 0.1;
+		var stop_audio = function(){
+			play.pause();
+		}
 
-	  // scroll down height
-	  var height = 0;
+		// scroll down height
+		var height = 0;
 		$(".col-md-8 .messages .inboxMsg").each(function(i, value){
 			height += parseInt($(this).height());
 		});
 		height += 2000;
 
-	  // messages-bells
-	  setInterval(function(){
-		  $.ajax({
-		  method: "POST",
-		  url: base_url+"/includes/comp/messages-bells",
-		  data: {seller_id : seller_id}
-		  }).done(function(data){
-		  	if(data != ""){
-			  	if(!isNaN(data)){
-					  if(enable_sound == "yes"){
-					  		play.play();
-					  		scroll = 1;
-					  }
-					  setTimeout(stop_audio, 2000);
-				  }
+		// messages-bells
+		setInterval(function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/comp/messages-bells",
+			data: {seller_id : seller_id}
+			}).done(function(data){
+				if(data != ""){
+					if(!isNaN(data)){
+						if(enable_sound == "yes"){
+							play.play();
+							scroll = 1;
+						}
+						setTimeout(stop_audio, 2000);
+					}
 				}
-		  });
-	  }, 2500);
+			});
+		}, 2500);
 
 		var c_favorites = function(){
 			$.ajax({
+				method: "POST",
+				url: base_url+"/includes/comp/c-favorites",
+				data: {seller_id: seller_id}
+			}).done(function(data){
+				data = parseInt(data);
+				if(data > 0){
+					$(".c-favorites").html(data);
+				}else{ 
+					$(".c-favorites").html(""); 
+				}
+				setTimeout(c_favorites, 1000);
+			});
+		}
+		c_favorites();
+
+		// c_messages_header
+		var c_messages_header = function(){
+			$.ajax({
 			method: "POST",
-		    url: base_url+"/includes/comp/c-favorites",
-		    data: {seller_id: seller_id}
-		    }).done(function(data){
-		    data = parseInt(data);
-		    if(data > 0){
-		      $(".c-favorites").html(data);
-		  	}else{ $(".c-favorites").html(""); }
-		      setTimeout(c_favorites, 1000);
-		   });
-	  }
-	  c_favorites();
+			url: base_url+"/includes/comp/c-messages-header",
+			data: {seller_id: seller_id}
+			}).done(function(data){
+				if(data > 0){
+					$(".c-messages-header").html(data);
+				}else{ 
+					$(".c-messages-header").html(""); 
+				}
+				setTimeout(c_messages_header, 1000);
+			});
+		}
+		c_messages_header();
 
-	  // c_messages_header
-	  var c_messages_header = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/comp/c-messages-header",
-	    data: {seller_id: seller_id}
-	    }).done(function(data){
-		  	if(data > 0){
-		      $(".c-messages-header").html(data);
-		  	}else{ 
-		  		$(".c-messages-header").html(""); 
-		  	}
-	      setTimeout(c_messages_header, 1000);
-	    });
-	  }
-	  c_messages_header();
+		// c_messages_body
+		var c_messages_body = function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/comp/c-messages-body",
+			data: {seller_id: seller_id}
+			}).done(function(data){
+				result = $.parseJSON(data);
+				messages = result.messages;
+				html = "<h3 class='dropdown-header'> "+result['lang'].inbox+" ("+result.count_all_inbox_sellers+") <a class='float-right make-black' href='"+base_url+"/conversations/inbox' style='color:black;'>"+result['lang'].view_inbox+"</a></h3>";
+				if(parseInt(result.count_all_inbox_sellers) == 0){
+					html += "<h6 class='text-center mt-3'>"+result['lang'].no_inbox+"</h6>";
+				}
+				for(i in messages){
+					html += "<div class='"+messages[i].class+"'><a href='"+base_url+"/conversations/inbox?single_message_id="+messages[i].message_group_id+"'><img src='"+messages[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+messages[i]['sender_user_name']+"</strong><p class='message text-truncate'>"+messages[i].desc+"</p><p class='date text-muted'>"+messages[i].date+"</p></a></div>";
+				}
+				if(parseInt(result.count_all_inbox_sellers) > 0){
+				html += "<div class='mt-2'><center class='pl-2 pr-2'><a href='"+base_url+"/conversations/inbox' class='ml-0 btn btn-success btn-block'>"+result.see_all+"</a></center></div>";
+				}
+				$('.messages-dropdown').html(html);
+				setTimeout(c_messages_body, 1000);
+			});
+		} 
+		c_messages_body();
 
-	  // c_messages_body
-	  var c_messages_body = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/comp/c-messages-body",
-	    data: {seller_id: seller_id}
-	    }).done(function(data){
-	      result = $.parseJSON(data);
-	      messages = result.messages;
-	      html = "<h3 class='dropdown-header'> "+result['lang'].inbox+" ("+result.count_all_inbox_sellers+") <a class='float-right make-black' href='"+base_url+"/conversations/inbox' style='color:black;'>"+result['lang'].view_inbox+"</a></h3>";
-	      if(parseInt(result.count_all_inbox_sellers) == 0){
-	      	html += "<h6 class='text-center mt-3'>"+result['lang'].no_inbox+"</h6>";
-	      }
-	      for(i in messages){
-	      	html += "<div class='"+messages[i].class+"'><a href='"+base_url+"/conversations/inbox?single_message_id="+messages[i].message_group_id+"'><img src='"+messages[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+messages[i]['sender_user_name']+"</strong><p class='message text-truncate'>"+messages[i].desc+"</p><p class='date text-muted'>"+messages[i].date+"</p></a></div>";
-	      }
-	      if(parseInt(result.count_all_inbox_sellers) > 0){
-	      html += "<div class='mt-2'><center class='pl-2 pr-2'><a href='"+base_url+"/conversations/inbox' class='ml-0 btn btn-success btn-block'>"+result.see_all+"</a></center></div>";
-	  	  }
-	      $('.messages-dropdown').html(html);
-	      setTimeout(c_messages_body, 1000);
-	    });
-	  } 
-	  c_messages_body();
+		var c_notifications_header = function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/comp/c-notifications-header",
+			data: {seller_id: seller_id}
+			}).done(function(data){
+				if(data > 0){
+					$(".c-notifications-header").html(data);
+				}else{ 
+					$(".c-notifications-header").html(""); 
+				}
+				setTimeout(c_notifications_header, 1000);
+			});
+		}
+		c_notifications_header();
 
-	  var c_notifications_header = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/comp/c-notifications-header",
-	    data: {seller_id: seller_id}
-	    }).done(function(data){
-		    if(data > 0){
-		      $(".c-notifications-header").html(data);
-		  	}else{ 
-		  		$(".c-notifications-header").html(""); 
-		  	}
-	      setTimeout(c_notifications_header, 1000);
-	    });
-	  }
-	  c_notifications_header();
-
-	  var c_notifications_body = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/comp/c-notifications-body",
-	    data: {seller_id: seller_id}
-	    }).done(function(data){
-	      result = $.parseJSON(data);
-	      notifications = result.notifications;
-	      html = "<h3 class='dropdown-header'> "+result['lang'].notifications+" ("+result.count_all_notifications+") <a class='float-right make-black' href='"+base_url+"/notifications' style='color:black;'>"+result['lang'].view_notifications+"</a></h3>";
-	      if(parseInt(result.count_all_notifications) == 0){
-	      	html += "<h6 class='text-center mt-3'>"+result['lang'].no_notifications+"</h6>";
-	      }
-	      for(i in notifications){
-	      	html += "<div class='"+notifications[i].class+"'><a href='"+base_url+"/dashboard?n_id="+notifications[i].id+"'><img src='"+notifications[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+notifications[i]['sender_user_name']+"</strong><p class='message text-truncate'>"+notifications[i].message+"</p><p class='date text-muted'>"+notifications[i].date+"</p></a></div>";
-	      }
-	      if(parseInt(result.count_all_notifications) > 0){
-	      	html += "<div class='mt-2'><center class='pl-2 pr-2'><a href='"+base_url+"/notifications' class='ml-0 btn btn-success btn-block'>"+result.see_all+"</a></center></div>";
-	      }
-	      $('.notifications-dropdown').html(html);
-	      setTimeout(c_notifications_body, 1000);
-	    });
-	  }
-	  c_notifications_body();
-	  	
-	  // messagePopup
-	  var messagePopup = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/messagePopup",
-	    data: {seller_id: seller_id}
-	    }).done(function(data){
-	    	if(enable_notifications == 1 & disable_messages == 0){
-		      result = $.parseJSON(data);
-		      html = '';
-		      for(i in result){
-		     		html += "<div class='header-message-div'><a class='float-left' href='"+base_url+"/conversations/inbox?single_message_id="+result[i].message_group_id+"'><img src='"+result[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+result[i].sender_user_name+"</strong><p class='message'>"+result[i].desc+"</p><p class='date text-muted'>"+result[i].date+"</p></a><a href='#' class='float-right close closePopup btn btn-sm pl-lg-5 pt-0'><i class='fa fa-times'></i></a></div>";
-		      }
-		      $('.messagePopup').prepend(html);
-	   	}
-	      setTimeout(messagePopup, 2000);
-	    });
-	  }
-	  messagePopup();
+		var c_notifications_body = function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/comp/c-notifications-body",
+			data: {seller_id: seller_id}
+			}).done(function(data){
+				result = $.parseJSON(data);
+				notifications = result.notifications;
+				html = "<h3 class='dropdown-header'> "+result['lang'].notifications+" ("+result.count_all_notifications+") <a class='float-right make-black' href='"+base_url+"/notifications' style='color:black;'>"+result['lang'].view_notifications+"</a></h3>";
+				if(parseInt(result.count_all_notifications) == 0){
+					html += "<h6 class='text-center mt-3'>"+result['lang'].no_notifications+"</h6>";
+				}
+				for(i in notifications){
+					html += "<div class='"+notifications[i].class+"'><a href='"+base_url+"/dashboard?n_id="+notifications[i].id+"'><img src='"+notifications[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+notifications[i]['sender_user_name']+"</strong><p class='message text-truncate'>"+notifications[i].message+"</p><p class='date text-muted'>"+notifications[i].date+"</p></a></div>";
+				}
+				if(parseInt(result.count_all_notifications) > 0){
+					html += "<div class='mt-2'><center class='pl-2 pr-2'><a href='"+base_url+"/notifications' class='ml-0 btn btn-success btn-block'>"+result.see_all+"</a></center></div>";
+				}
+				$('.notifications-dropdown').html(html);
+				setTimeout(c_notifications_body, 1000);
+			});
+		}
+		c_notifications_body();
+			
+		// messagePopup
+		var messagePopup = function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/messagePopup",
+			data: {seller_id: seller_id}
+			}).done(function(data){
+				if(enable_notifications == 1 & disable_messages == 0){
+					result = $.parseJSON(data);
+					html = '';
+					for(i in result){
+						html += "<div class='header-message-div'><a class='float-left' href='"+base_url+"/conversations/inbox?single_message_id="+result[i].message_group_id+"'><img src='"+result[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+result[i].sender_user_name+"</strong><p class='message'>"+result[i].desc+"</p><p class='date text-muted'>"+result[i].date+"</p></a><a href='#' class='float-right close closePopup btn btn-sm pl-lg-5 pt-0'><i class='fa fa-times'></i></a></div>";
+					}
+					$('.messagePopup').prepend(html);
+				}
+				setTimeout(messagePopup, 2000);
+			});
+		}
+		messagePopup();
 	
-	  var notificationsPopup = function(){
-	    $.ajax({
-	    method: "POST",
-	    url: base_url+"/includes/notificationsPopup",
-	    data: {seller_id: seller_id, enable_sound: enable_sound}
-	    }).done(function(data){
-	    	if(enable_notifications == 1){
-		      result = $.parseJSON(data);
-		      html = '';
-		      for(i in result){
-		     		html += "<div class='header-message-div'><a class='float-left' href='"+base_url+"/dashboard?n_id="+result[i].notification_id+"'><img src='"+result[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+result[i].sender_user_name+"</strong><p class='message'>"+result[i].message+"</p><p class='date text-muted'>"+result[i].date+"</p></a><a href='#' class='float-right close closePopup btn btn-sm pl-lg-5 pt-0'><i class='fa fa-times'></i></a>"+result[i].more+"</div>";
-			     		if(enable_sound == "yes"){ 
-						  	play.play(); 
+		var notificationsPopup = function(){
+			$.ajax({
+			method: "POST",
+			url: base_url+"/includes/notificationsPopup",
+			data: {seller_id: seller_id, enable_sound: enable_sound}
+			}).done(function(data){
+				if(enable_notifications == 1){
+					result = $.parseJSON(data);
+					html = '';
+					for(i in result){
+						html += "<div class='header-message-div'><a class='float-left' href='"+base_url+"/dashboard?n_id="+result[i].notification_id+"'><img src='"+result[i].sender_image+"' width='50' height='50' class='rounded-circle'><strong class='heading'>"+result[i].sender_user_name+"</strong><p class='message'>"+result[i].message+"</p><p class='date text-muted'>"+result[i].date+"</p></a><a href='#' class='float-right close closePopup btn btn-sm pl-lg-5 pt-0'><i class='fa fa-times'></i></a>"+result[i].more+"</div>";
+						if(enable_sound == "yes"){ 
+							play.play();
 						}
-		      }
-		      $('.messagePopup').prepend(html);
-		   }
-		   setTimeout(notificationsPopup, 2000);
-		   setTimeout(stop_audio, 2000);
-      });
+					}
+					$('.messagePopup').prepend(html);
+				}
+				setTimeout(notificationsPopup, 2000);
+				setTimeout(stop_audio, 2000);
+			});
 		}
 		notificationsPopup();
 		// Ajax Requests Code Ends ////
-
 
 	}
 

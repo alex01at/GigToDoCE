@@ -10,7 +10,7 @@ echo "<script>window.open('../login','_self')</script>";
 
 }
 
-if(isset($_POST["proposal_id"])){
+if(isset($_POST["proposal_id"])){  
 
 $proposal_id = strip_tags($input->post('proposal_id'));
 
@@ -25,7 +25,6 @@ foreach ($packages as $key => $package) {
   $price = $package['price'];
 
   $update_package = $db->update("proposal_packages",array("description"=>$description,"delivery_time"=>$delivery_time,"revisions"=>$revisions,"price"=>$price),array("package_id"=>$package_id));
-
 }
 
 
@@ -56,8 +55,13 @@ if(isset($_POST['proposal_price'])){
 
 }
 
-// $data = $input->post();
-// unset($data['proposal_id']);
-// $update_proposal = $db->update("proposals",$data,array("proposal_id"=>$proposal_id));
+if(isset($_POST["change_status"])){
+	$status = $_POST['change_status'];
+	$proposal_id = $_POST['proposal_id'];
+	if($status == 'true' && isset( $_POST['proposal_id'] )){
+		$update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+	}
+}
+
 
 }

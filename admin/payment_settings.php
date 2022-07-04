@@ -907,21 +907,22 @@
             <!--- form-group row Ends --->
 
 
-            <h6 class="text-muted small mb-0">Proposal Buying</h6>
-            <hr class="mt-2">
+            <!-- <h6 class="text-muted small mb-0">Proposal Buying</h6>
+            <hr class="mt-2"> -->
             
-            <div class="form-group row"><!--- form-group row Starts --->
+            <div class="form-group row d-none"><!--- form-group row Starts --->
               <label class="col-md-3 control-label"> Payment Method : </label>
               <div class="col-md-6">
                 <select name="dusupay_method" class="form-control" required="">
                   <option value="MOBILE_MONEY"> Mobile Money </option>
                   <option value="CARD" <?= ($dusupay_method == "CARD")?"selected":""; ?>> Card </option>
                   <option value="BANK" <?= ($dusupay_method == "BANK")?"selected":""; ?>> Bank </option>
+                  <option value="CRYPTO" <?= ($dusupay_method == "CRYPTO")?"selected":""; ?>> Crypto </option>
                 </select>
               </div>
             </div><!--- form-group row Ends --->
 
-            <div class="form-group row"><!--- form-group row Starts --->
+            <div class="form-group row d-none"><!--- form-group row Starts --->
               <label class="col-md-3 control-label"> Provider Id : </label>
               <div class="col-md-6">
                 <input type="text" name="dusupay_provider_id" class="form-control" value="<?= $dusupay_provider_id; ?>">

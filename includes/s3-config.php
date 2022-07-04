@@ -71,6 +71,8 @@ function getImageColumn($table){
 		return "image";
 	}elseif($table == "support_tickets"){
 		return "attachment";
+	}elseif($table == "support_conversations"){
+		return "attachment";
 	}
 
 }
@@ -108,6 +110,8 @@ function getFolderName($table){
 	}elseif($table == "slider"){
 		return "slides_images";
 	}elseif($table == "support_tickets"){
+		return "ticket_files";
+	}elseif($table == "support_conversations"){
 		return "ticket_files";
 	}elseif($table == "knowledge_bank"){
 		return "article_images";
@@ -169,6 +173,7 @@ function getImageUrl($table,$key,$column=''){
 
 		if(empty($key)){ $key = "empty-image.png"; }
 		$main_folder = getMainFolderName($folder,$table);
+		$key = rawurlencode($key);
 		return "$site_url/"."$main_folder/$folder/$key";
 
 	}
@@ -200,6 +205,9 @@ function getImageUrl2($table,$field,$key){
 		if(empty($key)){ $key = "empty-image.png"; }
 		
 		$main_folder = getMainFolderName($folder,$table);
+
+		$key = rawurlencode($key);
+
 		return "$site_url/$main_folder/$folder/$key"; 
 
 	}

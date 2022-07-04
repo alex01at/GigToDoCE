@@ -6,6 +6,7 @@ function base_url($url=''){
 }
 
 function showPrice($price,$class='',$show_symbol=''){
+	
 	global $db;
    global $s_currency;
 	global $currency_position;
@@ -83,4 +84,26 @@ function messageRedirect($text,$url){
 
 function showMessage($text){
 	echo "<script>alert('$text')</script>";
+}
+
+function sendPushMessage($notification_id){
+
+   global $site_url;
+   
+   /// Added by Pixinal Studio For Push Notification
+   $curl = curl_init();
+   curl_setopt_array($curl, array(
+      CURLOPT_URL => "$site_url/api/v1/single-notification/".$notification_id,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 30,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "GET"
+   ));
+   $response = curl_exec($curl);
+   $err = curl_error($curl);
+   curl_close($curl);
+   /// End For Push Notification
+
 }

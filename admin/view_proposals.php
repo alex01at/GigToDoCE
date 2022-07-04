@@ -10,6 +10,7 @@ echo "<script>window.open('login','_self');</script>";
 	
 
 $count_all_proposals = $db->query("select * from proposals where proposal_status not in ('modification','draft','deleted')")->rowCount();
+
 $count_active_proposals = $db->count("proposals",array("proposal_status" => "active"));
 $count_featured_proposals = $db->count("proposals",array("proposal_status"=>"active","proposal_featured"=>"yes"));
 $count_pending_proposals = $db->count("proposals",array("proposal_status" => "pending"));
@@ -330,7 +331,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <?php if($proposal_featured == "yes"){ ?>
 
-<a class="text-success" title="Remove Proposal From Featured Listing." href="index?remove_feature_proposal=<?= $proposal_id; ?>"/>
+<a class="text-success" title="Remove Proposal From Featured Listing." href="index?remove_feature_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>"/>
 
     <i class="fa fa-star-half-o"></i>
 
@@ -338,30 +339,30 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <?php }else{ ?>
 
-    <a href="index?feature_proposal=<?= $proposal_id; ?>" title="Make Your Proposal Featured">
+    <a href="index?feature_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>" title="Make Your Proposal Featured">
         <i class="fa fa-star"></i>
     </a>
 
 <?php } ?>
 
 <?php if($proposal_toprated == 0){ ?>
-<a href="index?toprated_proposal=<?= $proposal_id; ?>" title="Make Your Proposal Top Rated">
+<a href="index?toprated_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>" title="Make Your Proposal Top Rated">
 <i class="fa fa-heart" aria-hidden="true"></i>
 </a>
 <?php }else{ ?>
-<a class="text-danger" href="index?removetoprated_proposal=<?= $proposal_id; ?>" title="Remove Proposal From Top Rated Listing.">
+<a class="text-danger" href="index?removetoprated_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>" title="Remove Proposal From Top Rated Listing.">
 <i class="fa fa-heartbeat" aria-hidden="true"></i>
 </a>
 <?php } ?>
 
-<a title="Pause/Deactivate Proposal" href="index?pause_proposal=<?= $proposal_id; ?>">
+<a title="Pause/Deactivate Proposal" href="index?pause_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-pause-circle"></i> 
 
 </a>
 
 
-<a title="Delete Proposal" href="index?move_to_trash=<?= $proposal_id; ?>">
+<a title="Delete Proposal" href="index?move_to_trash=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-trash"></i>
 
@@ -370,7 +371,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 </td>
 
-<?php }elseif($proposal_status == "pause"){ ?>
+<?php }elseif($proposal_status == "pause" or $proposal_status == "admin_pause"){ ?>
 
 <td>
 
@@ -382,7 +383,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br>
 
-<a href="index?unpause_proposal=<?= $proposal_id; ?>" >
+<a href="index?unpause_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>" >
 
 <i class="fa fa-refresh"></i> Unpause 
 
@@ -390,7 +391,7 @@ $cat_title = $get_meta->fetch()->cat_title;
     
 <br>
 
-<a href="index?move_to_trash=<?= $proposal_id; ?>">
+<a href="index?move_to_trash=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-trash"></i> Trash Proposal
 
@@ -410,7 +411,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br/>
 
-<a href="index?submit_modification=<?= $proposal_id; ?>">
+<a href="index?submit_modification=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-edit"></i> Submit For Modification
 
@@ -418,7 +419,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br>
 
-<a href="index?approve_proposal=<?= $proposal_id; ?>">
+<a href="index?approve_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-check-square-o"></i> Approve
 
@@ -426,7 +427,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br/>
 
-<a title="Decline this Proposal" href="index?decline_proposal=<?= $proposal_id; ?>">
+<a title="Decline this Proposal" href="index?decline_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-ban"></i> Decline
 
@@ -438,7 +439,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <td>
 
-<a href="index?approve_proposal=<?= $proposal_id; ?>">
+<a href="index?approve_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-check-square-o"></i> Approve
 
@@ -446,7 +447,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br/>
 
-<a href="index?submit_modification=<?= $proposal_id; ?>">
+<a href="index?submit_modification=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-edit"></i> Submit For Modification
 
@@ -462,7 +463,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br/>
 
-<a href="index?delete_proposal=<?= $proposal_id; ?>">
+<a href="index?delete_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-trash"></i> Delete Permanently
 
@@ -474,7 +475,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <td>
 
-<a href="index?restore_proposal=<?= $proposal_id; ?>">
+<a href="index?restore_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-reply"></i> Restore Proposal
 
@@ -482,7 +483,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 <br/>
 
-<a href="index?delete_proposal=<?= $proposal_id; ?>">
+<a href="index?delete_proposal=<?= $proposal_id; ?>&page=<?= $page; ?>">
 
 <i class="fa fa-trash"></i> Delete Permanently
 

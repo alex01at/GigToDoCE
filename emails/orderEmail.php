@@ -7,6 +7,7 @@ $select_proposal_seller = $db->select("sellers",array("seller_id"=>$proposal_sel
 $row_proposal_seller = $select_proposal_seller->fetch();
 $proposal_seller_user_name = $row_proposal_seller->seller_user_name;
 $proposal_seller_email = $row_proposal_seller->seller_email;
+$proposal_seller_phone = $row_proposal_seller->seller_phone;
 
 $data = [];
 $data['template'] = "order_email";
@@ -33,3 +34,10 @@ $data['duration'] = $delivery_proposal_title;
 $data['amount'] = $order_price;
 $data['order_id'] = $insert_order_id;
 send_mail($data);
+
+if($notifierPlugin == 1){
+
+	$smsText = str_replace('{seller_user_name}',$login_seller_user_name,$lang['notifier_plugin']['new_order']);
+	sendSmsTwilio("",$smsText,$proposal_seller_phone);
+
+}

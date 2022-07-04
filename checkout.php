@@ -120,20 +120,24 @@
 	}
 
 	if(isset($_POST['proposal_extras'])){
+		
 		$extra_price = 0;
 		$_SESSION['c_proposal_extras'] = $input->post('proposal_extras');
+		
 		if (isset($_POST['add_order'])) {
 			$proposal_extras = $_SESSION['c_proposal_extras'];
 		}else{
 			$proposal_extras = unserialize(base64_decode($input->post('proposal_extras')));
 			$_SESSION['c_proposal_extras'] = $proposal_extras;
 		}
+		
 		foreach($proposal_extras as $value){
 			$get_extras = $db->select("proposals_extras",array("id"=>$value));
 			$row_extras = $get_extras->fetch();
 			$extra_price += $row_extras->price;
 			$proposal_price += $row_extras->price;
 		}
+
 	}else{
 		unset($_SESSION['c_proposal_extras']);
 	}
@@ -182,7 +186,7 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 
 <!-- Include the PayPal JavaScript SDK -->
-<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&commit=true&disable-funding=credit,card"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&commit=true&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
 
 <?php if(!empty($site_favicon)){ ?>
 <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
@@ -437,7 +441,7 @@ if(isset($_POST['code'])){
 									?>>
 								</div>
 								<div class="col-11">
-									<img src="images/mobile-money.png" height="50" class="ml-2 width-xs-100">
+									<img src="images/dusupay.png" height="50" class="ml-2 width-xs-100">
 								</div>
 							</div>
             			<?php } ?>
@@ -505,9 +509,9 @@ if(isset($_POST['code'])){
 						<button type="submit" name="coupon_submit" class="input-group-addon btn">Apply</button>
 					</form>
          			
-         	<?php if($coupon_usage == "not_valid"){ ?>
+         			<?php if($coupon_usage == "not_valid"){ ?>
 					<p class="coupon-response mt-2 p-2 bg-danger text-white"> <?= $lang['coupon_code']['not_valid']; ?> </p>
-          <?php }elseif($coupon_usage == "used"){ ?>
+          			<?php }elseif($coupon_usage == "used"){ ?>
 					<p class="coupon-response mt-2 p-2 applied text-white"><?= $lang['coupon_code']['applied']; ?></p>
 					<?php }elseif($coupon_usage == "expired"){ ?>
 					<p class="coupon-response mt-2 p-2 bg-danger text-white"> <?= $lang['coupon_code']['expired']; ?> </p>
@@ -518,7 +522,7 @@ if(isset($_POST['code'])){
 					<?php } ?>
 					<hr>
 					<h5 class="font-weight-bold">
-					Proposal's Total: <span class="float-right total-price"><?= showPrice($total); ?></span>
+						Proposal's Total: <span class="float-right total-price"><?= showPrice($total); ?></span>
 					</h5>
 					<hr>
 			    <?php include("checkoutPayMethods.php"); ?>          

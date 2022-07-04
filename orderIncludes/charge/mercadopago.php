@@ -19,13 +19,15 @@ if(isset($_POST['mercadopago'])){
 	
 	$processing_fee = processing_fee($amount);
 
+	$reference_no = mt_rand();
+
 	$data = [];
 	$data['type'] = "orderTip";
 	$data['content_id'] = $_SESSION['tipOrderId'];
-	$reference_no = mt_rand();
 	$data['reference_no'] = $reference_no;
 	$data['title'] = 'Order Tip Payment';
 	$data['price'] = $amount+$processing_fee;
+	$data['qty'] = 1;
 	$data['sub_total'] = $amount;
 	$data['total'] = $amount+$processing_fee;
 

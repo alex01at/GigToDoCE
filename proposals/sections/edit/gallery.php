@@ -37,7 +37,7 @@
     <?php }else{ ?>
     <div class="img">
       
-      <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+      <?php if($img_2_extension == "mp3" or $img_2_extension == "wav"){ ?>
         <img src="proposal_files/audio.jpg" class='img-fluid'>
       <?php }else{ ?>
         <img src="<?= getImageUrl2("proposals","proposal_img2",$d_proposal_img2); ?>" class='img-fluid' alt="">
@@ -61,7 +61,7 @@
     <?php }else{ ?>
     <div class="img">
       
-      <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+      <?php if($img_3_extension == "mp3" or $img_3_extension == "wav"){ ?>
         <img src="proposal_files/audio.jpg" class='img-fluid'>
       <?php }else{ ?>
         <img src="<?= getImageUrl2("proposals","proposal_img3",$d_proposal_img3); ?>" class='img-fluid' alt="">
@@ -84,7 +84,7 @@
     <?php }else{ ?>
     <div class="img">
 
-      <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+      <?php if($img_4_extension == "mp3" or $img_4_extension == "wav"){ ?>
         <img src="proposal_files/audio.jpg" class='img-fluid'>
       <?php }else{ ?>
         <img src="<?= getImageUrl2("proposals","proposal_img4",$d_proposal_img4); ?>" class='img-fluid' alt="">
@@ -279,18 +279,26 @@ $(document).ready(function(){
 
     }else{
 
-      var reader = new FileReader();
-      reader.onload = function (event) {
-        $image_crop.croppie('bind',{
-          url: event.target.result
-        }).then(function(){
-          console.log('jQuery bind complete');
-        });
+      if(extension == "jpeg" || extension == "jpg" || extension == "gif" || extension == "png"){
+
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          $image_crop.croppie('bind',{
+            url: event.target.result
+          }).then(function(){
+            console.log('jQuery bind complete');
+          });
+        }
+        reader.readAsDataURL(data.files[0]);
+        $('#insertimageModal').modal('show');
+        $('input[type=hidden][name=img_type]').val($(data).attr('name'));
+        $('input[type=hidden][name=img_name]').val(data.files[0].name);
+
+      }else{
+
+        alert("Your File Format Extension Is Not Supported.");
+
       }
-      reader.readAsDataURL(data.files[0]);
-      $('#insertimageModal').modal('show');
-      $('input[type=hidden][name=img_type]').val($(data).attr('name'));
-      $('input[type=hidden][name=img_name]').val(data.files[0].name);
 
     }
 

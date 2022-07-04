@@ -109,9 +109,19 @@ $row = $get->fetch();
 $seller_id = $row->seller_id;
 $amount = $row->amount;
 
+$get_seller = $db->select("sellers",array("seller_id" => $seller_id));
+$row_seller = $get_seller->fetch();
+$seller_phone = $row_seller->seller_phone;
+
 $insert_notification = $db->insert("notifications",array("receiver_id" => $seller_id,"sender_id" => "admin_$admin_id","order_id" => $id,"reason" => "withdrawal_declined","date" => $date,"status" => "unread"));
 
 $update_seller_account = $db->query("update seller_accounts set current_balance=current_balance+:plus,withdrawn=withdrawn-:minus where seller_id='$seller_id'",array("plus"=>$amount,"minus"=>$amount));
+
+
+if($notifierPlugin == 1){
+  $smsText = $lang['notifier_plugin']['payout_declined'];
+  sendSmsTwilio("",$smsText,$seller_phone);
+}
 
 echo "
 <script>alert('One Payout Request Has Been Declined.');

@@ -29,13 +29,9 @@ $paypal_sandbox = $row_payment_settings->paypal_sandbox;
 
 
 if($paypal_sandbox == "on"){
-	
-$mode = "sandbox";
-	
+	$mode = "sandbox";
 }elseif($paypal_sandbox == "off"){
-	
-$mode = "live";
-	
+	$mode = "live";
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
@@ -148,14 +144,14 @@ echo "<script>window.open('$site_url/revenue','_self')</script>";
 	
 }catch(Exception $ex){
 
-echo "<pre>";
-	print_r($ex);
-echo "</pre>";
+// echo "<pre>";
+// 	print_r($ex);
+// echo "</pre>";
 
-// echo "<script>
-// 	alert('Sorry An error occurred During Sending Your Money To Your Paypal Account.');
-// 	window.open('revenue','_self')
-// </script>";
+echo "<script>
+	alert('Sorry An error occurred During Sending Your Money To Your Paypal Account.');
+	window.open('revenue','_self')
+</script>";
 	
 }
 

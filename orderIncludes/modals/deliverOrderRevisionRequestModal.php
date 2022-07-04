@@ -37,7 +37,7 @@
             $d_message = $input->post('delivered_message');
             $d_file = $_FILES['delivered_file']['name'];
             $d_file_tmp = $_FILES['delivered_file']['tmp_name'];
-            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4','zip','rar','mp3','wav','docx','csv','xls','pptx','pdf','txt');
+            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4','zip','rar','mp3','wav','docx','csv','xls','xlsx','pptx','pdf','txt','psd','xd','txt');
             $file_extension = pathinfo($d_file, PATHINFO_EXTENSION);
             if(!in_array($file_extension,$allowed) & !empty($d_file)){
               echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
@@ -88,6 +88,11 @@
                 $data['message'] = $d_message;
                 $data['order_id'] = $order_id;
                 send_mail($data);
+
+                if($notifierPlugin == 1){ 
+                  $smsText = str_replace('{seller_user_name}',$login_seller_user_name,$lang['notifier_plugin']['order_delivered']);
+                  sendSmsTwilio("",$smsText,$buyer_phone);
+                }
 
                 echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
 
@@ -145,7 +150,7 @@
             $revison_message = $input->post('revison_message');
             $revison_file = $_FILES['revison_file']['name'];
             $revison_file_tmp = $_FILES['revison_file']['tmp_name'];
-            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4', 'zip','rar','mp3','wav');
+            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4', 'zip','rar','mp3','wav','docx','csv','xls','xlsx','pptx','pdf','txt');
             $file_extension = pathinfo($revison_file, PATHINFO_EXTENSION);
             if(!in_array($file_extension,$allowed) & !empty($revison_file)){
               echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
@@ -159,6 +164,7 @@
                 uploadToS3("order_files/$revison_file",$revison_file_tmp);
                 
               }
+              
               // move_uploaded_file($revison_file_tmp,"order_files/$revison_file");
 
               $last_update_date = date("h:i: F d, Y");
@@ -185,6 +191,11 @@
                 $data['buyer_user_name'] = $buyer_user_name;
                 $data['order_id'] = $order_id;
                 send_mail($data);
+
+                if($notifierPlugin == 1){ 
+                  $smsText = str_replace('{buyer_user_name}',$buyer_user_name,$lang['notifier_plugin']['order_revision']);
+                  sendSmsTwilio("",$smsText,$seller_phone);
+                }
 
                 echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
 

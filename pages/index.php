@@ -1,19 +1,33 @@
 <?php
+
   require_once("../includes/db.php");
   require_once("../social-config.php");
   
   $slug = urlencode($input->get('slug'));
+  if(isset($_GET['lang'])){
+    $language_id = urlencode($input->get('lang'));
+  }else{
+    $language_id = $_SESSION['siteLanguage'];
+  }
+
   $page = $db->select("pages",array('url'=>$slug));
+
   $countPage = $page->rowCount();
 
   if($countPage == 0){
     echo "<script>window.open('../index?not_available','_self');</script>";
     exit();
   }
+
   $row_page = $page->fetch();
   $page_id = $row_page->id;
-  $page_title = $row_page->title;
-  $page_content = $row_page->content;
+
+  $get_meta = $db->select("pages_meta",array("page_id" => $page_id, "language_id" => $language_id));
+  $row_meta = $get_meta->fetch();
+  $page_title = $row_meta->title;
+  $page_content = $row_meta->content;
+
+  // echo $_GET['power'];
 
 ?>
 <!DOCTYPE html>

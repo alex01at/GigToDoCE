@@ -7,12 +7,16 @@ namespace Composer\Autoload;
 class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
 {
     public static $files = array (
+        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '972fda704d680a3a53c68e34e193cb22' => __DIR__ . '/..' . '/react/promise-timer/src/functions_include.php',
+        '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
@@ -24,13 +28,32 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
         array (
             'Yabacon\\' => 8,
         ),
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Php72\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Intl\\Idn\\' => 26,
+            'Symfony\\Component\\Routing\\' => 26,
+            'Symfony\\Component\\HttpFoundation\\' => 33,
             'Stripe\\' => 7,
             'Sample\\' => 7,
+        ),
+        'R' => 
+        array (
+            'React\\Stream\\' => 13,
+            'React\\Socket\\' => 13,
+            'React\\Promise\\Timer\\' => 20,
+            'React\\Promise\\' => 14,
+            'React\\EventLoop\\' => 16,
+            'React\\Dns\\' => 10,
+            'React\\Cache\\' => 12,
+            'Ratchet\\RFC6455\\' => 16,
+            'Ratchet\\' => 8,
         ),
         'P' => 
         array (
@@ -89,6 +112,14 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
         array (
             0 => __DIR__ . '/..' . '/yabacon/paystack-php/src',
         ),
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/src/Twilio',
+        ),
+        'Symfony\\Polyfill\\Php80\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+        ),
         'Symfony\\Polyfill\\Php72\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php72',
@@ -101,6 +132,14 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-idn',
         ),
+        'Symfony\\Component\\Routing\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/routing',
+        ),
+        'Symfony\\Component\\HttpFoundation\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/http-foundation',
+        ),
         'Stripe\\' => 
         array (
             0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
@@ -108,6 +147,42 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
         'Sample\\' => 
         array (
             0 => __DIR__ . '/..' . '/paypal/paypal-checkout-sdk/samples',
+        ),
+        'React\\Stream\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/stream/src',
+        ),
+        'React\\Socket\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/socket/src',
+        ),
+        'React\\Promise\\Timer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/promise-timer/src',
+        ),
+        'React\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/promise/src',
+        ),
+        'React\\EventLoop\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/event-loop/src',
+        ),
+        'React\\Dns\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/dns/src',
+        ),
+        'React\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/react/cache/src',
+        ),
+        'Ratchet\\RFC6455\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ratchet/rfc6455/src',
+        ),
+        'Ratchet\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cboden/ratchet/src/Ratchet',
         ),
         'Psr\\Log\\' => 
         array (
@@ -218,6 +293,19 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
                 0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
             ),
         ),
+        'E' => 
+        array (
+            'Evenement' => 
+            array (
+                0 => __DIR__ . '/..' . '/evenement/evenement/src',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
+        'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
@@ -226,6 +314,7 @@ class ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b
             $loader->prefixLengthsPsr4 = ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd77f9f9e6c9fdd342ae4a499e78bd79b::$classMap;
 
         }, null, ClassLoader::class);
     }

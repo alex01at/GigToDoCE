@@ -14,7 +14,6 @@
 				<th><?= $lang['th']['due_on']; ?></th>
 				<th><?= $lang['th']['total']; ?></th>
 				<th><?= $lang['th']['status2']; ?></th>
-				
 
 			</tr>
 

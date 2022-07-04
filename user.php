@@ -34,6 +34,10 @@ $get_seller_user_name = $input->get('slug');
 $select_seller = $db->query("select * from sellers where seller_user_name=:u_name AND NOT seller_status='deactivated' AND NOT seller_status='block-ban'",array("u_name"=>$get_seller_user_name));
 $count_seller = $select_seller->rowCount();
 
+if($count_seller == 0){
+  echo "<script>window.open('index','_self');</script>";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">

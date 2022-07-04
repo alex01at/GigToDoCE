@@ -181,7 +181,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
               ?>
               >
             <label for="mobile-money" class="radio-custom-label"></label>
-            <img src="images/mobile-money.png" class="img-fluid">
+            <img src="images/dusupay.png" class="img-fluid">
           </div>
           <?php } ?> 
         </div>
@@ -249,7 +249,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
   </div>
 </div>
 
-<?php include("../../includes/comp/mobile_money_modal.php"); ?>
+<?php include("../../includes/comp/dusupay_payment_modal.php"); ?>
 
 <script 
    src="js/paypal.js" 

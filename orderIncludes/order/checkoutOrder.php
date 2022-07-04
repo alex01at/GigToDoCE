@@ -24,7 +24,6 @@ if(isset($_SESSION['checkout_seller_id'])){
 	$row_delivery_time = $select_delivery_time->fetch();
 	$delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
 
-
 	$get_delivery = $db->select("instant_deliveries",['proposal_id'=>$proposal_id]);
 	$row_delivery = $get_delivery->fetch();
 	$enable_delivery = $row_delivery->enable;
@@ -149,6 +148,11 @@ if(isset($_SESSION['checkout_seller_id'])){
 		}
 
 		$insert_notification = $db->insert("notifications",array("receiver_id"=>$proposal_seller_id,"sender_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","date"=>$order_date,"status"=>"unread"));
+
+        /// sendPushMessage Starts
+        $notification_id = $db->lastInsertId();
+        sendPushMessage($notification_id);
+        /// sendPushMessage Ends
 
 		unset($_SESSION['checkout_seller_id']);
 		unset($_SESSION['proposal_id']);

@@ -88,8 +88,6 @@ function send_mail($data,$temp_name=''){
 
          if($mail->send()){ 
             return true;
-         }else{
-            return true;
          }
 
       }catch(Exception $e){
@@ -111,6 +109,7 @@ function load_view($file,$data=''){
    global $site_email_address;
    global $site_logo;
    global $s_currency;
+   global $template_folder;
    
    if($data['template'] != "email_confirmation"){ 
       $file = "main"; 
@@ -118,8 +117,10 @@ function load_view($file,$data=''){
       $file = "main2";
    }
 
+   $lang = ( isset($data['lang']) && !empty($data['lang']) ) ? $data['lang'] : $template_folder;
+
    ob_start();
-   require("$dir"."emails/templates/$file.php");
+   require("$dir"."emails/templates/{$lang}/$file.php");
    return ob_get_clean();
 }
 

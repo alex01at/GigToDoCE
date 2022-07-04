@@ -33,7 +33,6 @@ $a_buyer_requests = $row_rights->buyer_requests;
 $a_restricted_words = $row_rights->restricted_words;
 $a_alerts = $row_rights->notifications;
 $a_cats = $row_rights->cats;
-$a_child_cats = $row_rights->child_cats;
 $a_delivery_times = $row_rights->delivery_times;
 $a_seller_languages = $row_rights->seller_languages;
 $a_seller_skills = $row_rights->seller_skills;
@@ -98,11 +97,13 @@ $a_admins = $row_rights->admins;
     margin-top: 4px\9;
     margin-left: -20px;
 }
+
 input[type=checkbox], input[type=radio] {
     margin: 7px 0 0;
     margin-top: 1px\9;
     line-height: normal;
 }
+
 input[type=checkbox], input[type=radio] {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -110,11 +111,10 @@ input[type=checkbox], input[type=radio] {
     padding: 0;
 }
 
-
 </style>
 
 
-<div class="container">
+<div class="container"><!--- container Starts --->
 
 <div class="row mt-2"><!--- 2 row Starts --->
 
@@ -337,7 +337,6 @@ if(isset($_POST['update'])){
 
   if($update_rights){
     echo "<script>alert_success('Admin Rights Has Been Updated Successfully.','index?edit_rights=$admin_id');</script>";
-    
   }
 
 }

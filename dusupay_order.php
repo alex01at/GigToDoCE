@@ -56,20 +56,20 @@ if($type == "proposal" & $status == "COMPLETED"){
 	$_SESSION['proposal_delivery'] = $delivery_id;
 	$_SESSION['proposal_revisions'] = $revisions;
 
-   if(!empty($extras)){
-      $_SESSION['proposal_extras'] = unserialize(base64_decode($extras));
-   }
+	if(!empty($extras)){
+    	$_SESSION['proposal_extras'] = unserialize(base64_decode($extras));
+	}
 
-   if(!empty($minutes)){
-      $_SESSION['proposal_minutes'] = $minutes;
-   }
+	if(!empty($minutes)){
+		$_SESSION['proposal_minutes'] = $minutes;
+	}
 
 	$_SESSION['method'] = "mobile_money";
 
 	$delete = $db->delete("dusupay_orders",array('reference_no'=>$reference_no));
 
 	echo "<script>window.open('order','_self');</script>";
-	
+
 }
 
 
@@ -92,7 +92,7 @@ if($type == "featured_listing" & $status == "COMPLETED"){
 	$_SESSION['method'] = "mobile_money";
 
 	echo "<script>window.open('$site_url/proposals/featured_proposal','_self')</script>";
-	
+
 }
 
 
@@ -105,7 +105,7 @@ if($type == "request_offer" & $status == "COMPLETED"){
 	$delete = $db->delete("dusupay_orders",array('reference_no'=>$reference_no));
 
 	echo "<script>window.open('order','_self');</script>";
-	
+
 }
 
 
@@ -118,11 +118,11 @@ if($type == "message_offer" & $status == "COMPLETED"){
 	$delete = $db->delete("dusupay_orders",array('reference_no'=>$reference_no));
 
 	echo "<script>window.open('order','_self');</script>";
-	
+
 }
 
 if($status == "CANCELLED" or $status == "FAILED"){
 
-	echo "<script>window.open('index','_self');</script>";
-	
+	echo "<script>window.open('index','_self');</script>";	
+
 }

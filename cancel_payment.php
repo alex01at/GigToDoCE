@@ -86,4 +86,8 @@ if($type == "cart"){
 
 $db->delete("temp_orders",array('reference_no'=>$reference_no));
 
-echo "<script>window.open('$c_url','_self');</script>";
+if($type == "orderExtendTime"){
+   echo "<script>window.close();</script>";
+}else{
+   echo "<script>window.open('$c_url','_self');</script>";
+}

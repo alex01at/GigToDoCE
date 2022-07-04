@@ -164,6 +164,8 @@ echo "<script>window.open('login','_self');</script>";
 
                     <th>User's Email</th>
 
+                    <th>Balance</th>
+
                     <th>Seller Level</th>
 
                     <th>Email Verified</th>
@@ -221,6 +223,10 @@ echo "<script>window.open('login','_self');</script>";
                     $email_verification = "No";
                 }
 
+                $select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $seller_id));
+                $row_seller_accounts = $select_seller_accounts->fetch();
+                $current_balance = $row_seller_accounts->current_balance;
+
                 $level_title = $db->select("seller_levels_meta",array("level_id"=>$seller_level,"language_id"=>$adminLanguage))->fetch()->title;
 
                 $i++;
@@ -239,6 +245,10 @@ echo "<script>window.open('login','_self');</script>";
 
                         <td>
                             <?= $seller_email; ?>
+                        </td>
+
+                        <td>
+                            <?= showPrice($current_balance); ?>
                         </td>
 
                         <td>

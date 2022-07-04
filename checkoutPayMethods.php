@@ -8,16 +8,12 @@
 <?php } ?>
 
 <?php if($enable_paypal == "yes"){ ?>
-
-<div id="paypal-form" class="paypal-button-container"></div>
-
+	<div id="paypal-form" class="paypal-button-container"></div>
 <?php } ?>
 
 <?php if($enable_stripe == "yes"){ ?>
 <form action="checkout_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
-
-  <input name='stripe' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_stripe']; ?>'/>
-
+	<input name='stripe' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_stripe']; ?>'/>
 </form>
 <?php } ?>
 

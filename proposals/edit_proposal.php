@@ -220,19 +220,35 @@ $(document).ready(function(){
     $("input[type='hidden'][name='section']").val(e);
   });
 
-  $(".proposal-form").on('submit', function(event){
-    event.preventDefault();
-    var form_data = new FormData(this);
+
+
+  function check_proposal(form_data){
     form_data.append('proposal_id',<?= $proposal_id; ?>);
-    $('#wait').addClass("loader");
+      $.ajax({
+        method: "POST",
+        url: "ajax/check/overview",
+        data: form_data,
+        dataType: 'json',
+        async: false,cache: false,contentType: false,processData: false
+      }).done(function(data){
+        console.log(data);
+        if(data === true){
+          $('#wait').removeClass("loader");        
+          overViewRequest(form_data, data);        
+        }else{        
+          processOverViewRequest(form_data, data);
+        }  
+      });
+  }
+
+  function processOverViewRequest(form_data, status){    
+    form_data.append('change_status', status);
     $.ajax({
       method: "POST",
       url: "ajax/save_proposal",
       data: form_data,
       async: false,cache: false,contentType: false,processData: false
-    }).done(function(data){
-      console.log(data);
-      
+    }).done(function(data){      
       if(data == "video" || data == "not-video"){
         videoOrNotVideo = data;
       }
@@ -334,6 +350,39 @@ $(document).ready(function(){
         });
       }
     });
+
+  }
+
+  function overViewRequest(form_data, status=false){    
+    form_data.append('proposal_id',<?= $proposal_id; ?>);
+    if(status == true){
+      swal({
+          title: "Are you sure?",
+          text: "You have made some changes, your porposal would be set as pending state.",
+          // text: "You have made some changes, your porposal would be set as pending state. and admin have to approve it again.",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, I understand continue.",
+          closeOnConfirm: false
+      }).then(function (isConfirm) {          
+          if(isConfirm.dismiss == 'cancel'){            
+            return;
+          }else if (isConfirm.value == true){
+            processOverViewRequest(form_data, status);
+          }
+      });
+    }
+  }
+
+
+  $(".proposal-form").on('submit', function(event){    
+    event.preventDefault();
+    var form_data = new FormData(this);
+    form_data.append('proposal_id',<?= $proposal_id; ?>);
+    $('#wait').addClass("loader");
+    check_proposal(form_data);
+
   });
 
   <?php if($d_proposal_enable_referrals == "no"){ ?>  
@@ -355,21 +404,22 @@ $(document).ready(function(){
   $(document).on("click",".pricing", function(event){
     var value = $(this).val();
     if(this.checked){
+
       $('.packages').hide();
       $('.add-attribute').hide();
       $('.proposal-price').show();
-      $('.proposal-price input[name="proposal_price"]').attr('min',<?= $min_proposal_price; ?>);
-
+      // $('.proposal-price input[name="proposal_price"]').attr('min',<?= $min_proposal_price; ?>);
       $('.packages input[name="proposal_packages[1][price]"]').attr('min',0);
       $('.packages input[name="proposal_packages[2][price]"]').attr('min',0);
       $('.packages input[name="proposal_packages[3][price]"]').attr('min',0);
 
     }else{
+
       $('.packages').show();
       $('.add-attribute').show();
       $('.proposal-price').hide();
+      $('.proposal-price input[name="proposal_price"]').val(0);
       $('.proposal-price input[name="proposal_price"]').attr('min',0);
-      
       $('.packages input[name="proposal_packages[1][price]"]').attr('min',<?= $min_proposal_price; ?>);
       $('.packages input[name="proposal_packages[2][price]"]').attr('min',<?= $min_proposal_price; ?>);
       $('.packages input[name="proposal_packages[3][price]"]').attr('min',<?= $min_proposal_price; ?>);

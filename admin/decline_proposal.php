@@ -14,6 +14,7 @@ function declineEmail(){
   $row_seller = $select_seller->fetch();
   $seller_user_name = $row_seller->seller_user_name;
   $seller_email = $row_seller->seller_email;
+  $seller_phone = $row_seller->seller_phone;
 
   $data = [];
   $data['template'] = "decline_proposal";
@@ -22,10 +23,16 @@ function declineEmail(){
   $data['user_name'] = $seller_user_name;
   send_mail($data);
 
+  if($notifierPlugin == 1){
+    $smsText = $lang['notifier_plugin']['proposal_declined'];
+    sendSmsTwilio("",$smsText,$seller_phone);
+  }
+
 }
 
 if(isset($_GET['decline_proposal'])){
   $proposal_id = $input->get('decline_proposal');
+  $page = (isset($_GET['page']))?"=".$input->get('page'):"";
   $update_proposal = $db->update("proposals",["proposal_status"=>'declined'],["proposal_id"=>$proposal_id]);
   if($update_proposal){
     $select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));

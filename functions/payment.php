@@ -96,7 +96,7 @@ public function execute_payment($reference_no,$method){
   }elseif($data->type == "featured_listing"){
     $_SESSION['featured_listing'] = 1;
     $_SESSION['proposal_id'] = $data->content_id;
-  }elseif($data->type == "view_offers"){
+  }elseif($data->type == "request_offer"){
     $_SESSION['offer_id'] = $data->content_id;
     $_SESSION['offer_buyer_id'] = $login_seller_id;
   }elseif($data->type == "message_offer"){ 
@@ -603,9 +603,32 @@ public function dusupay($data){
     $account_number = '"account_number": "'.$data['account_number'].'",';
   }
 
-  if(isset($data['voucher'])){
+  if(isset($data['voucher']) AND !empty($data['voucher'])){
     $voucher = '"voucher": "'.$data['voucher'].'",';
   }
+
+
+  // print_r($data);
+
+  // echo "<br>";
+
+  // echo '<pre>{ 
+  //     "api_key": "'.$dusupay_api_key.'", 
+  //     "currency": "'.$dusupay_currency_code.'", 
+  //     "amount": '.$data['amount'].',
+  //     "method": "'.$data['method'].'", 
+  //     "provider_id": "'.$data['provider_id'].'",
+  //     '.@$account_number.'
+  //     '.@$voucher.'
+  //     "merchant_reference": "'.mt_rand().'",
+  //     "narration": "'.$data['name'].'",
+  //     "redirect_url": "'.$site_url.'/dusupay_return",
+  //     "account_name": "'.$login_seller_user_name.'",
+  //     "account_email": "'.$login_seller_email.'"
+  //     '.$test_mode.'
+  //   }</pre>';
+
+  // exit();  
 
 	$curl = curl_init();
 	curl_setopt_array($curl, array(
@@ -620,13 +643,13 @@ public function dusupay($data){
 	    "api_key": "'.$dusupay_api_key.'", 
 	    "currency": "'.$dusupay_currency_code.'", 
 	    "amount": '.$data['amount'].',
-	    "method": "'.$dusupay_method.'", 
-	    "provider_id": "'.$dusupay_provider_id.'",
+	    "method": "'.$data['method'].'", 
+	    "provider_id": "'.$data['provider_id'].'",
       '.@$account_number.'
       '.@$voucher.'
 	    "merchant_reference": "'.mt_rand().'",
 	    "narration": "'.$data['name'].'",
-	    "redirect_url": "'.$site_url.'/dusupay_return",
+	    "redirect_url": "'.$site_url.'/dusupay_return?",
 	    "account_name": "'.$login_seller_user_name.'",
 	    "account_email": "'.$login_seller_email.'"
 	    '.$test_mode.'
@@ -695,7 +718,8 @@ public function dusupay($data){
         echo "<script>window.open('$url','_self')</script>";
       }else{
         if($dusupay_method == "CARD" OR $dusupay_method == "BANK"){
-           // header('Location: '.$data['data']['payment_url']);
+          // header('Location: '.$data['data']['payment_url']);
+          // echo $d_data['data']['payment_url'];
           echo "<script>window.open('".$d_data['data']['payment_url']."','_self')</script>";
         }else{
           echo "<script>window.open('$site_url/dusupay_return?reference={$d_data['data']['merchant_reference']}&status={$d_data['data']['transaction_status']}','_self')</script>";

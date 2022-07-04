@@ -43,6 +43,7 @@
     height: 150px;
   }
 </style>
+
 </head>
 <body class="is-responsive blog">
 <?php require_once("../includes/header.php"); ?>

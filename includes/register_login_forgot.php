@@ -41,6 +41,17 @@ if(isset($_POST['register'])){
 		$email = strip_tags($input->post('email'));
 		$email = strip_tags($email);
 		$_SESSION['email']=$email;
+
+		$phone = strip_tags($input->post('phone'));
+		$phone = strip_tags($phone);
+		$_SESSION['phone']=$phone;
+
+		$country_code = strip_tags($input->post('country_code'));
+		$country_code = strip_tags($country_code);
+		$_SESSION['country_code']=$country_code;
+
+		$phone = $country_code." ".$phone;
+
 		$pass = strip_tags($input->post('pass'));
 		$con_pass = strip_tags($input->post('con_pass'));
 		$referral = strip_tags($input->post('referral'));
@@ -58,6 +69,11 @@ if(isset($_POST['register'])){
 		if($check_seller_username > 0 ){
 		  array_push($error_array, "Opps! This username has already been taken. Please try another one");
 		}
+
+		if(strpbrk($input->post('u_name'), ' ') !== false){
+			array_push($error_array, "Spaces Are Not Allowed In Username. Please Remove The Spaces.");
+		}
+
 		if($check_seller_email > 0){
 		  array_push($error_array, "Email has already been taken. Try logging in instead.");
 		}
@@ -81,7 +97,7 @@ if(isset($_POST['register'])){
 			// Convert minutes to seconds and get timezone
 			$timezone = timezone_name_from_abbr("", $timezone_offset_minutes*60, false);
 			
-			$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_pass" => $encrypted_password,"seller_country"=>$country,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 0,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_activity"=>$seller_activity,"seller_timezone"=>$timezone,"seller_status" => 'online'));
+			$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_phone" => $phone,"seller_pass" => $encrypted_password,"seller_country"=>$country,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 0,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_activity"=>$seller_activity,"seller_timezone"=>$timezone,"seller_status" => 'online'));
 					
 			$regsiter_seller_id = $db->lastInsertId();
 			if($insert_seller){
@@ -109,7 +125,7 @@ if(isset($_POST['register'])){
 					}
 					if($signup_email == "yes"){
 						userSignupEmail($email);
-				  }
+				  	}
 					echo "
 					<script>
 						swal({
@@ -117,15 +133,11 @@ if(isset($_POST['register'])){
 							text: '".str_replace("{name}",$name,$lang['alert']['successfully_registered'])."',
 							timer: 6000,
 							onOpen: function(){
-							swal.showLoading()
+								swal.showLoading()
 							}
 						}).then(function(){
-							if (
 							// Read more about handling dismissals
 							window.open('$site_url','_self')
-							) {
-							console.log('Successful Registration')
-							}
 						});
 					</script>";
 					$_SESSION['name'] = "";
@@ -139,14 +151,14 @@ if(isset($_POST['register'])){
 			$_SESSION['error_array'] = $error_array;
 			echo "
 			<script>
-			swal({
-				type: 'warning',
-				html: $('<div>').text('{$lang['alert']['errors']}'),
-				animation: false,
-				customClass: 'animated tada'
-			}).then(function(){
-				window.open('index','_self')
-			});
+				swal({
+					type: 'warning',
+					html: $('<div>').text('{$lang['alert']['errors']}'),
+					animation: false,
+					customClass: 'animated tada'
+				}).then(function(){
+					window.open('index','_self')
+				});
 			</script>";
 		}
 	}
@@ -170,25 +182,29 @@ if(isset($_POST['login'])){
 
 		$seller_user_name = $input->post('seller_user_name');
 		$seller_pass = $input->post('seller_pass');
+
 		// $select_seller = $db->query("select * from sellers where seller_user_name=:u_name",array(":u_name"=>$seller_user_name));
-		$select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+		// $select_seller = $db->query("select * from sellers where seller_user_name=:u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
+
+		$select_seller = $db->query("select * from sellers where binary seller_user_name like :u_name OR seller_email=:u_email",array(":u_name"=>$seller_user_name,":u_email"=>$seller_user_name));
 		$row_seller = $select_seller->fetch();
 		@$hashed_password = $row_seller->seller_pass;
 		@$seller_user_name = $row_seller->seller_user_name;
 		@$seller_status = $row_seller->seller_status;
-		$decrypt_password = password_verify($seller_pass, $hashed_password);
+		$decrypt_password = password_verify($seller_pass,$hashed_password);
 		
 		if($decrypt_password == 0){
+		
 			echo "
 			<script>
-        swal({
-          type: 'warning',
-          html: $('<div>').text('{$lang['alert']['incorrect_login']}'),
-          animation: false,
-          customClass: 'animated tada'
-        })
-	    </script>
-			";
+	        swal({
+	          type: 'warning',
+	          html: $('<div>').text('{$lang['alert']['incorrect_login']}'),
+	          animation: false,
+	          customClass: 'animated tada'
+	        })
+		    </script>";
+
 		}else{
 			if($seller_status == "block-ban"){
 				echo "
@@ -215,11 +231,13 @@ if(isset($_POST['login'])){
 				$select_seller = $db->query("select * from sellers where seller_email=:u_email OR seller_user_name=:u_name AND seller_pass=:u_pass",array("u_email"=>$seller_user_name,"u_name"=>$seller_user_name,"u_pass"=>$hashed_password));
 	    		$row_seller = $select_seller->fetch();
 				if($select_seller){
+					
 					$_SESSION['sessionStart'] = $row_seller->seller_user_name;
 					if(isset($_SESSION['sessionStart']) and $_SESSION['sessionStart'] === $row_seller->seller_user_name){
 
 						$update_seller_status = $db->update("sellers",array("seller_status"=>'online',"seller_ip"=>$ip),array("seller_user_name"=>$row_seller->seller_user_name,"seller_pass"=>$hashed_password));
-						$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
+//						$seller_user_name = ucfirst(strtolower($row_seller->seller_user_name));
+						$seller_user_name = ucfirst($row_seller->seller_user_name);
 						$url = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 						echo "

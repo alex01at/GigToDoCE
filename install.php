@@ -110,6 +110,7 @@ body {
 <!-- row Ends -->
 </div>
 <?php
+
 if(isset($_POST["install"])){
   $host = $input->post("db_host");
   $uname = $input->post("db_username");

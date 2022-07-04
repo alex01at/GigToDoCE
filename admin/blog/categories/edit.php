@@ -1,5 +1,4 @@
 <?php
-
 @session_start();
 
 if(!isset($_SESSION['admin_email'])){
@@ -18,6 +17,10 @@ if($edit_cat->rowCount() == 0){
 }
 
 $cat = $edit_cat->fetch();
+
+
+$get_meta = $db->select("post_categories_meta",array("cat_id" => $edit_id, "language_id" => $adminLanguage));
+$row_meta = $get_meta->fetch();
 
 $show_image = getImageUrl("post_categories",$cat->cat_image);
 
@@ -57,7 +60,7 @@ $show_image = getImageUrl("post_categories",$cat->cat_image);
 						<div class="form-group row"><!--- form-group row Starts --->
 							<label class="col-md-3 control-label"> Category Name: </label>
 							<div class="col-md-6">
-								<input type="text" name="cat_name" class="form-control" value="<?= $cat->cat_name; ?>" required="">
+								<input type="text" name="cat_name" class="form-control" value="<?= $row_meta->cat_name; ?>" required="">
 							</div>
 						</div><!--- form-group row Ends --->
 
@@ -116,19 +119,22 @@ if(isset($_POST['update'])){
 		}else{
          uploadToS3("blog_cat_images/$cat_image",$tmp_cat_image);
          $isS3 = $enable_s3;
-      }
+      	}
 
-      $data['cat_image'] = $cat_image;
-      $data['isS3'] = $isS3;
+    	$update = $db->update("post_categories", array('cat_image' => $cat_image, 'isS3' => $isS3 ),array("id" => $cat->id));
 
-		$update = $db->update("post_categories",$data,["id"=>$cat->id]);
+    	unset($data['date_time']);
+    	unset($data['cat_image']);
+      
+		$update = $db->update("post_categories_meta",$data,array(
+			"cat_id" => $row_meta->cat_id,
+			'language_id' => $adminLanguage
+		) );
 		if($update){
-			$insert_log = $db->insert_log($admin_id,"post_cat",$cat->id,"updated");
+			$insert_log = $db->insert_log($admin_id,"post_cat",$row_meta->cat_id,"updated");
 			echo "<script>alert_success('One Post Category has been Updated Successfully.','index?post_categories');</script>";
 		}
-
 	}
-
 }
 
 ?>

@@ -36,6 +36,13 @@
 			$categories = $db->select("post_categories");
 			while($cat = $categories->fetch()){
 				$image = $cat->cat_image;
+				$cat_meta = $db->select("post_categories_meta", 
+					array(
+						'cat_id' => $cat->id,
+						'language_id' => $_SESSION['siteLanguage']
+				))->fetch();				
+				$cat_name = !empty($cat_meta->cat_name) ? $cat_meta->cat_name:'';
+				//echo $cat_name.'<br />';
 			?>
 				<li>
 					<a href="index?cat_id=<?= $cat->id; ?>">
@@ -44,7 +51,7 @@
 						<?php }else{ ?>
 							<span style="margin-left: 26px;"></span>
 						<?php } ?>
-						<?= $cat->cat_name; ?>
+						<?= $cat_name; ?>
 					</a>
 				</li>
 			<?php } ?>

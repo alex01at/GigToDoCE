@@ -31,6 +31,8 @@ if(isset($_POST['paypal'])){
 		include("paypal/featured_listing_charge.php");
 	}elseif($type == "orderTip") {
 		include("paypal/tip_charge.php");
+	}elseif($type == "orderExtendTime") {
+		include("plugins/videoPlugin/extendTime/charge/paypalCharge.php");
 	}
    
    $payment = new Payment();

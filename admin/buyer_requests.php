@@ -27,6 +27,7 @@ $status = "";
 ?>
 
 <div class="breadcrumbs">
+
   <div class="col-sm-4">
       <div class="page-header float-left">
           <div class="page-title">
@@ -34,6 +35,7 @@ $status = "";
           </div>
       </div>
   </div>
+
   <div class="col-sm-8">
       <div class="page-header float-right">
           <div class="page-title">
@@ -64,15 +66,15 @@ $status = "";
 
                   <a href="index?buyer_requests" class="<?php if($status == " all "){ echo "text-muted "; } ?> mr-2">
 
-                   All (<?= $count_all_requests; ?>)
+                    All (<?= $count_all_requests; ?>)
 
-                   </a>
+                  </a>
 
                   <span class="mr-2">|</span>
 
                   <a href="index?buyer_requests&status=active" class="<?php if($status == " all "){ echo "text-muted "; } ?> mr-2">
 
-                   Active (<?= $count_active_requests; ?>)
+                    Active (<?= $count_active_requests; ?>)
 
                   </a>
 
@@ -80,7 +82,7 @@ $status = "";
 
                   <a href="index?buyer_requests&status=pending" class="<?php if($status == " all "){ echo "text-muted "; } ?> mr-2">
 
-                   Pending (<?= $count_pending_requests; ?>)
+                    Pending (<?= $count_pending_requests; ?>)
 
                   </a>
 
@@ -88,7 +90,7 @@ $status = "";
 
                   <a href="index?buyer_requests&status=unapproved" class="<?php if($status == " all "){ echo "text-muted "; } ?> mr-2">
 
-                   Declined (<?= $count_unapproved_requests; ?>)
+                    Declined (<?= $count_unapproved_requests; ?>)
 
                   </a>
 
@@ -96,18 +98,15 @@ $status = "";
 
                   <a href="index?buyer_requests&status=pause" class="<?php if($status == " all "){ echo "text-muted "; } ?> mr-2">
 
-                   Paused (<?= $count_pause_requests; ?>)
+                    Paused (<?= $count_pause_requests; ?>)
 
                   </a>
 
-                  <div class="table-responsive mt-3">
-                      <!--- table-responsive Starts --->
+                  <div class="table-responsive mt-3"><!--- table-responsive Starts --->
 
-                      <table class="table table-bordered">
-                          <!--- table table-bordered table-hover Starts --->
+                      <table class="table table-bordered"><!--- table table-bordered table-hover Starts --->
 
-                          <thead>
-                              <!--- thead Starts --->
+                          <thead><!--- thead Starts --->
 
                               <tr>
 
@@ -129,11 +128,9 @@ $status = "";
 
                               </tr>
 
-                          </thead>
-                          <!--- thead Ends --->
+                          </thead><!--- thead Ends --->
 
-                          <tbody>
-                              <!--- tbody Starts --->
+                          <tbody><!--- tbody Starts --->
 
                            <?php
 
@@ -170,23 +167,15 @@ $status = "";
                            while($row_requests = $get_requests->fetch()){
 
                            $request_id = $row_requests->request_id;
-
                            $request_title = $row_requests->request_title;
-
                            $request_description = $row_requests->request_description;
-
                            $seller_id = $row_requests->seller_id;
-
                            $request_budget = $row_requests->request_budget;
-
                            $delivery_time = $row_requests->delivery_time;
-
                            $request_file = $row_requests->request_file;
-
                            $request_status = $row_requests->request_status;
 
                            $select_seller = $db->select("sellers",array("seller_id" => $seller_id));
-
                            $seller_user_name = $select_seller->fetch()->seller_user_name;
 
                            ?>
@@ -241,7 +230,7 @@ $status = "";
 
                              <td>
 
-                           <?php if($request_status == "pending"){ ?>
+                            <?php if($request_status == "pending"){ ?>
 
                                <a href="index?approve_request=<?= $request_id; ?>" class="btn btn-success" onclick="return confirm('You are about to approve this request. Continue?')">
                                    <i class="fa fa-thumbs-up text-white" style="width:12px;"></i> <span class="text-white pl-1">Approve</span>

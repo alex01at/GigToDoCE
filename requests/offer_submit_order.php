@@ -6,9 +6,9 @@ require_once("../includes/db.php");
 require_once("../functions/processing_fee.php");
 
 if(!isset($_SESSION['seller_user_name'])){
-	
+   
 echo "<script>window.open('../login','_self')</script>";
-	
+   
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
@@ -24,9 +24,9 @@ $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;
 if($paypal_sandbox == "on"){
-	$paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+   $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 }elseif($paypal_sandbox == "off"){
-	$paypal_url = "https://www.paypal.com/cgi-bin/webscr";	
+   $paypal_url = "https://www.paypal.com/cgi-bin/webscr";   
 }
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
@@ -54,7 +54,7 @@ if($paymentGateway == 1){
    }
 
 }else{
-	$enable_2checkout = "no"; 
+   $enable_2checkout = "no"; 
 }
 
 $select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $login_seller_id));
@@ -90,114 +90,114 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 ?>
 
 <div id="offer-order-modal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header"><!-- modal-header Starts -->
-				<h5 class="modal-title"> Select A Payment Method </h5>
-				<button class="close" data-dismiss="modal">
-					<span> &times; </span>
-				</button>
-			</div>
-			<div class="modal-body p-0">
-				<div class="order-details">
-					<div class="request-div">
-						<h4>
-							THIS ORDER IS RELATED TO THE FOLLOWING REQUEST:
-							<span class="btn-close float-right">x</span>
-						</h4>
-						<p>
-							"<?= $request_description; ?>"
-						</p>
-						<span class="arrow">
-							View Offer  &nbsp; <i class="fa fa-caret-down"></i>
-						</span>
-					</div>
-					<div class="offer-div"><!-- offer-div Starts -->
-						<h4>
-							<?= $proposal_title; ?>
-						<span class="price float-right"><?= showPrice($amount); ?></span>
-						</h4>
-						<p>
-							<?= $description; ?>
-						</p>
-						<p>
-						<strong> <i class="fa fa-calendar"></i> Delivery Time: </strong>
-						<?= $delivery_time; ?>
-						</p>
-					</div>
-				</div>
-			<div class="payment-options-list">
-				<?php if($current_balance >= $amount){ ?>
-				<div class="payment-options mb-2">
-					<input type="radio" name="payment_option" id="shopping-balance" class="radio-custom" checked>
-					<label for="shopping-balance" class="radio-custom-label" ></label>
-					<span class="lead font-weight-bold"> Shopping Balance </span>
-					<p class="lead ml-5">
-					Personal Balance - <?= $login_seller_user_name; ?> <span class="text-success font-weight-bold"> <?= showPrice($current_balance); ?> </span>
-					</p>
-				</div>
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header"><!-- modal-header Starts -->
+            <h5 class="modal-title"> Select A Payment Method </h5>
+            <button class="close" data-dismiss="modal">
+               <span> &times; </span>
+            </button>
+         </div>
+         <div class="modal-body p-0">
+            <div class="order-details">
+               <div class="request-div">
+                  <h4>
+                     THIS ORDER IS RELATED TO THE FOLLOWING REQUEST:
+                     <span class="btn-close float-right">x</span>
+                  </h4>
+                  <p>
+                     "<?= $request_description; ?>"
+                  </p>
+                  <span class="arrow">
+                     View Offer  &nbsp; <i class="fa fa-caret-down"></i>
+                  </span>
+               </div>
+               <div class="offer-div"><!-- offer-div Starts -->
+                  <h4>
+                     <?= $proposal_title; ?>
+                  <span class="price float-right"><?= showPrice($amount); ?></span>
+                  </h4>
+                  <p>
+                     <?= $description; ?>
+                  </p>
+                  <p>
+                  <strong> <i class="fa fa-calendar"></i> Delivery Time: </strong>
+                  <?= $delivery_time; ?>
+                  </p>
+               </div>
+            </div>
+         <div class="payment-options-list">
+            <?php if($current_balance >= $amount){ ?>
+            <div class="payment-options mb-2">
+               <input type="radio" name="payment_option" id="shopping-balance" class="radio-custom" checked>
+               <label for="shopping-balance" class="radio-custom-label" ></label>
+               <span class="lead font-weight-bold"> Shopping Balance </span>
+               <p class="lead ml-5">
+               Personal Balance - <?= $login_seller_user_name; ?> <span class="text-success font-weight-bold"> <?= showPrice($current_balance); ?> </span>
+               </p>
+            </div>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes" or $enable_dusupay == "yes"){ ?>
-				<hr>
+            <hr>
                 <?php } ?>
                 <?php } ?>
                 <?php if($enable_paypal == "yes"){ ?>
-				<div class="payment-option">
-					<input type="radio" name="payment_option" id="paypal" class="radio-custom"
+            <div class="payment-option">
+               <input type="radio" name="payment_option" id="paypal" class="radio-custom"
                         <?php
                         if($current_balance < $amount){
-                        	echo "checked";
+                           echo "checked";
                         }
                         ?>>
-					<label for="paypal" class="radio-custom-label"></label>
-					<img src="../images/paypal.png" class="img-fluid">
-				</div>
+               <label for="paypal" class="radio-custom-label"></label>
+               <img src="../images/paypal.png" class="img-fluid">
+            </div>
                 <?php } ?>
                 <?php if($enable_stripe == "yes"){ ?>
                 <?php if($enable_paypal == "yes"){ ?>
-				<hr>
+            <hr>
                 <?php } ?>
-				<div class="payment-option">
-					<input type="radio" name="payment_option" id="credit-card" class="radio-custom"
+            <div class="payment-option">
+               <input type="radio" name="payment_option" id="credit-card" class="radio-custom"
                            <?php
                                 if($current_balance < $amount){
-	                                if($enable_paypal == "no"){
-	                                echo "checked";
-	                                }
+                                   if($enable_paypal == "no"){
+                                   echo "checked";
+                                   }
                                 }
                             ?>>
-					<label for="credit-card" class="radio-custom-label"></label>
-					<img src="../images/credit_cards.jpg" class="img-fluid">
-				</div>
-            	<?php } ?>
-				<?php 
-				if($enable_2checkout == "yes"){ 
-					include("../plugins/paymentGateway/paymentMethod2.php");
-				} 
-				?>
+               <label for="credit-card" class="radio-custom-label"></label>
+               <img src="../images/credit_cards.jpg" class="img-fluid">
+            </div>
+               <?php } ?>
+            <?php 
+            if($enable_2checkout == "yes"){ 
+               include("../plugins/paymentGateway/paymentMethod2.php");
+            } 
+            ?>
                 <?php if($enable_mercadopago == "1"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes"){ ?>
-				<hr>
+            <hr>
                 <?php } ?>
-					<div class="payment-option">
-						<input type="radio" name="payment_option" id="mercadopago" class="radio-custom"
+               <div class="payment-option">
+                  <input type="radio" name="payment_option" id="mercadopago" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
-	                            if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){ 
-	                            echo "checked";
-	                            }
+                               if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1"){ 
+                               echo "checked";
+                               }
                             }
                             ?>>
-						<label for="mercadopago" class="radio-custom-label"></label>
-						<img src="../images/mercadopago.png" class="img-fluid">
-					</div>
+                  <label for="mercadopago" class="radio-custom-label"></label>
+                  <img src="../images/mercadopago.png" class="img-fluid">
+               </div>
                 <?php } ?>
                               
                 <?php if($enable_coinpayments == "yes"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1"){ ?>
-				    <hr>
+                <hr>
                 <?php } ?>
-					<div class="payment-option">
-						<input type="radio" name="payment_option" id="coinpayments" class="radio-custom"
+               <div class="payment-option">
+                  <input type="radio" name="payment_option" id="coinpayments" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
                             if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0"){ 
@@ -205,16 +205,16 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                             }
                             }
                             ?>>
-						<label for="coinpayments" class="radio-custom-label"></label>
-						<img src="../images/coinpayments.png" class="img-fluid">
-					</div>
+                  <label for="coinpayments" class="radio-custom-label"></label>
+                  <img src="../images/coinpayments.png" class="img-fluid">
+               </div>
                 <?php } ?>
                 <?php if($enable_paystack == "yes"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments == "yes"){ ?>
-				  <hr>
+              <hr>
                 <?php } ?>
-					<div class="payment-option">
-						<input type="radio" name="payment_option" id="paystack" class="radio-custom"
+               <div class="payment-option">
+                  <input type="radio" name="payment_option" id="paystack" class="radio-custom"
                             <?php
                             if($current_balance < $amount){
                             if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no"){ 
@@ -222,39 +222,39 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
                             }
                             }
                             ?>>
-						<label for="paystack" class="radio-custom-label"></label>
-						<img src="../images/paystack.png" class="img-fluid">
-					</div>
+                  <label for="paystack" class="radio-custom-label"></label>
+                  <img src="../images/paystack.png" class="img-fluid">
+               </div>
                 <?php } ?>   
                 <?php if($enable_dusupay == "yes"){ ?>
                 <?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes" or $enable_mercadopago == "1" or $enable_coinpayments =="yes" or $enable_paystack == "yes"){ ?>
-				<hr>
+            <hr>
                 <?php } ?>
-					<div class="payment-option">
-						<input type="radio" name="payment_option" id="mobile-money" class="radio-custom"
-	                           <?php
-	                                if($current_balance < $amount){
-	                                if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){ 
-	                                	echo "checked"; 
-	                                }
-	                                }
-	                            ?>>
-						<label for="mobile-money" class="radio-custom-label"></label>
-						<img src="../images/mobile-money.png" class="img-fluid">
-					</div>
+               <div class="payment-option">
+                  <input type="radio" name="payment_option" id="mobile-money" class="radio-custom"
+                              <?php
+                                   if($current_balance < $amount){
+                                   if($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "no"){ 
+                                    echo "checked"; 
+                                   }
+                                   }
+                               ?>>
+                  <label for="mobile-money" class="radio-custom-label"></label>
+                  <img src="../images/dusupay.png" class="img-fluid">
+               </div>
                <?php } ?>
             </div>
-			</div>
-			<div class="modal-footer">
+         </div>
+         <div class="modal-footer">
 
          <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
 
             <?php if($current_balance >= $amount){ ?>
                <form action="../shopping_balance" method="post" id="shopping-balance-form">
-   				  <button class="btn btn-success" type="submit" name="view_offers_submit_order" onclick="return confirm('Are you sure you want to pay for this order with your shopping balance ?')">
+                 <button class="btn btn-success" type="submit" name="view_offers_submit_order" onclick="return confirm('Are you sure you want to pay for this order with your shopping balance ?')">
                   <?= $lang['button']['pay_with_shopping']; ?>
-   				  </button>
-   			   </form>
+                 </button>
+               </form>
                <br>
             <?php } ?>
 
@@ -270,11 +270,11 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             </form>
             <?php } ?>
 
-      		<?php if($enable_2checkout == "yes"){ ?>
-      		<form action="../plugins/paymentGateway/requests/2checkout_charge" method="post" id="2checkout-form">
+            <?php if($enable_2checkout == "yes"){ ?>
+            <form action="../plugins/paymentGateway/requests/2checkout_charge" method="post" id="2checkout-form">
                <button type="submit" name="2Checkout" class="btn btn-success"><?= $lang['button']['pay_with_2checkout']; ?></button>
             </form>
-      		<?php } ?>
+            <?php } ?>
 
             <?php if($enable_mercadopago == "1"){ ?>
             <form action="mercadopago_charge" method="post" id="mercadopago-form">
@@ -290,11 +290,11 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 
             <?php } ?>
 
-      		<?php if($enable_paystack == "yes"){ ?>
-      		<form action="paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
-      			<button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
-      		</form><!--- paystack-form Ends --->
-      		<?php } ?>
+            <?php if($enable_paystack == "yes"){ ?>
+            <form action="paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
+               <button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
+            </form><!--- paystack-form Ends --->
+            <?php } ?>
 
             <?php 
                if($enable_dusupay == "yes"){
@@ -305,11 +305,11 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             ?>
 
          </div>
-		</div>
-	</div>
+      </div>
+   </div>
 </div>
 
-<?php include("../includes/comp/mobile_money_modal.php"); ?>
+<?php include("../includes/comp/dusupay_payment_modal.php"); ?>
 
 <script 
    src="../js/paypal.js" id="paypal-js" 
@@ -320,7 +320,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 <script>
 
 $(document).ready(function(){
-	
+   
    $("#offer-order-modal").modal('show');
 
    $(".offer-div").hide();
@@ -330,8 +330,8 @@ $(document).ready(function(){
    });
 
    $(".btn-close").click(function(){
-   	$(".request-div").fadeOut().remove();
-   	$(".offer-div").fadeOut().remove();
+      $(".request-div").fadeOut().remove();
+      $(".offer-div").fadeOut().remove();
    });
 
    <?php if($current_balance >= $amount){ ?>
@@ -387,46 +387,46 @@ $(document).ready(function(){
    <?php } ?>
 
    $('#shopping-balance').click(function(){
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').hide();
-   	$('#mobile-money-form').hide();
-   	$('#paypal-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').hide();
-   	$('#mercadopago-form').hide();
-   	$('#shopping-balance-form').show();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paypal-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
+      $('#shopping-balance-form').show();
    });
 
    $('#paypal').click(function(){
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').hide();
-   	$('#paypal-form').show();
-   	$('#shopping-balance-form').hide();
-   	$('#mobile-money-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').hide();
-   	$('#mercadopago-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#paypal-form').show();
+      $('#shopping-balance-form').hide();
+      $('#mobile-money-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
    });
 
    $('#credit-card').click(function(){
-   	$('#credit-card-form').show();
-   	$('#2checkout-form').hide();
-   	$('#paypal-form').hide();
-   	$('#shopping-balance-form').hide();
-   	$('#mobile-money-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').hide();
-   	$('#mercadopago-form').hide();
+      $('#credit-card-form').show();
+      $('#2checkout-form').hide();
+      $('#paypal-form').hide();
+      $('#shopping-balance-form').hide();
+      $('#mobile-money-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
    });
 
    $('#2checkout').click(function(){
-   	$('#mobile-money-form').hide();
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').show();
-   	$('#paypal-form').hide();
-   	$('#shopping-balance-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').hide();
+      $('#mobile-money-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').show();
+      $('#paypal-form').hide();
+      $('#shopping-balance-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
       $('#mercadopago-form').hide();
    });
 
@@ -441,39 +441,39 @@ $(document).ready(function(){
    });
 
    $('#coinpayments').click(function(){
-   	$('#mobile-money-form').hide();
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').hide();
-   	$('#paypal-form').hide();
+      $('#mobile-money-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#paypal-form').hide();
       $('#coinpayments-form').show();
-   	$('#mercadopago-form').hide();
-   	$('#paystack-form').hide();
-   	$('#shopping-balance-form').hide();
+      $('#mercadopago-form').hide();
+      $('#paystack-form').hide();
+      $('#shopping-balance-form').hide();
    });
 
    $('#paystack').click(function(){
-   	
-   	$('#mobile-money-form').hide();
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').show();
-   	$('#paypal-form').hide();
-   	$('#shopping-balance-form').hide();
+      
+      $('#mobile-money-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').show();
+      $('#paypal-form').hide();
+      $('#shopping-balance-form').hide();
       $('#mercadopago-form').hide();
    });
 
    $('#mobile-money').click(function(){
-   	$('#credit-card-form').hide();
-   	$('#2checkout-form').hide();
-   	$('#paypal-form').hide();
-   	$('#shopping-balance-form').hide();
-   	$('#coinpayments-form').hide();
-   	$('#paystack-form').hide();
-   	$('#mercadopago-form').hide();
-   	$('#mobile-money-form').show();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#paypal-form').hide();
+      $('#shopping-balance-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').show();
    });
-	
+   
 });
 
 </script>

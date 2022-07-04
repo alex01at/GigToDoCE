@@ -221,10 +221,16 @@ $server = $row_api->server;
     </div><!--- col-lg-12 Ends --->
   </div><!--- 1 row Starts --->
 
-  <?php 
-  if($videoPlugin == 1){ 
-    include("../plugins/videoPlugin/admin/general_settings.php");
-  }
+  <?php
+   
+    if($videoPlugin == 1){ 
+      include("../plugins/videoPlugin/admin/general_settings.php");
+    }
+
+    if($notifierPlugin == 1){ 
+      include("../plugins/notifierPlugin/admin/api_settings.php");
+    }
+
   ?>
 
 </div><!--- container Ends --->

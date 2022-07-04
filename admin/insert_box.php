@@ -11,64 +11,58 @@ echo "<script>window.open('login','_self');</script>";
 ?>
 
 <div class="breadcrumbs">
-            <div class="col-sm-4">
-                <div class="page-header float-left">
-                    <div class="page-title">
-                        <h1><i class="menu-icon fa fa-cog"></i> Settings / Insert Box</h1>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="page-header float-right">
-                    <div class="page-title">
-                        <ol class="breadcrumb text-right">
-                            <li class="active">Insert Box</li>
-                        </ol>
-                    </div>
-                </div>
-            </div>
-    
-    </div>
+   <div class="col-sm-4">
+       <div class="page-header float-left">
+           <div class="page-title">
+               <h1><i class="menu-icon fa fa-cog"></i> Settings / Insert Box</h1>
+           </div>
+       </div>
+   </div>
+   <div class="col-sm-8">
+       <div class="page-header float-right">
+           <div class="page-title">
+               <ol class="breadcrumb text-right">
+                   <li class="active">Insert Box</li>
+               </ol>
+           </div>
+       </div>
+   </div>
+</div>
 
-<div class="container">
+<div class="container"><!--- container Starts --->
 
 <div class="row"><!--- 2 row Starts --->
 
 <div class="col-lg-12"><!--- col-lg-12 Starts --->
 
+<?php 
 
-  <?php 
+$form_errors = Flash::render("form_errors");
+$form_data = Flash::render("form_data");
 
-  $form_errors = Flash::render("form_errors");
+if(is_array($form_errors)){
 
-  $form_data = Flash::render("form_data");
+?>
 
-  if(is_array($form_errors)){
+<div class="alert alert-danger"><!--- alert alert-danger Starts --->
 
-  ?>
+   <ul class="list-unstyled mb-0">
+      <?php $i = 0; foreach ($form_errors as $error) { $i++; ?>
+         <li class="list-unstyled-item">
+            <?= $i ?>. <?= ucfirst($error); ?>
+         </li>
+      <?php } ?>
+   </ul>
 
-  <div class="alert alert-danger"><!--- alert alert-danger Starts --->
-      
-  <ul class="list-unstyled mb-0">
-  <?php $i = 0; foreach ($form_errors as $error) { $i++; ?>
-  <li class="list-unstyled-item"><?= $i ?>. <?= ucfirst($error); ?></li>
-  <?php } ?>
-  </ul>
+</div><!--- alert alert-danger Ends --->
 
-  </div><!--- alert alert-danger Ends --->
-
-  <?php } ?>
-
+<?php } ?>
 
 <div class="card"><!--- card Starts --->
 
 <div class="card-header"><!--- card-header Starts --->
 
-<h4 class="card-title">
-
-Insert Box
-
-</h4>
+   <h4 class="card-title">Insert Box</h4>
 
 </div><!--- card-header Ends --->
 
@@ -76,58 +70,54 @@ Insert Box
 
 <form action="" method="post" enctype="multipart/form-data"><!--- form Starts --->
 
+   <div class="form-group row"><!--- form-group row Starts --->
+
+   <label class="col-md-3 control-label"> Box Title : </label>
+
+   <div class="col-md-6">
+
+   <input type="text" name="box_title" class="form-control" required="">
+
+   </div>
+
+   </div><!--- form-group row Ends --->
 
 
-<div class="form-group row"><!--- form-group row Starts --->
+   <div class="form-group row"><!--- form-group row Starts --->
 
-<label class="col-md-3 control-label"> Box Title : </label>
+   <label class="col-md-3 control-label"> Box Description : </label>
 
-<div class="col-md-6">
+   <div class="col-md-6">
 
-<input type="text" name="box_title" class="form-control" required="">
+   <textarea name="box_desc" class="form-control" cols="6" required=""></textarea>
 
-</div>
+   </div>
 
-</div><!--- form-group row Ends --->
-
-
-<div class="form-group row"><!--- form-group row Starts --->
-
-<label class="col-md-3 control-label"> Box Description : </label>
-
-<div class="col-md-6">
-
-<textarea name="box_desc" class="form-control" cols="6" required=""></textarea>
-
-</div>
-
-</div><!--- form-group row Ends --->
+   </div><!--- form-group row Ends --->
 
 
-<div class="form-group row"><!--- form-group row Starts --->
+   <div class="form-group row"><!--- form-group row Starts --->
 
-<label class="col-md-3 control-label"> Box Image : </label>
+   <label class="col-md-3 control-label"> Box Image : </label>
 
-<div class="col-md-6">
+   <div class="col-md-6">
 
-<input type="file" name="box_image" class="form-control" required="">
+   <input type="file" name="box_image" class="form-control" required="">
 
-</div>
+   </div>
 
-</div><!--- form-group row Ends --->
+   </div><!--- form-group row Ends --->
 
-<div class="form-group row"><!--- form-group row Starts --->
 
-<label class="col-md-3 control-label"></label>
+   <div class="form-group row"><!--- form-group row Starts --->
 
-<div class="col-md-6">
+   <label class="col-md-3 control-label"></label>
 
-<input type="submit" name="submit" class="form-control btn btn-success" value="Insert Box">
+   <div class="col-md-6">
+      <input type="submit" name="submit" class="form-control btn btn-success" value="Insert Box">
+   </div>
 
-</div>
-
-</div><!--- form-group row Ends --->
-
+   </div><!--- form-group row Ends --->
 
 </form><!--- form Ends --->
 
@@ -138,8 +128,8 @@ Insert Box
 </div><!--- col-lg-12 Ends --->
 
 </div><!--- 2 row Ends --->
-    
-</div>
+
+</div><!--- container Ends --->
 
 <?php
 
@@ -183,10 +173,10 @@ if(isset($_POST['submit'])){
 
          if($insert_box){
 
-         $insert_id = $db->lastInsertId();
-         $insert_log = $db->insert_log($admin_id,"section_box",$insert_id,"inserted");
+            $insert_id = $db->lastInsertId();
+            $insert_log = $db->insert_log($admin_id,"section_box",$insert_id,"inserted");
 
-         echo "<script>alert_success('One Box Successfully Inserted.','index?layout_settings');</script>";
+            echo "<script>alert_success('One Box Successfully Inserted.','index?layout_settings');</script>";
 
          }
       	
@@ -198,8 +188,4 @@ if(isset($_POST['submit'])){
 
 ?>
 
-<?php
-
-}
-
-?>
+<?php } ?>

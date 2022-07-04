@@ -54,9 +54,7 @@
                   <source src="<?= $slide_image; ?>" type="video/mp4">
                 </video>
               <?php }else{ ?>
-                <a>
-                  <img src="<?= $slide_image; ?>" class="img-fluid">
-                </a>
+                <a href="<?= $slide_url; ?>"> <img src="<?= $slide_image; ?>" class="img-fluid"> </a>
               <?php } ?>
               <div class="carousel-caption d-lg-block d-md-block d-none <?=($lang_dir == "right"?'text-right':'')?>"/>
                 <h3><?= $slide_name; ?></h3>

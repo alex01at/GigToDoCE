@@ -7,6 +7,16 @@ if(!isset($_SESSION['seller_user_name'])){
 	echo "<script>window.open('../../login','_self')</script>";
 }
 
+if(isset($_POST["change_status"])){
+	$status = $_POST['change_status'];
+	$proposal_id = $_POST['proposal_id'];
+	if($status == 'true' && isset( $_POST['proposal_id'] )){
+		$update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+	}
+}
+
+
+
 function watermarkImage($image,$data){
 	
 	global $site_watermark;
@@ -91,6 +101,7 @@ if(isset($_POST["proposal_id"])){
 		}
 
 		unset($data['enable_watermark']);
+		unset($data['change_status']);
 
 		$update = $db->update("instant_deliveries",$data,["proposal_id"=>$proposal_id]);
 		if($update){

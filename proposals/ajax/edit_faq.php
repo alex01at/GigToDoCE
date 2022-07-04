@@ -34,4 +34,12 @@
 
   $update_extra = $db->update("proposals_faq",$data,array('id' => $id,'proposal_id'=>$proposal_id));
 
+  if(isset($_POST["proposal_id"])){
+    $status = $_POST['change_status'];
+    $proposal_id = $_POST['proposal_id'];
+    if($status == 'true'){
+      $update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+    }
+  }
+
   }

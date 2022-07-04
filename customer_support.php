@@ -23,8 +23,8 @@
     $floatRight = "float-left";
   }
 
-  $recaptcha_site_key = "";
-  $recaptcha_secret_key = "";
+  // $recaptcha_site_key = "";
+  // $recaptcha_secret_key = "";
 
 ?>
 <!DOCTYPE html>
@@ -200,24 +200,30 @@
   $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4', 'zip','rar','mp3','wav','txt');
   $file_extension = pathinfo($file, PATHINFO_EXTENSION);
   if(!in_array($file_extension,$allowed) & !empty($file)){
-  echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
+    echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
   }else{
 
-    $file = pathinfo($file, PATHINFO_FILENAME);
-    $file = $file."_".time().".$file_extension";
+    if(!empty($file)){
+      $file = pathinfo($file, PATHINFO_FILENAME);
+      $file = $file."_".time().".$file_extension";
+      uploadToS3("ticket_files/$file",$file_tmp);
+    }else{
+      $file = "";
+    }
 
-    uploadToS3("ticket_files/$file",$file_tmp);
     $isS3 = $enable_s3;
 
+    $number = mt_rand();
+
     $date = date("h:i M d, Y");
-    $insert_support_ticket = $db->insert("support_tickets",array("enquiry_id" => $enquiry_type,"sender_id" => $login_seller_id,"subject" => $subject,"message" => $message,"order_number" => $order_number,"order_rule" => $order_rule,"attachment" => $file,"date" => $date,"isS3" => $isS3,"status" => 'open'));
+    $insert_support_ticket = $db->insert("support_tickets",array("enquiry_id" => $enquiry_type,"number"=>$number,"sender_id" => $login_seller_id,"subject" => $subject,"message" => $message,"order_number" => $order_number,"order_rule" => $order_rule,"attachment" => $file,"date" => $date,"isS3" => $isS3,"status" => 'open'));
     if($insert_support_ticket){
 
       $get_enquiry_types = $db->select("enquiry_types",array("enquiry_id" => $enquiry_id));
       $row_enquiry_types = $get_enquiry_types->fetch();
       $enquiry_title = $row_enquiry_types->enquiry_title;
-      // Send Email To Admin Code Starts
 
+      // Send Email To Admin Code Starts
       $data = [];
       $data['template'] = "customer_support";
       $data['to'] = $contact_email;
@@ -229,18 +235,15 @@
       $data['message'] = $message;
       $data['attachment'] = $file;
       send_mail($data);
-
       // Send Email To Admin Code Ends
 
       /// Send Email To Sender Code Starts 
-
       $data = [];
       $data['template'] = "customer_support_2";
       $data['to'] = $login_seller_email;
       $data['subject'] = "$site_name - Your Message has been received.";
       $data['user_name'] = $login_seller_user_name;
       send_mail($data);
-
       /// Send Email To Sender Code Ends  
       echo "
       <script>
@@ -250,7 +253,6 @@
         timer: 6000,
       })
       </script>";
-
     }
   }
 

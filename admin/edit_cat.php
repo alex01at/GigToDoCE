@@ -239,7 +239,7 @@ $show_image = getImageUrl("categories",$row_edit->cat_image);
 </div><!--- 2 row Ends --->
 
 <?php
-
+include("includes/sanitize_url.php");
 if(isset($_POST['update_cat'])){
 	
 	$rules = $vaidation = array(
@@ -266,12 +266,12 @@ if(isset($_POST['update_cat'])){
 	}else{
 
 		$cat_title = $input->post('cat_title');
-		$cat_desc = $input->post('cat_desc');
+        $cat_url = slug($cat_title);
+        $cat_desc = $input->post('cat_desc');
 		$cat_featured = $input->post('cat_featured');
-      $enable_watermark = $input->post('enable_watermark');
+        $enable_watermark = $input->post('enable_watermark');
 		$cat_image = $_FILES['cat_image']['name'];
 		$tmp_cat_image = $_FILES['cat_image']['tmp_name'];
-
 		$allowed = array('jpeg','jpg','gif','png','tif','ico','webp');
 		$file_extension = pathinfo($cat_image, PATHINFO_EXTENSION);
 
@@ -293,9 +293,9 @@ if(isset($_POST['update_cat'])){
 				$reminder_emails = $input->post('reminder_emails');
 				$missed_session_emails = $input->post('missed_session_emails');
 				$warning_message = $input->post('warning_message');
-				$update_cat = $db->update("categories",array("cat_image"=>$cat_image,"cat_featured"=>$cat_featured,"enable_watermark"=>$enable_watermark,"isS3"=>$isS3,"video"=>$video,"reminder_emails"=>$reminder_emails,"missed_session_emails"=>$missed_session_emails,"warning_message"=>$warning_message),array("cat_id"=>$edit_id));
+				$update_cat = $db->update("categories",array("cat_url"=>$cat_url,"cat_image"=>$cat_image,"cat_featured"=>$cat_featured,"enable_watermark"=>$enable_watermark,"isS3"=>$isS3,"video"=>$video,"reminder_emails"=>$reminder_emails,"missed_session_emails"=>$missed_session_emails,"warning_message"=>$warning_message),array("cat_id"=>$edit_id));
 			}else{
-				$update_cat = $db->update("categories",array("cat_image"=>$cat_image,"cat_featured"=>$cat_featured,"enable_watermark"=>$enable_watermark,"isS3"=>$isS3),array("cat_id"=>$edit_id));
+				$update_cat = $db->update("categories",array("cat_url"=>$cat_url,"cat_image"=>$cat_image,"cat_featured"=>$cat_featured,"enable_watermark"=>$enable_watermark,"isS3"=>$isS3),array("cat_id"=>$edit_id));
 			}
 
 			if($update_cat){

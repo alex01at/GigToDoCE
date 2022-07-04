@@ -10,7 +10,15 @@ echo "<script>window.open('../login','_self')</script>";
 
 }
 
+
 if(isset($_POST["proposal_id"])){
+
+	$status = $_POST['change_status'];
+	$proposal_id = $_POST['proposal_id'];
+	if($status == 'true'){
+		$update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+	}
+	
 
 	function removeJava($html,$allowed_tags){
 	  
@@ -41,6 +49,7 @@ if(isset($_POST["proposal_id"])){
 	$proposal_id = strip_tags($input->post('proposal_id'));
 	$data = $input->post();
 	unset($data['proposal_id']);
+	unset($data['change_status']);	
 
 
 	if(isset($_POST['proposal_title'])){

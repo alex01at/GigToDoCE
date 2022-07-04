@@ -237,5 +237,6 @@ require_once("functions/functions.php");
     get_freelancers(); 
   }
 </script>
+
 </body>
 </html>

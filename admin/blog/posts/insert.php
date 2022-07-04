@@ -1,4 +1,3 @@
-
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote-bs4.min.css" rel="stylesheet">
 <script type="text/javascript" src="../js/popper.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap.js"></script>
@@ -28,7 +27,7 @@
 		<div class="col-lg-12"><!--- col-lg-12 Starts --->
 			<div class="card"><!--- card Starts --->
 				<div class="card-header"><!--- card-header Starts --->
-				<i class="fa fa-money fa-fw"></i> Insert Post
+					<i class="fa fa-money fa-fw"></i> Insert Post
 				</div><!--- card-header Ends --->
 				<div class="card-body"><!--- card-body Starts --->
 					<form action="" method="post" enctype="multipart/form-data"><!--- form Starts --->
@@ -45,10 +44,13 @@
 							<div class="col-md-7">
 								<select class="form-control" name="cat_id" required="">
 								<?php
-								   $get_cats = $db->select("post_categories");
-									while($cat = $get_cats->fetch()){
-										echo "<option value='$cat->id'>$cat->cat_name</option>";
-									}
+
+								$get_cats = $db->select("post_categories_meta",['language_id'=>$adminLanguage]);
+
+								while($cat = $get_cats->fetch()){
+									echo "<option value='$cat->id'>$cat->cat_name</option>";
+								}
+									
 								?>
 								</select>
 							</div>
@@ -75,22 +77,6 @@
 							</div>
 						</div><!--- form-group row Ends --->
 
-					  <div class="form-group row"><!--- form-group row Starts --->
-					    <label class="col-md-3 control-label"> Post Language : </label>
-					    <div class="col-md-7">
-					      <select name="language_id" class="form-control" required="">
-					      <?php
-					      $get_languages = $db->select("languages");
-					      while($row_languages = $get_languages->fetch()){
-					      $id = $row_languages->id;
-					      $title = $row_languages->title;
-					      ?>
-					      <option value="<?= $id; ?>"><?= $title; ?></option>
-					      <?php } ?>
-					      </select>
-					    </div>
-					  </div><!--- form-group row Ends --->
-
 						<div class="form-group row"><!--- form-group row Starts --->
 							<label class="col-md-3 control-label"></label>
 							<div class="col-md-7">
@@ -108,18 +94,18 @@
 
 <script>
 $('textarea').summernote({
-  placeholder: 'Start Typing Here...',
-  height: 280,
-  toolbar: [
-	  ['style', ['style']],
-	  ['font', ['bold', 'italic', 'underline', 'clear']],
-	  ['fontname', ['fontname']],
-	  ['fontsize', ['fontsize']],
-	  ['height', ['height']],
-	  ['color', ['color']],
-	  ['para', ['ul', 'ol', 'paragraph']],
-	  ['misc', ['codeview']]
-  ],
+	placeholder: 'Start Typing Here...',
+	height: 280,
+	toolbar: [
+		['style', ['style']],
+		['font', ['bold', 'italic', 'underline', 'clear']],
+		['fontname', ['fontname']],
+		['fontsize', ['fontsize']],
+		['height', ['height']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['misc', ['codeview']]
+	],
 });
 </script>
 
@@ -131,7 +117,15 @@ if(isset($_POST['insert_post'])){
 	$data = $input->post();
 	$data['content'] = removeJava($_POST['content']);
 	$data['date_time'] = date("F d, Y");
+
+	$post_meta['title'] = $data['title'];
+	$post_meta['author'] = $data['author'];
+	$post_meta['content'] = $data['content'];	
+
 	unset($data['insert_post']);
+	unset($data['title']);
+	unset($data['author']);
+	unset($data['content']);
 
 	$image = $_FILES['image']['name'];
 	$tmp_image = $_FILES['image']['tmp_name'];
@@ -148,16 +142,19 @@ if(isset($_POST['insert_post'])){
 		$data['isS3'] = $enable_s3;
 		$data['image'] = $image;
 		$data['status'] = 1;
-		$insert = $db->insert("posts",$data); 
-
+		$insert = $db->insert("posts",$data);
 		if($insert){
 			$insert_id = $db->lastInsertId();
+			$get_languages = $db->select("languages");
+			while($row_languages = $get_languages->fetch()){
+				$id = $row_languages->id;
+				$insert = $db->insert("posts_meta",array("post_id"=>$insert_id,"language_id"=>$id));
+			}
+			$update_meta = $db->update("posts_meta",$post_meta,array("post_id" => $insert_id, "language_id" => $adminLanguage));
 			$insert_log = $db->insert_log($admin_id,"post",$insert_id,"inserted");
 			echo "<script>alert_success('One Post has been Inserted Successfully.','index?posts');</script>";
-		}
-
+		}			
 	}
-
 }
 
 ?>

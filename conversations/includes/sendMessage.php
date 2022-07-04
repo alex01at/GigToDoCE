@@ -70,7 +70,7 @@
   <p class="mb-2 mt-2 d-none files"></p>
   <div class="custom-file float-left"><!--- custom-file float-left Starts --->
   <!-- <i class="fa fa-smile-o fa-lg text-muted"></i> -->    
-  <input type="hidden" id="sendType" value="new-line">
+  <input type="hidden" id="sendType" value="send-msg">
   <input type="hidden" id="fileVal">
   <input type="file" class="custom-file-input d-none" id="file">
   <label class="custom-file-label btn pl-0 ml-0" for="file">

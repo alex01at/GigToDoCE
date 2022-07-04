@@ -54,6 +54,15 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 
    include("$dir/includes/s3-config.php");
 
+   if(!isset($_SESSION['adminLanguage'])){
+      $_SESSION['adminLanguage'] = $db->select("languages",["default_lang" =>1])->fetch()->id;
+   }
+
+   $sel_language = $db->select("languages",array( "id" => $_SESSION['adminLanguage']))->fetch();
+   $template_folder = $sel_language->template_folder; 
+   require($dir."languages/".strtolower($sel_language->title).".php");
+
+
    $site_favicon = getImageUrl2("general_settings","site_favicon",$row_general_settings->site_favicon);
    $site_logo_image = getImageUrl2("general_settings","site_logo_image",$row_general_settings->site_logo_image);
    $site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);

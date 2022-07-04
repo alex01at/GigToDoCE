@@ -45,6 +45,11 @@ $lang["menu"]["my_profile"] = "My Profile";
 $lang["menu"]["settings"] = "Settings";
 $lang["menu"]["profile_settings"] = "Profile Settings";
 $lang["menu"]["account_settings"] = "Account Settings";
+
+$lang["menu"]["customer_support"] = "Customer Support";
+$lang["menu"]["support_new"] = "New Ticket";
+$lang["menu"]["my_tickets"] = "My Tickets";
+
 $lang["menu"]["logout"] = "Logout";
 
 /// Mobile Menu
@@ -422,6 +427,11 @@ $lang["blog"]['desc'] = "Secure, innovative and user friendly platform for buyin
 $lang['label']['full_name'] = "Full Name";
 $lang['label']['username'] = "Username";
 $lang['label']['email'] = "Email";
+$lang['label']['phone'] = "Phone No ";
+
+$lang['label']['phone_optional'] = "<span class='text-success'>(Optional)</span>";
+$lang['label']['phone_required'] = "<span class='text-success'>(Required)</span>";
+
 $lang['label']['password'] = "Password";
 $lang['label']['password_confirm'] = "Confirm Password:";
 
@@ -479,6 +489,8 @@ $lang['label']['enable_referrals'] = "Enable Referrals";
 $lang['label']['promotion_commission'] = "Proposal Commission";
 $lang['label']['tags'] = "Tags";
 
+$lang['label']['upload_file'] = "Upload File";
+
 
 /// Input Placeholders
 
@@ -487,6 +499,7 @@ $lang['placeholder']['search'] = "Search";
 $lang['placeholder']['full_name'] = "Enter Your Full Name";
 $lang['placeholder']['username'] = "Enter Your Username";
 $lang['placeholder']['email'] = "Enter Your Email";
+$lang['placeholder']['phone'] = "Enter Your Phone";
 $lang['placeholder']['password'] = "Enter Your Password";
 $lang['placeholder']['password_confirm'] = "Enter Your Password Again";
 $lang['placeholder']['username_or_email'] = "Enter Your Username Or Email";
@@ -508,6 +521,7 @@ $lang['placeholder']['wallet_address'] = "Enter Wallet Address";
 
 $lang['placeholder']['search_questions'] = "Search Questions";
 $lang['placeholder']['type_message'] = "Type your Message Here";
+$lang['placeholder']['enter_message'] = "Enter your Message Here";
 
 
 /// Input Note Messages
@@ -522,11 +536,15 @@ $lang['note']['wallet_address'] = "! Warning You Only Need To Enter Your Bitcoin
 
 /// Warnings
 
+$lang['warning']['no_spaces'] = "(Only letters, numbers and underscores are allowed.)";
+
 $lang['warning']['note'] = "Note: You will not be able to change username once your account has been created.";
 $lang['warning']['username_already'] = "This username has already been taken. Please try another one.";
 $lang['warning']['username_greater'] = "Username must be greater that 4 characters long or less than 25 characters.";
 $lang['warning']['foreign_characters'] = "Foreign characters are not allowed in username, Please try another one.";
 $lang['warning']['dont_match'] = "Passwords don't match. Please try again.";
+
+$lang['warning']['spaces_not_allowed'] = "Spaces Are Not Allowed In Username. Please Remove The Spaces.";
 
 /// Buttons
 
@@ -587,7 +605,9 @@ $lang['button']['pay_with_2checkout'] = "Pay With 2Checkout";
 $lang['button']['pay_with_mercadopago'] = "Pay With Mercadopago";
 $lang['button']['pay_with_coinpayments'] = "Pay With Coinpayments";
 $lang['button']['pay_with_paystack'] = "Pay With Paystack";
-$lang['button']['pay_with_dusupay'] = "Pay With Mobile Money";
+$lang['button']['pay_with_dusupay'] = "Pay With Dusupay";
+
+$lang['button']['submut'] = "Submit";
 
 
 /// Tables Th and Tds Translations
@@ -643,6 +663,14 @@ $lang['th']['proposal'] = "Proposal";
 $lang['th']['purchase_date'] = "Purchase Date";
 
 
+$lang['th']['ticket_number'] = "Ticket Number";
+$lang['th']['subject'] = "Subject";
+$lang['th']['message'] = "Message";
+$lang['th']['order_number'] = "Order #";
+$lang['th']['rule'] = "Rule";
+$lang['th']['status'] = "Status";
+$lang['th']['action'] = "Action";
+
 /// Sweat Alert Boxes
 
 $lang['alert']['incorrect_login'] = "Opps! password or username is incorrect. Please try again.";
@@ -659,6 +687,12 @@ $lang['alert']['confirmation_email'] = "Confirmation email sent. Please check yo
 $lang['alert']['invalid_link'] = "Your account activation link is invalid.";
 $lang['alert']['verify_email'] = "Your account has been activated successfully. Welcome on board.";
 $lang['alert']['extension_not_supported'] = "Your File Format Extension Is Not Supported.";
+
+$lang['alert']['language_already_added'] = "The language you just tried to enter already exists.  Please search through the list.";
+$lang['alert']['skill_already_added'] = "The skill you just tried to enter already exists.  Please search through the list.";
+
+
+
 $lang['alert']['logout'] = "Good Bye!";
 
 
@@ -803,17 +837,34 @@ $lang['edit_proposal']['pricing']['warning3'] = "Please select 1 day if this is 
 
 /// Order Details
 
+$lang['order_details']['number'] = "Order Number";
+$lang['order_details']['view_proposal'] = "View Proposal/Service";
+$lang['order_details']['buyer'] = "Buyer";
+$lang['order_details']['seller'] = "Seller";
+$lang['order_details']['status'] = "Status";
+$lang['order_details']['date'] = "Date";
+$lang['order_details']['revisions'] = "Order Revisions";
+$lang['order_details']['revisions_used'] = "Revisions Used";
+$lang['order_details']['video_call_minutes'] = "Video Call Minutes";
+$lang['order_details']['minutes'] = "Minutes";
+
+$lang['order_details']['item'] = "Item";
+$lang['order_details']['quantity'] = "Quantity";
+$lang['order_details']['duration'] = "Duration";
+$lang['order_details']['duration/price_per_minute'] = "Duration/Price Per Minute";
+$lang['order_details']['amount'] = "Amount";
+
+$lang['order_details']['processing_fee'] = "Processing Fee";
+$lang['order_details']['total'] = "Total";
+$lang['order_details']['description'] = "Description";
+
+
 $lang['order_details']['order_not_started'] = "Buyer Hasn't Started The Order Yet. Buyer Will Have To Reply To This Order So It Get Started.";
 
 $lang['order_details']['tip_given'] = "You have given {amount} tip to seller. ";
 
 $lang['order_details']['seller_tip']['title'] = "Your buyer has given you a tip";
 $lang['order_details']['seller_tip']['desc'] = "Congrats! You've just received a tip of";
-
-
-/// Manage Contacts Page
-
-
 
 
 /// Inbox Page
@@ -845,18 +896,19 @@ $lang['inbox']['delete'] = "Delete";
 
 
 //// Manage Requests Page
+
 $lang['manage_requests']['no_active'] = "You've have no active requests at the moment.";
 $lang['manage_requests']['no_pause'] = "You currently have no requests paused.";
 $lang['manage_requests']['no_pending'] = "You currently have no requests pending.";
 $lang['manage_requests']['no_unapproved'] = "You currently have no unapproved requests.";
-// $lang['manage_requests']['no_active'] = "";
 
 
 //// Post A Request Page Sidebar
+
 $lang['post_request']['heading_1'] = "Chose A Category";
 $lang['post_request']['heading_2'] = "Once you place your order, when would you like your service delivered?";
 $lang['post_request']['heading_3'] = "What is your budget for this service? (Optional)";
-$lang['post_request']['heading_1'] = "";
+// $lang['post_request']['heading_1'] = "";
 
 $lang['post_request']['column_1']['title'] = "Define in Detail";
 $lang['post_request']['column_1']['desc'] = "Include all the necessary details needed to complete your request.";
@@ -881,3 +933,71 @@ $lang['knowledge_bank']['desc'] = "Everything you need to know";
 
 $lang['single_artilce']['bottom']['title'] = "Do you still have questions ?";
 $lang['single_artilce']['bottom']['desc'] = "Our support agents are ready with the answers.";
+
+
+/// Customer Support
+
+/// Sigle Ticket
+
+$lang['single_ticket']['ticket_details'] = "Ticket Details";
+
+$lang['single_ticket']['all_conversation'] = "All Conversation Regards Ticket No #";
+$lang['single_ticket']['no_conversation'] = "Currenty do not have any conversation.";
+
+$lang['single_ticket']['ticket_number'] = "Ticket Number:";
+$lang['single_ticket']['subject'] = "Subject:";
+$lang['single_ticket']['message'] = "Message:";
+$lang['single_ticket']['order_number'] = "Order No:";
+$lang['single_ticket']['order_rule'] = "Order Rule:";
+$lang['single_ticket']['status'] = "Status:";
+$lang['single_ticket']['reply_to_admin'] = "Reply To Admin";
+
+$lang['single_ticket']["can't_send"] = "You Can't Send Message Now Because Ticket status is closed now.";
+
+// $lang['single_ticket']['all_conversation'] = "";
+// $lang['single_ticket']['all_conversation'] = "";
+
+
+/// Gigtodo Notifier Plugin 
+
+/// Inbox
+$lang['notifier_plugin']['new_message'] = "$site_name - You've received a message from {seller_user_name}";
+
+
+/// Payouts
+$lang['notifier_plugin']['payout_approved'] = "$site_name - Your payout withdrawal request has just been approved.";
+$lang['notifier_plugin']['payout_delcined'] = "$site_name - Your payout withdrawal request has just been declined.";
+
+/// Requests
+$lang['notifier_plugin']['request_approved'] = "$site_name - Admin Has approved your request. Thanks for posting.";
+
+$lang['notifier_plugin']['request_unapproved'] = "$site_name - Admin Has unapproved your request. Please submit a valid request.";
+
+
+/// Proposals
+$lang['notifier_plugin']['proposal_approved'] = "$site_name - Your proposal/service has been successfully approved.";
+
+$lang['notifier_plugin']['proposal_declined'] = "$site_name - Your proposal/service has been declined.";
+
+$lang['notifier_plugin']['proposal_modification'] = "$site_name - Admin Has Sent Modification To Your Proposal.";
+
+
+/// Order
+$lang['notifier_plugin']['new_order'] = "$site_name - Congrats! You just received an order from {seller_user_name}";
+
+$lang['notifier_plugin']['order_message'] = "$site_name - {seller_user_name} has sent you a message on order #{order_number}";
+
+$lang['notifier_plugin']['order_tip'] = "$site_name: Congrats! {buyer_user_name} just issued you a tip.";
+
+$lang['notifier_plugin']['order_delivered'] = "$site_name: Congrats! {seller_user_name} has delivered your order.";
+
+$lang['notifier_plugin']['order_revision'] = "$site_name: Revision Requested By {buyer_user_name}";
+
+$lang['notifier_plugin']['order_review'] = "";
+
+
+/// Ticket
+$lang['notifier_plugin']['ticket_reply'] = "$site_name - We just responded to your ticket #{number}. please login to your portal and respond.";
+
+
+// $lang['notifier_plugin']['payout_approved'] = "";

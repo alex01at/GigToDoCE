@@ -100,7 +100,7 @@ $total = $sub_total + $processing_fee;
   <?php } ?>
 
 	<!-- Include the PayPal JavaScript SDK -->
-	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
 
 </head>
 <body class="is-responsive">
@@ -280,7 +280,7 @@ if($seller_verification != "ok"){
 									?>>
 								</div>
 								<div class="col-11">
-									<img src="images/mobile-money.png" height="50" class="ml-2 width-xs-100">
+									<img src="images/dusupay.png" height="50" class="ml-2 width-xs-100">
 								</div>
 							</div>
               			<?php } ?>

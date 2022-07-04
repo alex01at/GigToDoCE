@@ -113,14 +113,14 @@ if(isset($_POST['submit_proposal'])){
     }
     echo "<script>
     swal({
-    type: 'success',
-    text: '$text',
-    timer: 2000,
-    onOpen: function(){
-    swal.showLoading()
-    }
+      type: 'success',
+      text: '$text',
+      timer: 2000,
+      onOpen: function(){
+        swal.showLoading()
+      }
     }).then(function(){
-    window.open('view_proposals','_self');
+      window.open('view_proposals','_self');
     });
     </script>";
   }

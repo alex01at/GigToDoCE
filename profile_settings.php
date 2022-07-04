@@ -7,6 +7,8 @@
 
   require 'admin/timezones.php';
 
+  $phone_no = explode(" ",$login_seller_phone);
+
   $form_errors = Flash::render("form_errors");
   $form_data = Flash::render("form_data");
   if(is_array($form_errors)){
@@ -28,10 +30,29 @@
       <input type="text" name="seller_name" value="<?= $login_seller_name; ?>" class="form-control" >
     </div>
   </div>
+
   <div class="form-group row">
     <label class="col-md-3 col-form-label"> <?= $lang['label']['email']; ?> </label>
     <div class="col-md-8">
       <input type="text" name="seller_email" value="<?= $login_seller_email; ?>" class="form-control" >
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-md-3 col-form-label"> <?= $lang['label']['phone']; ?> </label>
+    <div class="col-md-8 phoneNo">
+
+      <div class="input-group">
+
+        <span class="input-group-addon p-0 border-0 rounded-0" style="width: 28%;">
+          <?php include("includes/country_codes.php"); ?>
+        </span>
+
+        <input type="text" class="form-control" name="seller_phone" placeholder="<?= $lang['placeholder']['phone']; ?>" value="<?= @$phone_no[1]; ?>"/>
+      
+      </div>
+
+      <small class="text-muted">Please Include Your Country Code Also Like This: <b>+12561040358</b> </small>
     </div>
   </div>
 
@@ -47,6 +68,9 @@
       while($row_countries = $get_countries->fetch()){
         $id = $row_countries->id;
         $name = $row_countries->name;
+
+        $get_code = $db->select("country",['nicname'=>$name]);
+
         echo "<option value='$name'".($name == $login_seller_country ? "selected" : "").">$name</option>";
       }
       ?>
@@ -243,6 +267,7 @@
     }else{
       $seller_name = strip_tags($input->post('seller_name'));
       $seller_email = strip_tags($input->post('seller_email'));
+      $seller_phone = strip_tags($input->post('country_code'))." ".strip_tags($input->post('seller_phone'));
       $seller_country = strip_tags($input->post('seller_country'));
       $seller_city = strip_tags($input->post('seller_city'));
       $seller_timezone = strip_tags($input->post('seller_timezone'));
@@ -303,7 +328,7 @@
             $verification_code = $login_seller_verification;
           }
 
-          $update_seller = $db->update("sellers",array("seller_name"=>$seller_name,"seller_email"=>$seller_email,"seller_image"=>$profile_photo,"seller_cover_image"=>$cover_photo,"seller_image_s3"=>$seller_image_s3,"seller_cover_image_s3"=>$seller_cover_image_s3,"seller_country"=>$seller_country,"seller_city"=>$seller_city,"seller_timezone"=>$seller_timezone,"seller_headline"=>$seller_headline,"seller_about"=>$seller_about,"seller_language"=>$seller_language,"seller_verification"=>$verification_code),array("seller_id"=>$login_seller_id));
+          $update_seller = $db->update("sellers",array("seller_name"=>$seller_name,"seller_email"=>$seller_email,"seller_phone"=>$seller_phone,"seller_image"=>$profile_photo,"seller_cover_image"=>$cover_photo,"seller_image_s3"=>$seller_image_s3,"seller_cover_image_s3"=>$seller_cover_image_s3,"seller_country"=>$seller_country,"seller_city"=>$seller_city,"seller_timezone"=>$seller_timezone,"seller_headline"=>$seller_headline,"seller_about"=>$seller_about,"seller_language"=>$seller_language,"seller_verification"=>$verification_code),array("seller_id"=>$login_seller_id));
           
           if($update_seller){
             if (($seller_email == $login_seller_email) or ($seller_email != $login_seller_email and userConfirmEmail($seller_email))){

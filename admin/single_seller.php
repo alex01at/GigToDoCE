@@ -1,6 +1,5 @@
 <?php
 
-
 @session_start();
 
 if(!isset($_SESSION['admin_email'])){
@@ -18,6 +17,9 @@ echo "<script>window.open('login','_self');</script>";
         $seller_user_name = $row_seller->seller_user_name;
         $seller_level = $row_seller->seller_level;
         $seller_email = $row_seller->seller_email;
+        $seller_paypal_email = $row_seller->seller_paypal_email;
+        $seller_payoneer_email = $row_seller->seller_payoneer_email;
+        $seller_phone = $row_seller->seller_phone;
         $seller_image = getImageUrl2("sellers","seller_image",$row_seller->seller_image);
         $seller_about = $row_seller->seller_about;
         $seller_verification = $row_seller->seller_verification;
@@ -132,13 +134,27 @@ echo "<script>window.open('login','_self');</script>";
 
                     </p>
 
-
                     <p class="lead">
-
                         <span class="font-weight-bold"> Email : </span> <?= $seller_email; ?>
-
                     </p>
 
+                    <?php if(!empty($seller_paypal_email)){ ?>
+                    <p class="lead">
+                        <span class="font-weight-bold"> Paypal Email : </span> <?= $seller_paypal_email; ?>
+                    </p>
+                    <?php } ?>
+
+                    <?php if(!empty($seller_payoneer_email)){ ?>
+                    <p class="lead">
+                        <span class="font-weight-bold"> Payoneer Email : </span> <?= $seller_payoneer_email; ?>
+                    </p>
+                    <?php } ?>
+
+                    <?php if(!empty($seller_phone)){ ?>
+                    <p class="lead">
+                        <span class="font-weight-bold"> Phone : </span> <?= $seller_phone; ?>
+                    </p>
+                    <?php } ?>
 
                     <p class="lead">
 
@@ -146,10 +162,9 @@ echo "<script>window.open('login','_self');</script>";
 
                     </p>
 
-
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Main Conversational Language : </span> <?= $language_title; ?>
+                        <span class="font-weight-bold">Main Conversational Language :</span><?= $language_title; ?>
 
                     </p>
 
@@ -375,37 +390,41 @@ echo "<script>window.open('login','_self');</script>";
 
                         <?php
 
-                            $get_proposals = $db->select("proposals",array("proposal_seller_id" => $seller_id));
+                            // $get_proposals = $db->select("proposals",array("proposal_seller_id" => $seller_id));
+
+                            $get_proposals = $db->query("select * from proposals where proposal_seller_id=$seller_id AND proposal_status not in ('modification','draft','deleted')");
 
                             $count_proposals = $get_proposals->rowCount();
 
                             if($count_proposals == 0){
 
                             echo "
-
                             <tr>
-
-                            <td colspan='4'>
-
-                            <h3 class='text-center pt-1 pb-1'> This seller has no proposals/services. </h3>
-
-                            </td>
-
+                                <td colspan='4'>
+                                    <h3 class='text-center pt-1 pb-1'>This seller has no proposals/services.</h3>
+                                </td>
                             </tr>
-
                             ";
 
                             }
 
                             while($row_proposals = $get_proposals->fetch()){
 
+                            $proposal_id = $row_proposals->proposal_id;
                             $proposal_title = $row_proposals->proposal_title;
-
                             $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-
                             $proposal_price = $row_proposals->proposal_price;
-
                             $proposal_status = $row_proposals->proposal_status;
+
+                            if($proposal_price == 0){
+                                $proposal_price = "";
+                                $get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id));
+                                while($row = $get_p->fetch()){
+                                    $proposal_price .=" | $s_currency" . $row->price;
+                                }
+                            }else{
+                                $proposal_price = "$s_currency" . $proposal_price;
+                            }
 
                         ?>
 
@@ -426,7 +445,7 @@ echo "<script>window.open('login','_self');</script>";
                             </td>
 
                             <td>
-                                <?= $proposal_status; ?>
+                                <?= ucfirst($proposal_status); ?>
                             </td>
 
                         </tr>

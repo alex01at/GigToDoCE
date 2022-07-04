@@ -38,7 +38,6 @@ if(isset($_POST['coinpayments'])){
 	$data['total'] = $amount+$processing_fee;
 
 	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
-	$data['redirect_url'] = "$site_url/orderIncludes/charge/order/paypal?reference_no=$reference_no";
 
 	$payment->coinpayments($data,$processing_fee);
 	

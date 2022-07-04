@@ -64,7 +64,7 @@ if($type == "proposal" & $status == "completed"){
       $_SESSION['proposal_minutes'] = $minutes;
    }
 
-   $_SESSION['method'] = "coinpayments";
+   $_SESSION['method'] = "paypal";
 
    $delete = $db->delete("temp_orders",array('reference_no'=>$reference_no));
 
@@ -89,7 +89,7 @@ if($type == "cart" & $status == "completed"){
 if($type == "featured_listing" & $status == "completed"){
    
    $_SESSION['proposal_id'] = $content_id;
-   $_SESSION['method'] = "coinpayments";
+   $_SESSION['method'] = "paypal";
 
    echo "<script>window.open('$site_url/proposals/featured_proposal','_self')</script>";
    
@@ -100,7 +100,7 @@ if($type == "request_offer" & $status == "completed"){
 
    $_SESSION['offer_id'] = $content_id;
    $_SESSION['offer_buyer_id'] = $buyer_id;
-   $_SESSION['method'] = "coinpayments";
+   $_SESSION['method'] = "paypal";
 
    $delete = $db->delete("temp_orders",array('reference_no'=>$reference_no));
 
@@ -113,7 +113,7 @@ if($type == "message_offer" & $status == "completed"){
          
    $_SESSION['message_offer_id'] = $content_id;
    $_SESSION['message_offer_buyer_id'] = $buyer_id;
-   $_SESSION['method'] = "coinpayments";
+   $_SESSION['method'] = "paypal";
 
    $delete = $db->delete("temp_orders",array('reference_no'=>$reference_no));
 

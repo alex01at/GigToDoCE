@@ -109,8 +109,22 @@
 				if($language_id == "custom"){
 
 					$language_title = $input->post('language_title');
-					$insert_language = $db->insert("seller_languages",array("language_title"=>$language_title));
-					$language_id = $db->lastInsertId();
+
+					$count = $db->count("seller_languages",["language_title"=>$language_title]);
+
+					if($count == 1){
+
+						echo "<script>alert('{$lang['alert']['language_already_added']}');</script>";
+						echo "<script>window.open('$seller_user_name','_self');</script>";
+
+						exit();
+
+					}else{
+
+						$insert_language = $db->insert("seller_languages",["language_title"=>$language_title]);
+						$language_id = $db->lastInsertId();
+
+					}
 
 				}
 
@@ -277,8 +291,16 @@
 		if($skill_id == "custom"){
 
 			$skill_name = $input->post('skill_name');
-			$insert_skill = $db->insert("seller_skills",array("skill_title"=>$skill_name));
-			$skill_id = $db->lastInsertId();
+			$count = $db->count("seller_skills",["skill_title"=>$skill_name]);
+
+			if($count == 1){
+				echo "<script>alert('{$lang['alert']['skill_already_added']}');</script>";
+				echo "<script>window.open('$seller_user_name','_self');</script>";
+				exit();
+			}else{
+				$insert_skill = $db->insert("seller_skills",array("skill_title"=>$skill_name));
+				$skill_id = $db->lastInsertId();
+			}
 
 		}
 			

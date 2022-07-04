@@ -1,6 +1,5 @@
 <?php 
-
-   session_start();
+   session_start();   
    include("includes/db.php");
    include("../functions/mailer.php");
    if(!isset($_SESSION['admin_email'])){
@@ -9,11 +8,13 @@
 
    if((time() - $_SESSION['loggedin_time']) > 9800){
       echo "<script>window.open('logout.php?session_expired','_self');</script>";
-   }
-
+   }   
+   
    $site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
 
-   $data['template'] = $input->get('template');
+   $data['template'] = $input->get('template');   
+   $data['lang'] = @$input->get('lang');
+   
    $data['user_name'] = "{receiver username}";
    $data['forgot_link'] = "$site_url/Reset_Password_Link";
    $data['verification_link'] = "$site_url/{verification link}";

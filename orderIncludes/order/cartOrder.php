@@ -141,6 +141,11 @@ if(isset($_SESSION['cart_seller_id'])){
 			
 			$insert_notification = $db->insert("notifications",array("receiver_id"=>$proposal_seller_id,"sender_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","date"=>$order_date,"status"=>"unread"));
 
+	        /// sendPushMessage Starts
+	        $notification_id = $db->lastInsertId();
+	        sendPushMessage($notification_id);
+	        /// sendPushMessage Ends
+
 		} // insert order query { bracket
 
 	} // cart while loo { bracket

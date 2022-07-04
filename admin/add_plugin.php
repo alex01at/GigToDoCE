@@ -118,11 +118,14 @@ $current_version = $row_app->version;
         $c_version = getStringBetween($readme,"Compatible Gigtodo Version: ","\n");
         
         if(!file_exists("updator/plugin.sql") or !file_exists("updator/files.zip")){
+
           rrmdir("updator");
           @mkdir("updator");
           unlink($zip);
+
           echo "<script>alert_error('Please upload the correct zipped folder.','index?add_plugin');</script>"; 
         }else{
+
           if(!is_dir("../plugins/$folderName")){
 
             if($c_version <= $current_version){
@@ -133,7 +136,9 @@ $current_version = $row_app->version;
               /* execute multi query */
               $run = $pdo->prepare($command); 
               if($run->execute()){
+                
                 $zip_obj = new ZipArchive;
+                
                 if($zip_obj->open("updator/files.zip")){
                   $zip_obj->extractTo('../plugins/');
                   $zip_obj->close();
@@ -141,11 +146,12 @@ $current_version = $row_app->version;
                   @mkdir("updator");
                   unlink($zip);
                 }
+                
                 echo "<script>alert_success('$pluginName Has Been Successfully installed on your website.','index?plugins');</script>"; 
               }
 
             }else{
-                echo "<script>alert_success('This Plugin Will Only Work On Gigtodo $c_version And Above $c_version','index?plugins');</script>"; 
+              echo "<script>alert_success('This Plugin Will Only Work On Gigtodo $c_version And Above $c_version','index?plugins');</script>"; 
             }
 
           }else{
@@ -163,4 +169,3 @@ $current_version = $row_app->version;
   }
 
 }
-?>

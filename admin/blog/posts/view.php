@@ -50,47 +50,57 @@ if(!isset($_SESSION['admin_email'])){
 		$posts = $db->select("posts","","DESC");
 		while($post = $posts->fetch()){
 			$i++;
-			$url = preg_replace('#[ -]+#', '-', $post->title);
+			$query = $db->select("posts_meta", array('post_id' => $post->id, 'language_id' => $adminLanguage));			
+			$post_meta = $query->fetch();
+			$title = !empty($post_meta->title) ? $post_meta->title: '';
+			$author = !empty($post_meta->author) ? $post_meta->author: '';
+			$content = !empty($post_meta->content) ? $post_meta->content: '';
+
+			$url = preg_replace('#[ -]+#', '-', $title);
 
 			/// Get Category Details
-			$get_cat = $db->select("post_categories",['id'=>$post->cat_id]);
+			$get_cat = $db->select("post_categories_meta",['cat_id'=>$post->cat_id, 'language_id' => $adminLanguage]);
 			$row_cat = $get_cat->fetch();
-			$cat_name = $row_cat->cat_name;
+			$cat_name = !empty($row_cat->cat_name) ? $row_cat->cat_name: '';
 
 		?>
 		<tr>
+
 		<td><?= $i; ?></td>
 		<td><img width="100" src="<?= getImageUrl("posts",$post->image); ?>" class="rounded"></td>
 		<td width="800">
-			<strong><?= $post->title; ?></strong>
-			<p class="mt-2"><?= strip_tags(substr($post->content, 0,300)); ?>...</p>
+			<strong><?= $title; ?></strong>
+			<p class="mt-2"><?= strip_tags(substr($content, 0,300)); ?>...</p>
 			<p class="text-lead mb-0">Published on: <?= $post->date_time; ?> | Category: <?= $cat_name; ?></p>
 		</td>
 		<td>
 
 			<div class="dropdown"><!--- dropdown Starts --->
 
-	      	<button class="btn btn-danger btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
-	       		<i class="fa fa-cog"></i> Actions
+	      		<button class="btn btn-danger btn-sm dropdown-toggle" type="button" data-toggle="dropdown">
+					<i class="fa fa-cog"></i> Actions
 	    	 	</button>
 
 	        	<div class="dropdown-menu" style="margin-left:-125px;"><!--- dropdown-menu Starts --->
 
-					<a class="dropdown-item" href="../blog/post?id=<?= $post->id; ?>" target="blank">
+					<a class="dropdown-item" href="../blog/post?id=<?= $post->id; ?>&lang=<?= $adminLanguage; ?>" target="blank">
 						<i class="fa fa-eye"></i> Live Preview
 					</a>
+
 					<a class="dropdown-item" href="index?edit_post=<?= $post->id; ?>">
 						<i class="fa fa-pencil"></i> Edit
 					</a>
+					
 					<a class="dropdown-item" href="index?delete_post=<?= $post->id; ?>" onclick="if(!confirm('Are you sure you want to delete selected item.')){ return false; }">
 						<i class="fa fa-trash"></i> Delete
-					</a>
-	                
-	        	</div><!--- dropdown-menu Ends --->
+					</a>	                
+	        	
+	      		</div><!--- dropdown-menu Ends --->
 
-	      </div><!--- dropdown Ends --->
+	    	</div><!--- dropdown Ends --->
 
 		</td>
+
 		</tr>
 		<?php } ?>
 	</tbody>

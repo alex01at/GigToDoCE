@@ -8,15 +8,18 @@ if(isset($_SESSION['seller_user_name'])){
   $login_seller_enable_notifications = $row_login_seller->enable_notifications;
 }
 ?>
+
+<div id="wait"></div>
+
 <?php if(!empty($google_analytics)){ ?>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=<?= $google_analytics; ?>"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', '<?= $google_analytics; ?>');
-</script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<?= $google_analytics; ?>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '<?= $google_analytics; ?>');
+  </script>
 <?php } ?>
 <script src="<?= $site_url; ?>/js/msdropdown.js"></script>
 <script type="text/javascript" src="<?= $site_url; ?>/js/jquery.sticky.js"></script>

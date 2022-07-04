@@ -55,7 +55,7 @@ $count_offers = $get_offers->rowCount();
 	<?php } ?>
 
 	<!-- Include the PayPal JavaScript SDK -->
-	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
 
 </head>
 <body class="is-responsive">

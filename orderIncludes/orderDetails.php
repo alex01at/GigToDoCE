@@ -76,6 +76,7 @@ $select_seller = $db->select("sellers",array("seller_id" => $seller_id));
 $row_seller = $select_seller->fetch();
 $seller_user_name = $row_seller->seller_user_name;
 $seller_email = $row_seller->seller_email;
+$seller_phone = $row_seller->seller_phone;
 $order_seller_rating = $row_seller->seller_rating;
 $order_seller_level = $row_seller->seller_level;
 if($order_seller_rating > "100"){
@@ -100,4 +101,5 @@ $select_buyer = $db->select("sellers",array("seller_id" => $buyer_id));
 $row_buyer = $select_buyer->fetch();
 $buyer_user_name = $row_buyer->seller_user_name;
 $buyer_email = $row_buyer->seller_email;
+$buyer_phone = $row_buyer->seller_phone;
 $n_date = date("F d, Y");

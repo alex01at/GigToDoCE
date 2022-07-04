@@ -1,5 +1,7 @@
 <?php
+
 	require_once "g-config.php";
+
 	if(isset($_SESSION['access_token'])){
 		$gClient->setAccessToken($_SESSION['access_token']);
 	}else if(isset($_GET['code'])){
@@ -9,6 +11,7 @@
 	  echo "<script> window.open('login','_self'); </script>";
 		exit();
 	}
+
 	$oAuth = new Google_Service_Oauth2($gClient);
 	$userData = $oAuth->userinfo_v2_me->get();
 

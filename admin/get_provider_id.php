@@ -90,6 +90,7 @@ $method = @$input->post('method');
                       <option value="MOBILE_MONEY"> Mobile Money </option>
                       <option value="CARD" <?= ($method == "CARD")?'selected':''; ?>> Card </option>
                       <option value="BANK" <?= ($method == "BANK")?'selected':''; ?>> Bank </option>
+                      <option value="CRYPTO" <?= ($method == "CRYPTO")?"selected":""; ?>>Crypto</option>
                     </select>
                   </div>
                 </div><!--- form-group row Ends --->
@@ -122,7 +123,9 @@ $method = @$input->post('method');
           $country = $input->post("country");
 
           $curl = curl_init();
+          
           $url = ($dusupay_sandbox=="on"?'https://dashboard.dusupay.com/api-sandbox':'https://api.dusupay.com');
+
           $url = "$url/v1/payment-options/$for/$method/$country?api_key=$dusupay_api_key";
 
           curl_setopt_array($curl, array(

@@ -1051,7 +1051,7 @@ font-size:18px;
 @media(max-width: 577px){
 
    .seller-info-wrapper{
-      width: 75%;
+      width: 74%;
    }
 
 }
@@ -1067,7 +1067,7 @@ font-size:18px;
 @media(max-width: 479px){
 
    .seller-info-wrapper{
-      width: 85%;
+      width: 83%;
    }
 
 }
@@ -1075,7 +1075,7 @@ font-size:18px;
 @media(max-width: 400px){
 
    .seller-info-wrapper{
-      width: 80%;
+      width: 78%;
    }
 
 }
@@ -1885,6 +1885,14 @@ audio.embed-responsive {
 
 /* Register, Login & Forgot Password modal boxes */
 
+.phoneNo .input-group-addon{
+  width: 38%;
+}
+
+.phoneNo .input-group-addon select{
+  flex: auto; width: 0%; border-top-right-radius: 0;border-bottom-right-radius: 0;
+}
+
 .modal-form.register {
 
    max-width:500px !important;
@@ -2005,7 +2013,7 @@ audio.embed-responsive {
    display: block;
    cursor: wait;
    position: fixed;
-   z-index: 5000;
+   z-index: 7000;
    background-image: url(../images/loading.gif);
    background-color: #666 ;
    opacity: 0.4;
@@ -3374,7 +3382,7 @@ color:#00B22D;
 
 .order-page .order-review-box {
 
-background:green;
+/*background:green;*/
 
 }
 

@@ -8,7 +8,7 @@ $seller_cover_image = $row_seller->seller_cover_image;
 if(empty($seller_cover_image)){ 
   $seller_cover_image = "images/user-background.jpg";
 }else{
-  $seller_cover_image = getImageUrl2("sellers","seller_cover_image",rawurlencode($seller_cover_image));
+  $seller_cover_image = getImageUrl2("sellers","seller_cover_image",$seller_cover_image);
 }
 $seller_country = $row_seller->seller_country;
 $seller_headline = $row_seller->seller_headline;

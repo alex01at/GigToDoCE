@@ -1,8 +1,10 @@
 <?php
+
 session_start();
 include("includes/db.php");
 include("functions/payment.php");
 include("functions/processing_fee.php");
+
 if(!isset($_SESSION['seller_user_name'])){
 	echo "<script>window.open('login.php','_self');</script>";
 }
@@ -20,16 +22,18 @@ if(isset($_POST['mercadopago'])){
    $select_cart =  $db->select("cart",array("seller_id" => $login_seller_id));
    $count_cart = $select_cart->rowCount();
    while($row_cart = $select_cart->fetch()){
+
       $proposal_id = $row_cart->proposal_id;
       $proposal_price = $row_cart->proposal_price;
       $proposal_qty = $row_cart->proposal_qty;
       $delivery_id = $row_cart->delivery_id;
       $revisions = $row_cart->revisions;
+      
       if($videoPlugin == 1){
          $video = $row_cart->video;
       }
 
-      $get_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
+      $get_extras = $db->select("cart_extras",["seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id]);
       while($row_extra = $get_extras->fetch()){
          $price = $row_extra->price;
          $proposal_price += $price;
@@ -59,19 +63,21 @@ if(isset($_POST['mercadopago'])){
       $db->insert("temp_orders",$o_data);
       $insert_id = $db->lastInsertId();
 
-      $get_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
+      $get_extras = $db->select("cart_extras",["seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id]);
       while($row_extra = $get_extras->fetch()){
          $name = $row_extra->name;
          $price = $row_extra->price;
-         $insert_extra = $db->insert("temp_extras",array("reference_no"=>$reference_no,"buyer_id"=>$login_seller_id,"item_id"=>$insert_id,"proposal_id"=>$proposal_id,"name"=>$name,"price"=>$price));
+         $insert_extra = $db->insert("temp_extras",["reference_no"=>$reference_no,"buyer_id"=>$login_seller_id,"item_id"=>$insert_id,"proposal_id"=>$proposal_id,"name"=>$name,"price"=>$price]);
       }
       
    }
+
 	$processing_fee = processing_fee($sub_total);
+
+   $reference_no2 = mt_rand();
 
 	$data = [];
 	$data['type'] = "cart";
-   $reference_no2 = mt_rand();
 	$data['reference_no'] = $reference_no2;
 	$data['content_id'] = $reference_no;
 	$data['title'] = 'All Cart Proposals Payment';

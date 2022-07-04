@@ -1,5 +1,4 @@
 <?php 
-
   @session_start();
 
   if(isset($_POST['proposal_id'])){
@@ -84,34 +83,69 @@
 
 $(document).ready(function(){
 
+  function processInsertExtra(form_data, status){
+    form_data.append('change_status', status);
+    $.ajax({      
+    method: "POST",
+    url: "ajax/insert_extra",
+    data: form_data,
+    async: false,cache: false,contentType: false,processData: false
+          
+    }).done(function(data){
+
+      $('#wait').removeClass("loader");
+
+      if(data == "error"){
+        swal({type: 'warning',text: 'You Must Need To Fill Out All Fields Before Updating The Details.'});
+      }else{
+
+        $(".add-extra").trigger("reset");
+        $("#allTabs").load("sections/edit/extras",{proposal_id : <?= $proposal_id; ?>});
+
+      }
+    });
+
+  }
+
+  function insertExtra(form_data, status=false){
+    if(status == true){
+      swal({
+          title: "Are you sure?",
+          text: "You have made some changes, your porposal would be set as pending state!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "Yes, I understand continue.",
+          closeOnConfirm: false
+        }).then(function (isConfirm) {
+            if(isConfirm.dismiss == 'cancel'){            
+              return;
+            }else if (isConfirm.value == true){
+              processInsertExtra(form_data, status);
+            }
+        });
+     }
+  }
+
     $(".add-extra").on('submit', function(event){
 
       event.preventDefault();
       var form_data = new FormData(this);
       form_data.append('proposal_id',<?= $proposal_id; ?>);
-
       $('#wait').addClass("loader");
-
       $.ajax({
-        
       method: "POST",
-      url: "ajax/insert_extra",
+      url: "ajax/check/insert_extra",
+      dataType:'json',
       data: form_data,
-      async: false,cache: false,contentType: false,processData: false
-            
+      async: false,cache: false,contentType: false,processData: false            
       }).done(function(data){
-
-        $('#wait').removeClass("loader");
-
-        if(data == "error"){
-          swal({type: 'warning',text: 'You Must Need To Fill Out All Fields Before Updating The Details.'});
+        if(data === true){
+          $('#wait').removeClass("loader");        
+          insertExtra(form_data, data);        
         }else{
-
-          $(".add-extra").trigger("reset");
-          $("#allTabs").load("sections/edit/extras",{proposal_id : <?= $proposal_id; ?>});
-
+          processInsertExtra(form_data, data);
         }
-
       });
 
     });
@@ -152,26 +186,57 @@ $(document).ready(function(){
 
     });
 
-
-    $(".delete-extra").on('click',function(){
-
-      event.preventDefault();
-
-      var id = $(this).parent().parent().find("input[name='id']").val();
-      var main = $(this).parent().parent().parent().parent();
-
-      $.ajax({
-        
+    function processDeleteExtra(main, id, status){
+      $.ajax({        
         method: "POST",
         url: "ajax/delete_extra",
-        data: {proposal_id : <?= $proposal_id; ?>, id : id},
-
+        data: {proposal_id : <?= $proposal_id; ?>, id : id, change_status: status},
         success : function(data){
           main.remove();
-        }
-      
-      });
+          $('#wait').removeClass("loader");
+        }      
+      });      
+    }
 
+    function deleteExtra(main, id, status){
+      if(status == true){
+        swal({
+            title: "Are you sure?",
+            text: "You have made some changes, your porposal would be set as pending state!",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, I understand continue.",
+            closeOnConfirm: false
+          }).then(function (isConfirm) {
+              if(isConfirm.dismiss == 'cancel'){            
+                return;
+              }else if (isConfirm.value == true){
+                processDeleteExtra(main, id, status);
+              }
+          });
+       }      
+    }
+
+    $(".delete-extra").on('click',function(){
+      event.preventDefault();
+      var id = $(this).parent().parent().find("input[name='id']").val();
+      var main = $(this).parent().parent().parent().parent();
+      $('#wait').addClass("loader");
+      $.ajax({        
+        method: "POST",
+        url: "ajax/check/delete_extra",
+        dataType: 'json',
+        data: {proposal_id : <?= $proposal_id; ?>},
+        success : function(data){
+          if(data === true){            
+            $('#wait').removeClass("loader");
+            deleteExtra(main, id, data);        
+          }else{            
+            processDeleteExtra(main, id, data);
+          }
+        }      
+      });
     });
 
 

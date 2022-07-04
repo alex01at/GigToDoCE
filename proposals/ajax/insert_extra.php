@@ -10,6 +10,14 @@
 
 	}
 
+  if(isset($_POST["proposal_id"])){
+    $status = $_POST['change_status'];
+    $proposal_id = $_POST['proposal_id'];
+    if($status == 'true'){
+      $update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+    }
+  }
+
   $rules = array(
   "name" => "required",
   "price" => "required");
@@ -24,9 +32,19 @@
 
   $data = $input->post();
 
+  unset($data['change_status']);
+
   $insert_extra = $db->insert("proposals_extras",$data);
 
   $data['id'] = $db->lastInsertId();
+
+  if(isset($_POST["proposal_id"])){
+	    $status = $_POST['change_status'];
+	    $proposal_id = $_POST['proposal_id'];
+	    if($status == 'true'){
+	      $update_status = $db->update("proposals", array('proposal_status' => 'pending') ,array("proposal_id"=>$proposal_id));
+	    }
+	  }
 
   echo json_encode($data);
 

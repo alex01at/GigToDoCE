@@ -90,7 +90,7 @@
 		<?php if(!empty($proposal_img2)){ ?>
 		<div class="carousel-item">
 
-            <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+            <?php if($img_2_extension == "mp3" or $img_2_extension == "wav"){ ?>
         
                 <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
                     <div class="player-1">
@@ -110,7 +110,7 @@
 		<?php if(!empty($proposal_img3)){ ?>
 		<div class="carousel-item"><!-- carousel-item Starts -->
 
-            <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+            <?php if($img_3_extension == "mp3" or $img_3_extension == "wav"){ ?>
 
                 <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
                     <div class="player-2">
@@ -130,7 +130,7 @@
 		<?php if(!empty($proposal_img4)){ ?>
 		<div class="carousel-item"><!-- carousel-item Starts -->
 
-            <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+            <?php if($img_4_extension == "mp3" or $img_4_extension == "wav"){ ?>
 
                 <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
                     <div class="player-3">
@@ -178,7 +178,7 @@
                 <?php if(!empty($proposal_img2)){ ?>
                 <div class="item" data-position="2">
                     <a>
-                        <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+                        <?php if($img_2_extension == "mp3" or $img_2_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>">
@@ -191,7 +191,7 @@
                 <div class="item" data-position="3">
 
                     <a>
-                        <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+                        <?php if($img_3_extension == "mp3" or $img_3_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img3; ?>" alt="<?= $proposal_img3; ?>">
@@ -205,7 +205,7 @@
                 <div class="item" data-position="4">
 
                     <a>
-                        <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+                        <?php if($img_4_extension == "mp3" or $img_4_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img4; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>">
@@ -225,7 +225,7 @@
                 <div class="item" data-position="1">
                   
                     <a>
-                        <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+                        <?php if($img_2_extension == "mp3" or $img_2_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>">
@@ -239,7 +239,7 @@
                 <div class="item" data-position="2">
 
                     <a>
-                        <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+                        <?php if($img_3_extension == "mp3" or $img_3_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img3; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img3; ?>" alt="<?= $proposal_img3; ?>">
@@ -253,7 +253,7 @@
                 <div class="item" data-position="3">
 
                     <a>
-                        <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+                        <?php if($img_4_extension == "mp3" or $img_4_extension == "wav"){ ?>
                             <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img4; ?>">
                         <?php }else{ ?>
                             <img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>">

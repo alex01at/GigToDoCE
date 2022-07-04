@@ -9,6 +9,7 @@ $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
+$login_seller_image = getImageUrl2("sellers","seller_image",$row_login_seller->seller_image);
 
 $message_group_id = $input->post('message_group_id');
 $get_inbox_sellers = $db->select("inbox_sellers",array("message_group_id" => $message_group_id));

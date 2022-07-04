@@ -78,6 +78,14 @@ if(isset($_POST['dusupay'])){
 	$data['content_id'] = $reference_no;
 	$data['name'] = "All Cart Proposals Payment";
 
+   if(isset($_POST['method'])){
+      $data['method'] = $input->post('method');
+   }
+
+   if(isset($_POST['provider_id'])){
+      $data['provider_id'] = $input->post('provider_id');
+   }
+
 	if(isset($_POST['account_number'])){
 		$account_number = $input->post('account_number');
 		$data['account_number'] = $account_number;

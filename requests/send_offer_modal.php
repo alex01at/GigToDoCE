@@ -159,26 +159,21 @@ $(document).ready(function(){
  
    $("#submit-proposal").click(function(){
 	   
-   proposal_id = document.querySelector('input[name="proposal_id"]:checked').value;	   
-	
-   request_id = "<?= $request_id; ?>";
-   
-   $.ajax({
+		proposal_id = document.querySelector('input[name="proposal_id"]:checked').value;	   
+		
+		request_id = "<?= $request_id; ?>";
 	   
-	method: "POST",   
-	
-	url: "<?= $site_url; ?>/requests/submit_proposal_details",
-	
-	data: { proposal_id: proposal_id, request_id: request_id }
-	   
-   })
-   
-   .done(function(data){
-	   
-	   $("#submit-proposal-details .modal-dialog").html(data);
-	   
-   });
-	
+		$.ajax({
+		   
+		method: "POST",   
+		url: "<?= $site_url; ?>/requests/submit_proposal_details",
+		data: { proposal_id: proposal_id, request_id: request_id }
+		   
+		}).done(function(data){
+		   
+		   $("#submit-proposal-details .modal-dialog").html(data);
+		   
+		});
 	
    });
 	

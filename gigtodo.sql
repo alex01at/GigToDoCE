@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 5.0.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2020 at 05:52 PM
--- Server version: 10.4.6-MariaDB
--- PHP Version: 7.2.22
+-- Generation Time: Nov 20, 2020 at 12:04 PM
+-- Server version: 10.4.14-MariaDB
+-- PHP Version: 7.2.34
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gigtodo`
+-- Database: `gigtodo-install`
 --
 
 -- --------------------------------------------------------
@@ -128,7 +127,7 @@ CREATE TABLE `admin_rights` (
 --
 
 INSERT INTO `admin_rights` (`id`, `admin_id`, `settings`, `plugins`, `pages`, `blog`, `feedback`, `video_schedules`, `proposals`, `accounting`, `payouts`, `reports`, `inbox`, `reviews`, `buyer_requests`, `restricted_words`, `notifications`, `cats`, `delivery_times`, `seller_languages`, `seller_skills`, `seller_levels`, `customer_support`, `coupons`, `slides`, `terms`, `sellers`, `orders`, `referrals`, `files`, `knowledge_bank`, `currencies`, `languages`, `admins`) VALUES
-(6, '1', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+(1, '1', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -193,7 +192,27 @@ CREATE TABLE `app_info` (
 --
 
 INSERT INTO `app_info` (`id`, `version`, `r_date`) VALUES
-(1, '1.5.2', '20 August 2020');
+(1, '1.5.3', '20 November 2020');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `app_license`
+--
+
+CREATE TABLE `app_license` (
+  `id` int(100) NOT NULL,
+  `purchase_code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `license_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `app_license`
+--
+
+INSERT INTO `app_license` (`id`, `purchase_code`, `license_type`, `website`) VALUES
+(1, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -625,258 +644,259 @@ INSERT INTO `contact_support_meta` (`id`, `language_id`, `contact_heading`, `con
 
 CREATE TABLE `countries` (
   `id` int(10) NOT NULL,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+  `name` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `code` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `countries` (`id`, `name`) VALUES
-(1, 'Afghanistan'),
-(2, 'Aland Islands'),
-(3, 'Albania'),
-(4, 'Algeria'),
-(5, 'American Samoa'),
-(6, 'Andorra'),
-(7, 'Angola'),
-(8, 'Anguilla'),
-(9, 'Antarctica'),
-(10, 'Antigua And Barbuda'),
-(11, 'Argentina'),
-(12, 'Armenia'),
-(13, 'Aruba'),
-(14, 'Australia'),
-(15, 'Austria'),
-(16, 'Azerbaijan'),
-(17, 'Bahamas'),
-(18, 'Bahrain'),
-(19, 'Bangladesh'),
-(20, 'Barbados'),
-(21, 'Belarus'),
-(22, 'Belgium'),
-(23, 'Belize'),
-(24, 'Benin'),
-(25, 'Bermuda'),
-(26, 'Bhutan'),
-(27, 'Bolivia'),
-(28, 'Bosnia And Herzegovina'),
-(29, 'Botswana'),
-(30, 'Bouvet Island'),
-(31, 'Brazil'),
-(32, 'British Indian Ocean Territory'),
-(33, 'Brunei Darussalam'),
-(34, 'Bulgaria'),
-(35, 'Burkina Faso'),
-(36, 'Burundi'),
-(37, 'Cambodia'),
-(38, 'Cameroon'),
-(39, 'Canada'),
-(40, 'Cape Verde'),
-(41, 'Cayman Islands'),
-(42, 'Central African Republic'),
-(43, 'Chad'),
-(44, 'Chile'),
-(45, 'China'),
-(46, 'Christmas Island'),
-(47, 'Cocos (keeling) Islands'),
-(48, 'Colombia'),
-(49, 'Comoros'),
-(50, 'Congo'),
-(51, 'Congo, The Democratic Republic Of'),
-(52, 'Cook Islands'),
-(53, 'Costa Rica'),
-(54, 'Cote D\'ivoire'),
-(55, 'Croatia'),
-(56, 'Cuba'),
-(57, 'Cyprus'),
-(58, 'Czech Republic'),
-(59, 'Denmark'),
-(60, 'Djibouti'),
-(61, 'Dominica'),
-(62, 'Dominican Republic'),
-(63, 'Ecuador'),
-(64, 'Egypt'),
-(65, 'El Salvador'),
-(66, 'Equatorial Guinea'),
-(67, 'Eritrea'),
-(68, 'Estonia'),
-(69, 'Ethiopia'),
-(70, 'Falkland Islands (malvinas)'),
-(71, 'Faroe Islands'),
-(72, 'Fiji'),
-(73, 'Finland'),
-(74, 'France'),
-(75, 'French Guiana'),
-(76, 'French Polynesia'),
-(77, 'French Southern Territories'),
-(78, 'Gabon'),
-(79, 'Gambia'),
-(80, 'Georgia'),
-(81, 'Germany'),
-(82, 'Ghana'),
-(83, 'Gibraltar'),
-(84, 'Greece'),
-(85, 'Greenland'),
-(86, 'Grenada'),
-(87, 'Guadeloupe'),
-(88, 'Guam'),
-(89, 'Guatemala'),
-(90, 'Guernsey'),
-(91, 'Guinea'),
-(92, 'Guinea-bissau'),
-(93, 'Guyana'),
-(94, 'Haiti'),
-(95, 'Heard Island And Mcdonald Islands'),
-(96, 'Holy See (vatican City State)'),
-(97, 'Honduras'),
-(98, 'Hong Kong'),
-(99, 'Hungary'),
-(100, 'Iceland'),
-(101, 'India'),
-(102, 'Indonesia'),
-(103, 'Iran, Islamic Republic Of'),
-(104, 'Iraq'),
-(105, 'Ireland'),
-(106, 'Isle Of Man'),
-(107, 'Israel'),
-(108, 'Italy'),
-(109, 'Jamaica'),
-(110, 'Japan'),
-(111, 'Jersey'),
-(112, 'Jordan'),
-(113, 'Kazakhstan'),
-(114, 'Kenya'),
-(115, 'Kiribati'),
-(116, 'Korea, Democratic People\'s Republic Of'),
-(117, 'Korea, Republic Of'),
-(118, 'Kuwait'),
-(119, 'Kyrgyzstan'),
-(120, 'Lao People\'s Democratic Republic'),
-(121, 'Latvia'),
-(122, 'Lebanon'),
-(123, 'Lesotho'),
-(124, 'Liberia'),
-(125, 'Libyan Arab Jamahiriya'),
-(126, 'Liechtenstein'),
-(127, 'Lithuania'),
-(128, 'Luxembourg'),
-(129, 'Macao'),
-(130, 'Macedonia, The Former Yugoslav Republic Of'),
-(131, 'Madagascar'),
-(132, 'Malawi'),
-(133, 'Malaysia'),
-(134, 'Maldives'),
-(135, 'Mali'),
-(136, 'Malta'),
-(137, 'Marshall Islands'),
-(138, 'Martinique'),
-(139, 'Mauritania'),
-(140, 'Mauritius'),
-(141, 'Mayotte'),
-(142, 'Mexico'),
-(143, 'Micronesia, Federated States Of'),
-(144, 'Moldova, Republic Of'),
-(145, 'Monaco'),
-(146, 'Mongolia'),
-(147, 'Montserrat'),
-(148, 'Morocco'),
-(149, 'Mozambique'),
-(150, 'Myanmar'),
-(151, 'Namibia'),
-(152, 'Nauru'),
-(153, 'Nepal'),
-(154, 'Netherlands'),
-(155, 'Netherlands Antilles'),
-(156, 'New Caledonia'),
-(157, 'New Zealand'),
-(158, 'Nicaragua'),
-(159, 'Niger'),
-(160, 'Nigeria'),
-(161, 'Niue'),
-(162, 'Norfolk Island'),
-(163, 'Northern Mariana Islands'),
-(164, 'Norway'),
-(165, 'Oman'),
-(166, 'Pakistan'),
-(167, 'Palau'),
-(168, 'Palestinian Territory, Occupied'),
-(169, 'Panama'),
-(170, 'Papua New Guinea'),
-(171, 'Paraguay'),
-(172, 'Peru'),
-(173, 'Philippines'),
-(174, 'Pitcairn'),
-(175, 'Poland'),
-(176, 'Portugal'),
-(177, 'Puerto Rico'),
-(178, 'Qatar'),
-(179, 'Reunion'),
-(180, 'Romania'),
-(181, 'Russian Federation'),
-(182, 'Rwanda'),
-(183, 'Saint Helena'),
-(184, 'Saint Kitts And Nevis'),
-(185, 'Saint Lucia'),
-(186, 'Saint Pierre And Miquelon'),
-(187, 'Saint Vincent And The Grenadines'),
-(188, 'Samoa'),
-(189, 'San Marino'),
-(190, 'Sao Tome And Principe'),
-(191, 'Saudi Arabia'),
-(192, 'Senegal'),
-(193, 'Serbia And Montenegro'),
-(194, 'Seychelles'),
-(195, 'Sierra Leone'),
-(196, 'Singapore'),
-(197, 'Slovakia'),
-(198, 'Slovenia'),
-(199, 'Solomon Islands'),
-(200, 'Somalia'),
-(201, 'South Africa'),
-(202, 'South Georgia And The South Sandwich Islands'),
-(203, 'Spain'),
-(204, 'Sri Lanka'),
-(205, 'Sudan'),
-(206, 'Suriname'),
-(207, 'Svalbard And Jan Mayen'),
-(208, 'Swaziland'),
-(209, 'Sweden'),
-(210, 'Switzerland'),
-(211, 'Syrian Arab Republic'),
-(212, 'Taiwan, Province Of China'),
-(213, 'Tajikistan'),
-(214, 'Tanzania, United Republic Of'),
-(215, 'Thailand'),
-(216, 'Timor-leste'),
-(217, 'Togo'),
-(218, 'Tokelau'),
-(219, 'Tonga'),
-(220, 'Trinidad And Tobago'),
-(221, 'Tunisia'),
-(222, 'Turkey'),
-(223, 'Turkmenistan'),
-(224, 'Turks And Caicos Islands'),
-(225, 'Tuvalu'),
-(226, 'Uganda'),
-(227, 'Ukraine'),
-(228, 'United Arab Emirates'),
-(229, 'United Kingdom'),
-(230, 'United States'),
-(231, 'United States Minor Outlying Islands'),
-(232, 'Uruguay'),
-(233, 'Uzbekistan'),
-(234, 'Vanuatu'),
-(235, 'Venezuela'),
-(236, 'Viet Nam'),
-(237, 'Virgin Islands, British'),
-(238, 'Virgin Islands, U.S.'),
-(239, 'Wallis And Futuna'),
-(240, 'Western Sahara'),
-(241, 'Yemen'),
-(242, 'Zambia'),
-(243, 'Zimbabwe'),
-(245, 'Myanmar (Burma)');
+INSERT INTO `countries` (`id`, `name`, `code`) VALUES
+(1, 'Afghanistan', 93),
+(2, 'Aland Islands', 0),
+(3, 'Albania', 355),
+(4, 'Algeria', 213),
+(5, 'American Samoa', 1684),
+(6, 'Andorra', 376),
+(7, 'Angola', 244),
+(8, 'Anguilla', 1264),
+(9, 'Antarctica', 0),
+(10, 'Antigua And Barbuda', 1268),
+(11, 'Argentina', 54),
+(12, 'Armenia', 374),
+(13, 'Aruba', 297),
+(14, 'Australia', 61),
+(15, 'Austria', 43),
+(16, 'Azerbaijan', 994),
+(17, 'Bahamas', 1242),
+(18, 'Bahrain', 973),
+(19, 'Bangladesh', 880),
+(20, 'Barbados', 1246),
+(21, 'Belarus', 375),
+(22, 'Belgium', 32),
+(23, 'Belize', 501),
+(24, 'Benin', 229),
+(25, 'Bermuda', 1441),
+(26, 'Bhutan', 975),
+(27, 'Bolivia', 591),
+(28, 'Bosnia And Herzegovina', 387),
+(29, 'Botswana', 267),
+(30, 'Bouvet Island', 0),
+(31, 'Brazil', 55),
+(32, 'British Indian Ocean Territory', 246),
+(33, 'Brunei Darussalam', 673),
+(34, 'Bulgaria', 359),
+(35, 'Burkina Faso', 226),
+(36, 'Burundi', 257),
+(37, 'Cambodia', 855),
+(38, 'Cameroon', 237),
+(39, 'Canada', 1),
+(40, 'Cape Verde', 238),
+(41, 'Cayman Islands', 1345),
+(42, 'Central African Republic', 236),
+(43, 'Chad', 235),
+(44, 'Chile', 56),
+(45, 'China', 86),
+(46, 'Christmas Island', 61),
+(47, 'Cocos (keeling) Islands', 672),
+(48, 'Colombia', 57),
+(49, 'Comoros', 269),
+(50, 'Congo', 242),
+(51, 'Congo, The Democratic Republic Of', 0),
+(52, 'Cook Islands', 682),
+(53, 'Costa Rica', 506),
+(54, 'Cote D\'ivoire', 225),
+(55, 'Croatia', 385),
+(56, 'Cuba', 53),
+(57, 'Cyprus', 357),
+(58, 'Czech Republic', 420),
+(59, 'Denmark', 45),
+(60, 'Djibouti', 253),
+(61, 'Dominica', 1767),
+(62, 'Dominican Republic', 1809),
+(63, 'Ecuador', 593),
+(64, 'Egypt', 20),
+(65, 'El Salvador', 503),
+(66, 'Equatorial Guinea', 240),
+(67, 'Eritrea', 291),
+(68, 'Estonia', 372),
+(69, 'Ethiopia', 251),
+(70, 'Falkland Islands (malvinas)', 500),
+(71, 'Faroe Islands', 298),
+(72, 'Fiji', 679),
+(73, 'Finland', 358),
+(74, 'France', 33),
+(75, 'French Guiana', 594),
+(76, 'French Polynesia', 689),
+(77, 'French Southern Territories', 0),
+(78, 'Gabon', 241),
+(79, 'Gambia', 220),
+(80, 'Georgia', 995),
+(81, 'Germany', 49),
+(82, 'Ghana', 233),
+(83, 'Gibraltar', 350),
+(84, 'Greece', 30),
+(85, 'Greenland', 299),
+(86, 'Grenada', 1473),
+(87, 'Guadeloupe', 590),
+(88, 'Guam', 1671),
+(89, 'Guatemala', 502),
+(90, 'Guernsey', 0),
+(91, 'Guinea', 224),
+(92, 'Guinea-bissau', 245),
+(93, 'Guyana', 592),
+(94, 'Haiti', 509),
+(95, 'Heard Island And Mcdonald Islands', 0),
+(96, 'Holy See (vatican City State)', 39),
+(97, 'Honduras', 504),
+(98, 'Hong Kong', 852),
+(99, 'Hungary', 36),
+(100, 'Iceland', 354),
+(101, 'India', 91),
+(102, 'Indonesia', 62),
+(103, 'Iran, Islamic Republic Of', 98),
+(104, 'Iraq', 964),
+(105, 'Ireland', 353),
+(106, 'Isle Of Man', 0),
+(107, 'Israel', 972),
+(108, 'Italy', 39),
+(109, 'Jamaica', 1876),
+(110, 'Japan', 81),
+(111, 'Jersey', 0),
+(112, 'Jordan', 962),
+(113, 'Kazakhstan', 7),
+(114, 'Kenya', 254),
+(115, 'Kiribati', 686),
+(116, 'Korea, Democratic People\'s Republic Of', 850),
+(117, 'Korea, Republic Of', 82),
+(118, 'Kuwait', 965),
+(119, 'Kyrgyzstan', 996),
+(120, 'Lao People\'s Democratic Republic', 856),
+(121, 'Latvia', 371),
+(122, 'Lebanon', 961),
+(123, 'Lesotho', 266),
+(124, 'Liberia', 231),
+(125, 'Libyan Arab Jamahiriya', 218),
+(126, 'Liechtenstein', 423),
+(127, 'Lithuania', 370),
+(128, 'Luxembourg', 352),
+(129, 'Macao', 853),
+(130, 'North Macedonia', 0),
+(131, 'Madagascar', 261),
+(132, 'Malawi', 265),
+(133, 'Malaysia', 60),
+(134, 'Maldives', 960),
+(135, 'Mali', 223),
+(136, 'Malta', 356),
+(137, 'Marshall Islands', 692),
+(138, 'Martinique', 596),
+(139, 'Mauritania', 222),
+(140, 'Mauritius', 230),
+(141, 'Mayotte', 269),
+(142, 'Mexico', 52),
+(143, 'Micronesia, Federated States Of', 691),
+(144, 'Moldova, Republic Of', 373),
+(145, 'Monaco', 377),
+(146, 'Mongolia', 976),
+(147, 'Montserrat', 1664),
+(148, 'Morocco', 212),
+(149, 'Mozambique', 258),
+(150, 'Myanmar', 95),
+(151, 'Namibia', 264),
+(152, 'Nauru', 674),
+(153, 'Nepal', 977),
+(154, 'Netherlands', 31),
+(155, 'Netherlands Antilles', 599),
+(156, 'New Caledonia', 687),
+(157, 'New Zealand', 64),
+(158, 'Nicaragua', 505),
+(159, 'Niger', 227),
+(160, 'Nigeria', 234),
+(161, 'Niue', 683),
+(162, 'Norfolk Island', 672),
+(163, 'Northern Mariana Islands', 1670),
+(164, 'Norway', 47),
+(165, 'Oman', 968),
+(166, 'Pakistan', 92),
+(167, 'Palau', 680),
+(168, 'Palestinian Territory, Occupied', 970),
+(169, 'Panama', 507),
+(170, 'Papua New Guinea', 675),
+(171, 'Paraguay', 595),
+(172, 'Peru', 51),
+(173, 'Philippines', 63),
+(174, 'Pitcairn', 0),
+(175, 'Poland', 48),
+(176, 'Portugal', 351),
+(177, 'Puerto Rico', 1787),
+(178, 'Qatar', 974),
+(179, 'Reunion', 262),
+(180, 'Romania', 40),
+(181, 'Russian Federation', 70),
+(182, 'Rwanda', 250),
+(183, 'Saint Helena', 290),
+(184, 'Saint Kitts And Nevis', 1869),
+(185, 'Saint Lucia', 1758),
+(186, 'Saint Pierre And Miquelon', 508),
+(187, 'Saint Vincent And The Grenadines', 1784),
+(188, 'Samoa', 684),
+(189, 'San Marino', 378),
+(190, 'Sao Tome And Principe', 239),
+(191, 'Saudi Arabia', 966),
+(192, 'Senegal', 221),
+(193, 'Serbia And Montenegro', 381),
+(194, 'Seychelles', 248),
+(195, 'Sierra Leone', 232),
+(196, 'Singapore', 65),
+(197, 'Slovakia', 421),
+(198, 'Slovenia', 386),
+(199, 'Solomon Islands', 677),
+(200, 'Somalia', 252),
+(201, 'South Africa', 27),
+(202, 'South Georgia And The South Sandwich Islands', 0),
+(203, 'Spain', 34),
+(204, 'Sri Lanka', 94),
+(205, 'Sudan', 249),
+(206, 'Suriname', 597),
+(207, 'Svalbard And Jan Mayen', 47),
+(208, 'Swaziland', 268),
+(209, 'Sweden', 46),
+(210, 'Switzerland', 41),
+(211, 'Syrian Arab Republic', 963),
+(212, 'Taiwan, Province Of China', 886),
+(213, 'Tajikistan', 992),
+(214, 'Tanzania, United Republic Of', 255),
+(215, 'Thailand', 66),
+(216, 'Timor-leste', 670),
+(217, 'Togo', 228),
+(218, 'Tokelau', 690),
+(219, 'Tonga', 676),
+(220, 'Trinidad And Tobago', 1868),
+(221, 'Tunisia', 216),
+(222, 'Turkey', 90),
+(223, 'Turkmenistan', 7370),
+(224, 'Turks And Caicos Islands', 1649),
+(225, 'Tuvalu', 688),
+(226, 'Uganda', 256),
+(227, 'Ukraine', 380),
+(228, 'United Arab Emirates', 971),
+(229, 'United Kingdom', 44),
+(230, 'United States', 1),
+(231, 'United States Minor Outlying Islands', 1),
+(232, 'Uruguay', 598),
+(233, 'Uzbekistan', 998),
+(234, 'Vanuatu', 678),
+(235, 'Venezuela', 58),
+(236, 'Viet Nam', 84),
+(237, 'Virgin Islands, British', 1284),
+(238, 'Virgin Islands, U.S.', 1340),
+(239, 'Wallis And Futuna', 681),
+(240, 'Western Sahara', 212),
+(241, 'Yemen', 967),
+(242, 'Zambia', 260),
+(243, 'Zimbabwe', 263),
+(245, 'Myanmar (Burma)', 0);
 
 -- --------------------------------------------------------
 
@@ -1291,6 +1311,7 @@ CREATE TABLE `general_settings` (
   `site_copyright` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_timezone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `language_switcher` int(10) NOT NULL,
+  `enable_google_translate` int(10) NOT NULL,
   `tinymce_api_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `recaptcha_site_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recaptcha_secret_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1321,18 +1342,21 @@ CREATE TABLE `general_settings` (
   `currency_position` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency_format` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `enable_maintenance_mode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `make_phone_number_required` int(10) NOT NULL,
   `order_auto_complete` int(10) NOT NULL,
   `wish_do_manual_payouts` int(10) NOT NULL,
   `payouts_date` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payouts_anyday` int(10) NOT NULL
+  `payouts_anyday` int(10) NOT NULL,
+  `enable_websocket` int(10) NOT NULL,
+  `websocket_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `general_settings`
 --
 
-INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `enable_mobile_logo`, `site_mobile_logo`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_mobile_logo_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`) VALUES
-(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 1, 'mobile-logo.png', 'logo1.png', 0, 0, 0, 0, 'watermark.png', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 2, 1, '', 0);
+INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `enable_mobile_logo`, `site_mobile_logo`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_mobile_logo_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `enable_google_translate`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `make_phone_number_required`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`, `enable_websocket`, `websocket_address`) VALUES
+(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 1, 'mobile-logo.png', 'logo1.png', 0, 0, 0, 0, 'watermark.png', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, 0, '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 0, 2, 1, '', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -1522,6 +1546,7 @@ CREATE TABLE `languages` (
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `default_lang` int(10) NOT NULL,
   `direction` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `template_folder` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isS3` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1529,8 +1554,8 @@ CREATE TABLE `languages` (
 -- Dumping data for table `languages`
 --
 
-INSERT INTO `languages` (`id`, `title`, `image`, `default_lang`, `direction`, `isS3`) VALUES
-(1, 'English', 'english.png', 1, 'left', 0);
+INSERT INTO `languages` (`id`, `title`, `image`, `default_lang`, `direction`, `template_folder`, `isS3`) VALUES
+(1, 'English', 'english.png', 1, 'left', 'en', 0);
 
 -- --------------------------------------------------------
 
@@ -1606,7 +1631,8 @@ CREATE TABLE `notifications` (
   `reason` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `bell` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'active',
-  `status` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `status` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `fcm_notification_status` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1704,12 +1730,23 @@ CREATE TABLE `package_attributes` (
 
 CREATE TABLE `pages` (
   `id` int(10) NOT NULL,
-  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `url` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `language_id` int(10) NOT NULL,
   `date` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pages_meta`
+--
+
+CREATE TABLE `pages_meta` (
+  `id` int(11) NOT NULL,
+  `page_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `content` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -1819,11 +1856,8 @@ CREATE TABLE `plugins` (
 
 CREATE TABLE `posts` (
   `id` int(11) NOT NULL,
-  `title` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `cat_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `author` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_time` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `isS3` int(10) NOT NULL,
   `language_id` int(10) NOT NULL,
@@ -1833,17 +1867,44 @@ CREATE TABLE `posts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `posts_meta`
+--
+
+CREATE TABLE `posts_meta` (
+  `id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL,
+  `title` text NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `language_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post_categories`
 --
 
 CREATE TABLE `post_categories` (
   `id` int(11) NOT NULL,
-  `cat_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cat_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cat_creator` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_time` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isS3` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `post_categories_meta`
+--
+
+CREATE TABLE `post_categories_meta` (
+  `id` int(11) NOT NULL,
+  `cat_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `cat_name` varchar(255) DEFAULT NULL,
+  `cat_creator` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -2106,6 +2167,7 @@ CREATE TABLE `sellers` (
   `seller_user_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seller_email` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `seller_wallet` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `seller_phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seller_payouts` int(100) NOT NULL,
   `seller_paypal_email` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `seller_payoneer_email` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2136,7 +2198,15 @@ CREATE TABLE `sellers` (
   `enable_notifications` int(10) NOT NULL DEFAULT 1,
   `seller_activity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `seller_timezone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `seller_status` text COLLATE utf8mb4_unicode_ci NOT NULL
+  `seller_status` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `device_type` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `device_token` int(10) NOT NULL,
+  `inbox_push_notification_status` tinyint(1) NOT NULL,
+  `order_message_push_notification_status` tinyint(1) NOT NULL,
+  `order_update_push_notification_status` tinyint(1) NOT NULL,
+  `buyer_req_push_notification_status` tinyint(1) NOT NULL,
+  `myproposal_push_notification_status` tinyint(1) NOT NULL,
+  `myaccount_push_notification_status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -2416,12 +2486,30 @@ CREATE TABLE `starred_messages` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `support_conversations`
+--
+
+CREATE TABLE `support_conversations` (
+  `id` int(11) NOT NULL,
+  `ticket_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `sender_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `date` text NOT NULL,
+  `attachment` text DEFAULT NULL,
+  `isS3` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `support_tickets`
 --
 
 CREATE TABLE `support_tickets` (
   `ticket_id` int(10) NOT NULL,
   `enquiry_id` int(10) NOT NULL,
+  `number` int(11) NOT NULL,
   `sender_id` int(10) NOT NULL,
   `subject` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2578,6 +2666,12 @@ ALTER TABLE `api_settings`
 -- Indexes for table `app_info`
 --
 ALTER TABLE `app_info`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `app_license`
+--
+ALTER TABLE `app_license`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -2863,6 +2957,12 @@ ALTER TABLE `pages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `pages_meta`
+--
+ALTER TABLE `pages_meta`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `payment_settings`
 --
 ALTER TABLE `payment_settings`
@@ -2887,9 +2987,21 @@ ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `posts_meta`
+--
+ALTER TABLE `posts_meta`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `post_categories`
 --
 ALTER TABLE `post_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `post_categories_meta`
+--
+ALTER TABLE `post_categories_meta`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -3073,6 +3185,12 @@ ALTER TABLE `starred_messages`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `support_conversations`
+--
+ALTER TABLE `support_conversations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `support_tickets`
 --
 ALTER TABLE `support_tickets`
@@ -3140,7 +3258,7 @@ ALTER TABLE `admin_notifications`
 -- AUTO_INCREMENT for table `admin_rights`
 --
 ALTER TABLE `admin_rights`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `announcement_bar`
@@ -3159,6 +3277,12 @@ ALTER TABLE `api_settings`
 --
 ALTER TABLE `app_info`
   MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `app_license`
+--
+ALTER TABLE `app_license`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `archived_messages`
@@ -3443,6 +3567,12 @@ ALTER TABLE `pages`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
+-- AUTO_INCREMENT for table `pages_meta`
+--
+ALTER TABLE `pages_meta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
 -- AUTO_INCREMENT for table `payment_settings`
 --
 ALTER TABLE `payment_settings`
@@ -3467,10 +3597,22 @@ ALTER TABLE `posts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
+-- AUTO_INCREMENT for table `posts_meta`
+--
+ALTER TABLE `posts_meta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
 -- AUTO_INCREMENT for table `post_categories`
 --
 ALTER TABLE `post_categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+
+--
+-- AUTO_INCREMENT for table `post_categories_meta`
+--
+ALTER TABLE `post_categories_meta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `post_comments`
@@ -3651,6 +3793,12 @@ ALTER TABLE `spam_words`
 --
 ALTER TABLE `starred_messages`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `support_conversations`
+--
+ALTER TABLE `support_conversations`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `support_tickets`

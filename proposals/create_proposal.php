@@ -57,10 +57,13 @@ if($enable_unlimited_revisions == 1){
 require_once("../includes/user_header.php"); 
 
 if($seller_verification != "ok"){
+
   echo "
-  <div class='alert alert-danger rounded-0 mt-0 text-center'>
-  Please confirm your email to use this feature.
-  </div>";
+    <div class='alert alert-danger rounded-0 mt-0 text-center'>
+      Please confirm your email to use this feature.
+    </div>
+  ";
+
 }else{
 
 ?>
@@ -166,7 +169,7 @@ $(document).ready(function(){
       $.ajax({
         url:"crop_upload",
         type: "POST",
-        data:{image: response, name: $('input[type=file][name='+ name +']').val().replace(/C:\\fakepath\\/i, '') },
+        data:{image: response,name: $('input[type=file][name='+name+']').val().replace(/C:\\fakepath\\/i,'')},
         success:function(data){
           $('#wait').removeClass("loader");
           $('#insertimageModal').modal('hide');

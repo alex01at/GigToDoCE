@@ -1,4 +1,3 @@
-
 <div class="breadcrumbs">
 	<div class="col-sm-4">
 		<div class="page-header float-left">
@@ -38,8 +37,8 @@
 			<input class="form-control input-md" type="text" name="cat_name" placeholder="Name" required="">
 		</div>
 		<div class="form-group mt-2">
-			<label for="cat_name">Image</label>
-			<input class="form-control input-md" type="file" name="cat_image" required="">
+			<label for="cat_image">Image</label>
+			<input class="form-control input-md" type="file" name="cat_image">
 		</div>
 		<div class="form-group">
 			<input class="form-control btn btn-success" name="insert" type="submit" value="Insert New Category">
@@ -52,8 +51,9 @@
 	<tr>
 	<th>No</th>
 	<th>Category Name</th>
-	<!-- <th>Date Added</th> -->
-	<th>Added By</th>
+	<th>Date Added</th>
+	<!-- <th>Added By</th> -->
+	<th>Language</th>
 	<th>Actions</th>
 	</tr>
 	</thead>
@@ -63,29 +63,39 @@
 		$categories = $db->select("post_categories","","DESC");
 		while($cat = $categories->fetch()){
 			$i++;
-		?>
-		<tr>
-			<td><?= $i; ?></td>
-			<td><?= $cat->cat_name; ?></td>
-			<td><?= $cat->date_time; ?></td>
-			<!-- <td><?= $cat->cat_creator; ?></td> -->
-			<td>
-				<div class="dropdown">
-					<button class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown">
-					<i class="fa fa-cog"></i> Actions
-					</button>
-					<div class="dropdown-menu" style="margin-left: -125px;">
-						<a class="dropdown-item" href="index?edit_post_cat=<?= $cat->id; ?>">
-							<i class="fa fa-pencil"></i> Edit
-						</a>
-						<a class="dropdown-item" href="index?delete_post_cat=<?= $cat->id; ?>" 
-						onclick="if(!confirm('Are you sure you want to delete selected item.')){ return false; }">
-							<i class="fa fa-trash"></i> Delete
-						</a>
+			$cat_id = $cat->id;
+			
+			// $insert = $db->insert("post_categories_meta",array("cat_id"=>$cat_id,"cat_name"=>$cat->cat_name,"language_id"=>$adminLanguage,"cat_creator"=>$cat->cat_creator));
+
+			$post_category_meta = $db->select("post_categories_meta",array("cat_id" => $cat_id, "language_id" => $adminLanguage))->fetch();			
+
+			$language_title = $db->query("select * from languages where id = ".$post_category_meta->language_id)->fetch()->title;
+
+			?>
+			<tr>
+				<td><?= $i; ?></td>
+				<td><?= $post_category_meta->cat_name; ?></td>
+				<td><?= $cat->date_time; ?></td>
+				<td><?= $language_title; ?></td>
+				<!-- <td><?= $cat->cat_creator; ?></td> -->
+				<td>
+					<div class="dropdown">
+						<button class="btn btn-sm btn-danger dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-cog"></i> Actions
+						</button>
+						<div class="dropdown-menu" style="margin-left: -125px;">
+							<a class="dropdown-item" href="index?edit_post_cat=<?= $cat->id; ?>">
+								<i class="fa fa-pencil"></i> Edit
+							</a>
+							<a class="dropdown-item" href="index?delete_post_cat=<?= $cat->id; ?>" 
+							onclick="if(!confirm('Are you sure you want to delete selected item.')){ return false; }">
+								<i class="fa fa-trash"></i> Delete
+							</a>
+						</div>
 					</div>
-				</div>
-			</td>
-		</tr>
+				</td>
+			</tr>
+
 		<?php } ?>
 	</tbody>
 	</table><!--- table table-bordered table-hover table-striped Starts -->
@@ -102,7 +112,7 @@ if(isset($_POST['insert'])){
 
 	$data = $input->post();
 	$data['date_time'] = date("F d, Y");
-	unset($data['insert']);
+	unset($data['insert']);	
 
 	$cat_image = $_FILES['cat_image']['name'];
 	$tmp_cat_image = $_FILES['cat_image']['tmp_name'];
@@ -113,19 +123,29 @@ if(isset($_POST['insert'])){
 	   echo "<script>alert('Your File Format Extension Is Not Supported.')</script>";
 	}else{
 	                  
-	   uploadToS3("blog_cat_images/$cat_image",$tmp_cat_image);
-      $data['cat_image'] = $cat_image;
-      $data['isS3'] = $enable_s3;
-
-		$update = $db->insert("post_categories",$data);
-		if($update){
+		uploadToS3("blog_cat_images/$cat_image",$tmp_cat_image);      
+		$isS3 = $enable_s3;
+		$post_categories = $db->insert("post_categories",array("date_time"=>$data['date_time'],'cat_image' => $cat_image, 'isS3'=> $isS3));
+		if($post_categories){
 			$insert_id = $db->lastInsertId();
+
+			$get_languages = $db->select("languages");
+			while($row_languages = $get_languages->fetch()){
+				$id = $row_languages->id;
+				$insert = $db->insert("post_categories_meta",["cat_id"=>$insert_id,"language_id"=>$id]);
+			}
+
+			unset($data['date_time']);
+
+			$update_meta = $db->update("post_categories_meta",$data,array("cat_id" => $insert_id, "language_id" => $adminLanguage));
+
 			$insert_log = $db->insert_log($admin_id,"post_cat",$insert_id,"updated");
-			echo "<script>alert_success('One Post Category has been Inserted Successfully.','index?post_categories');</script>";
+
+			echo "<script>alert('One Post Category has been Inserted Successfully.');</script>";
+			echo "<script>window.open('index?post_categories','_self');</script>";
+
 		}
-
 	}
-
 }
 
 ?>

@@ -11,11 +11,8 @@ echo "<script>window.open('../login','_self')</script>";
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];
-
 $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
-
 $row_login_seller = $select_login_seller->fetch();
-
 $login_seller_id = $row_login_seller->seller_id;
 
 

@@ -440,7 +440,12 @@ if(isset($_POST['accept_request'])){
   $update_order = $db->update("orders",array("order_status"=>'cancelled',"order_active"=>'no'),array("order_id"=>$order_id));
 
   $insert_notification = $db->insert("notifications",array("receiver_id" => $receiver_id,"sender_id" => $login_seller_id,"order_id" => $order_id,"reason" => "accept_cancellation_request","date" => $n_date,"status" => "unread"));
-  	
+
+  /// sendPushMessage Starts
+  $notification_id = $db->lastInsertId();
+  sendPushMessage($notification_id);
+  /// sendPushMessage Ends
+
   $update_my_buyers = $db->update("my_buyers",array("completed_orders"=>'completed_orders-1',"amount_spent"=>"amount_spent-$order_price"),array("buyer_id"=>$buyer_id,"seller_id"=>$seller_id));
 
   $update_my_sellers = $db->update("my_sellers",array("completed_orders"=>'completed_orders-1',"amount_spent"=>"amount_spent-$order_price"),array("seller_id"=>$seller_id,"buyer_id"=>$buyer_id));

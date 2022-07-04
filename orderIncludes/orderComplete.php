@@ -44,12 +44,18 @@ $update_messages = $db->update("order_conversations",array("status"=>"message"),
 $date = date("F d, Y");
 $insert_notification = $db->insert("notifications",array("receiver_id"=>$seller_id,"sender_id"=>$buyer_id,"order_id"=>$order_id,"reason"=>"order_completed","date"=>$date,"status"=>"unread"));
 
+/// sendPushMessage Starts
+$notification_id = $db->lastInsertId();
+sendPushMessage($notification_id);
+/// sendPushMessage Ends
+
 // update seller account
 $update_seller_account = $db->query("update seller_accounts set pending_clearance=pending_clearance+:p_plus,month_earnings=month_earnings+:m_plus where seller_id='$seller_id'",array("p_plus"=>$seller_price,"m_plus"=>$seller_price));
 
 // insert seller revenue
 $revenue_date = date("F d, Y", strtotime(" + $days_before_withdraw days"));
 $end_date = date("F d, Y H:i:s", strtotime(" + $days_before_withdraw days"));
+
 $insert_revenue = $db->insert("revenues",array("seller_id" => $seller_id,"order_id" => $order_id,"reason" => "order","amount" => $seller_price,"date" => $revenue_date,"end_date" => $end_date,"status" => "pending"));
 
 // select payment method using order_id from purchases table

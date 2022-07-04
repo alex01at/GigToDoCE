@@ -101,3 +101,7 @@ if($reason == "extendTimeAccepted"){
 if($reason == "buyerExtendTimeAccepted"){
 	return "Time increased successfully.";
 }
+
+if($reason == "ticket_reply"){
+	return "just responded to your ticket.";
+}

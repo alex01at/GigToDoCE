@@ -17,7 +17,7 @@ echo "<script>window.open('login','_self');</script>";
     if(isset($_GET['restore_proposal'])){
         
         $restore_id = $input->get('restore_proposal');
-        
+        $page = (isset($_GET['page']))?"=".$input->get('page'):"";
         $update_proposal = $db->update("proposals",array("proposal_status"=>'active'),array("proposal_id"=>$restore_id));
 
         if($update_proposal){

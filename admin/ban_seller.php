@@ -28,12 +28,12 @@ if(isset($_GET['ban_seller'])){
 		$seller_user_name = $row_seller->seller_user_name;
 		$seller_email = $row_seller->seller_email;
 
-		// $data = [];
-		// $data['template'] = "admin_ban_seller";
-		// $data['to'] = $seller_email;
-		// $data['subject'] = "$site_name: You Are Banned";
-		// $data['user_name'] = $seller_user_name;
-		// send_mail($data);
+		$data = [];
+		$data['template'] = "admin_ban_seller";
+		$data['to'] = $seller_email;
+		$data['subject'] = "$site_name: You Are Banned";
+		$data['user_name'] = $seller_user_name;
+		send_mail($data);
 		
 		echo "<script>alert('Seller has been blocked/banned successfully.');</script>";
 		echo "<script>window.open('index?view_sellers','_self');</script>";

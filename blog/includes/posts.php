@@ -35,13 +35,16 @@ if($count_posts == 0){
 
 while($post = $posts->fetch()){
 
-$url = preg_replace('#[ -]+#','-', $post->title);
-$content = substr(strip_tags($post->content),0,250);
+$post_meta = $db->select('posts_meta', ['post_id' => $post->id, 'language_id' => $siteLanguage])->fetch();
+
+$url = preg_replace('#[ -]+#','-', $post_meta->title);
+$content = substr(strip_tags($post_meta->content),0,250);
 
 /// Get Category Details
-$get_cat = $db->select("post_categories",['id'=>$post->cat_id]);
+
+$get_cat = $db->select("post_categories_meta",['cat_id'=>$post->cat_id,'language_id' => $siteLanguage]);
 $row_cat = $get_cat->fetch();
-$cat_name = $row_cat->cat_name;
+$cat_name = !empty($row_cat->cat_name) ? $row_cat->cat_name:'' ;
 
 ?>
 
@@ -53,13 +56,13 @@ $cat_name = $row_cat->cat_name;
 		   </a>
 		</div>
 	   <div class="col-lg-8 col-md-12 <?=($lang_dir == "right" ? 'order-lg-1 order-md-2':'')?>">
-		   <h5 class="mt-0 mb-2 <?= $textRight; ?>"><?= $post->title; ?></h5>
+		   <h5 class="mt-0 mb-2 <?= $textRight; ?>"><?= $post_meta->title; ?></h5>
 		   <p class="small mb-1 <?= $textRight; ?>">
 		   	<span class="text-muted">Published on:</span> <?= $post->date_time; ?> | 
 		   	<span class="text-muted">Category:</span> 
 		   	<a href="index?cat_id=<?= $post->cat_id; ?>"><?= $cat_name; ?></a> | 
 		   	<span class="text-muted">Author:</span> 
-		   	<a href="index?author=<?= $post->author; ?>"><?= $post->author; ?></a> 
+		   	<a href="#"><?= $post_meta->author; ?></a> 
 		   </p>
 		   <p class="post-content <?= $textRight; ?>"><?= $content; ?>...</p>
 		   <a href="<?= $post->id; ?>/<?= $url; ?>" class="btn btn-success float-right">Read More</a>

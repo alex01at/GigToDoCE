@@ -21,6 +21,19 @@
    $buyer_id = $row_order->buyer_id;
    $seller_id = $row_order->seller_id;
 
+   /// Select Order Seller Details ///
+   $select_seller = $db->select("sellers",array("seller_id" => $seller_id));
+   $row_seller = $select_seller->fetch();
+   $seller_user_name = $row_seller->seller_user_name;
+   $seller_email = $row_seller->seller_email;
+   $seller_phone = $row_seller->seller_phone;
+
+   //// Select Order Buyer Details ///
+   $select_buyer = $db->select("sellers",array("seller_id" => $buyer_id));
+   $row_buyer = $select_buyer->fetch();
+   $buyer_user_name = $row_buyer->seller_user_name;
+   $buyer_email = $row_buyer->seller_email;
+
    $processing_fee = processing_fee($amount);
    $total_amount = $amount+$processing_fee;
 
@@ -45,6 +58,18 @@
 
       $insert_notification = $db->insert("notifications",array("receiver_id"=>$seller_id,"sender_id"=>$buyer_id,"order_id"=>$order_id,"reason"=>"order_tip","date"=>$date,"status"=>"unread"));
 
+      /// sendPushMessage Starts
+      $notification_id = $db->lastInsertId();
+      sendPushMessage($notification_id);
+      /// sendPushMessage Ends
+
+      if($notifierPlugin == 1){ 
+
+         $smsText = str_replace('{buyer_user_name}',$buyer_user_name,$lang['notifier_plugin']['order_tip']);
+         sendSmsTwilio("",$smsText,$seller_phone);
+
+      }
+
       // get admin profit - Insert sale
       if($payment_method == "shopping_balance"){
          $adminProfit = 0;
@@ -54,10 +79,10 @@
       $sale = array("buyer_id" => $buyer_id,"work_id" => $order_id,"payment_method" => $payment_method,"amount" => $amount,"profit"=> $adminProfit,"processing_fee"=>$adminProfit,"action"=>"order_tip","date"=>date("Y-m-d"));
       insertSale($sale);
 
-      // unset($_SESSION['tipOrderId']);
-      // unset($_SESSION['tipAmount']);
-      // unset($_SESSION['tipMessage']);
-      // unset($_SESSION['method']);
+      unset($_SESSION['tipOrderId']);
+      unset($_SESSION['tipAmount']);
+      unset($_SESSION['tipMessage']);
+      unset($_SESSION['method']);
 
       echo "
       <script>

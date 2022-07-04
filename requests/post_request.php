@@ -84,10 +84,10 @@ Please confirm your email to use this feature.
                 <div class="row">
                   <div class="col-xl-9 col-lg-12">
                     <div class="form-group">
-                      <input type="text" name="request_title" placeholder="<?= $lang['placeholder']['request_title']; ?>" class="form-control input-lg" required="" value="<?= $form_data['request_title']; ?>">
+                      <input type="text" name="request_title" placeholder="<?= $lang['placeholder']['request_title']; ?>" class="form-control input-lg" required="" value="<?php isset($form_data['request_title'])? $form_data['request_title']:"" ;  ?>">
                     </div>
                     <div class="form-group">
-                      <textarea name="request_description" id="textarea" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required=""><?= $form_data['request_description']; ?></textarea>
+                      <textarea name="request_description" id="textarea" rows="5" cols="73" maxlength="380" class="form-control" placeholder="<?= $lang['placeholder']['request_desc']; ?>" required=""><?php if (isset($form_data['request_description'])){echo $form_data['request_description'];} ?></textarea>
                     </div>
                     <div class="form-group">
                       <input type="file" name="request_file" id="file" >
@@ -156,7 +156,7 @@ Please confirm your email to use this feature.
       						?>
                   <label class="custom-control custom-radio">
                     <input type="radio" value="<?= $delivery_proposal_title; ?>" 
-                    <?php if($form_data['delivery_time'] == $delivery_proposal_title){ echo "checked"; } ?> name="delivery_time" class="custom-control-input" required="">
+                    <?php if(isset($form_data['delivery_time']) and$form_data['delivery_time'] == $delivery_proposal_title){ echo "checked"; } ?> name="delivery_time" class="custom-control-input" required="">
                     <span class="custom-control-indicator"></span>
                     <span class="custom-control-description"> 
                       <?= $delivery_proposal_title; ?> 
