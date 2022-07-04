@@ -1,0 +1,64 @@
+<?php
+   
+   require_once("$dir/functions/functions.php");
+   // require_once("$dir/functions/processing_fee.php");
+
+   // select payment_settings
+   $get_payment_settings = $db->select("payment_settings");
+   $row_payment_settings = $get_payment_settings->fetch();
+   $days_before_withdraw = $row_payment_settings->days_before_withdraw;
+
+   $order_id = $_SESSION['tipOrderId'];
+   $amount = $_SESSION['tipAmount'];
+   $message = $_SESSION['tipMessage'];
+   $payment_method = $_SESSION['method'];
+   $date = date("F d, Y");
+
+   // Get Order Details
+   $get_order = $db->select("orders",array("order_id"=>$order_id));
+   $count_orders = $get_order->rowCount();
+   $row_order = $get_order->fetch();
+   $buyer_id = $row_order->buyer_id;
+   $seller_id = $row_order->seller_id;
+
+   $processing_fee = processing_fee($amount);
+   $total_amount = $amount+$processing_fee;
+
+   $insert_tip = $db->insert("order_tips",array("order_id"=>$order_id,"amount"=>$amount,"message"=>$message,"date"=>$date));
+
+   if($insert_tip){
+
+      if($payment_method == "shopping_balance"){
+         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"amount"=>$amount,"date"=>$date,"method"=>$payment_method));
+      }else{
+         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"amount"=>$total_amount,"date"=>$date,"method"=>$payment_method));
+      }
+
+      // insert seller revenue
+      $revenue_date = date("F d, Y", strtotime(" + $days_before_withdraw days"));
+      $end_date = date("F d, Y h:i:s", strtotime(" + $days_before_withdraw days"));
+
+      $insert_revenue = $db->insert("revenues",array("seller_id" => $seller_id,"order_id" => $order_id,"reason" => "order_tip","amount" => $amount,"date" => $revenue_date,"end_date" => $end_date,"status" => "pending"));
+
+      $insert_notification = $db->insert("notifications",array("receiver_id"=>$seller_id,"sender_id"=>$buyer_id,"order_id"=>$order_id,"reason"=>"order_tip","date"=>$date,"status"=>"unread"));
+
+      // get admin profit - Insert sale
+      if($payment_method == "shopping_balance"){
+         $adminProfit = 0;
+      }else{
+         $adminProfit = $processing_fee;
+      }
+      $sale = array("buyer_id" => $buyer_id,"work_id" => $order_id,"payment_method" => $payment_method,"amount" => $amount,"profit"=> $adminProfit,"processing_fee"=>$adminProfit,"action"=>"order_tip","date"=>date("Y-m-d"));
+      insertSale($sale);
+
+      // unset($_SESSION['tipOrderId']);
+      // unset($_SESSION['tipAmount']);
+      // unset($_SESSION['tipMessage']);
+      // unset($_SESSION['method']);
+
+      echo "
+      <script>
+        window.open('$site_url/order_details?order_id=$order_id','_self');
+      </script>";
+
+   }
