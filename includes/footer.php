@@ -32,7 +32,7 @@
         </ul>
       </div>
       <div class="col-md-3 col-12">
-        <h3 class="h3Border" data-toggle="collapse" data-target="#collapsecategories2"><?= ucwords($lang['pages']); ?></h3>
+        <h3 class="h3Border" data-toggle="collapse" data-target="#collapsecategories2"><?= $lang['pages']; ?></h3>
         <ul class="collapse show list-unstyled" id="collapsecategories2">
           <?php
           $pages = $db->select("pages");
@@ -40,7 +40,7 @@
           $title = $rowPage->title;
           $url = $rowPage->url;
           ?>
-          <li class="list-unstyled-item"><a href="<?= "$site_url/$url"; ?>"><?= $title; ?></a></li>
+          <li class="list-unstyled-item"><a href="<?= "$site_url/pages/$url"; ?>"><?= $title; ?></a></li>
           <?php } ?>
         </ul>
       </div>
@@ -90,10 +90,11 @@
               $currency_id = $row->currency_id;
               $position = $row->position;
 
-              $get_currencies = $db->select("currencies",array("id" => $currency_id));
-              $row_currencies = $get_currencies->fetch();
-              $name = $row_currencies->name;
-              $symbol = $row_currencies->symbol;
+              $get_currency = $db->select("currencies",array("id" => $currency_id));
+              $row_currency = $get_currency->fetch();
+              $name = $row_currency->name;
+              $symbol = $row_currency->symbol;
+
               ?>
               <option data-url="<?= "$site_url/change_currency?id=$id"; ?>" <?php if($id == @$_SESSION["siteCurrency"]){ echo "selected"; } ?>>
                 <?= $name; ?> (<?= $symbol ?>)

@@ -20,13 +20,23 @@ if(isset($_POST['mercadopago'])){
 	
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "featured_listing";
+	$data['content_id'] = $_SESSION['f_proposal_id'];
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
 	$data['title'] = $proposal_title;
 	$data['qty'] = 1;
 	$data['price'] = $featured_fee + $processing_fee;
-	$data['cancel_url'] = "$site_url/proposals/view_proposals";
-	$data['redirect_url'] = "$site_url/paypal_order?proposal_id={$_SESSION['f_proposal_id']}&featured_listing=1";
+	$data['sub_total'] = $featured_fee;
+	$data['total'] = $featured_fee + $processing_fee;
+
+   $lastId = $db->query("SHOW TABLE STATUS LIKE 'temp_orders'")->fetch(PDO::FETCH_ASSOC)['Auto_increment'];
+
+   $data['cancel_url'] = "$site_url/cancel_payment?id=$lastId";
+	$data['redirect_url'] = "$site_url/mercadopago_order?reference_no=$reference_no";
+	
 	$payment->mercadopago($data,$processing_fee);
 
 }else{
-	echo "<script>window.open('../ndex','_self');</script>";
+	echo "<script>window.open('../index','_self');</script>";
 }

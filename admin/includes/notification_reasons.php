@@ -27,7 +27,16 @@ if($reason == "message_spam"){
 }elseif($reason == "order_report"){
 
 	$message = "has reported about order conversation.";
-
 	$url = "index?order_reports";
+
+}elseif($reason == "order_report"){
+
+   $message = "has reported about order conversation.";
+   $url = "index?order_reports";
+
+}elseif($reason == "payout_request"){
+
+   $message = "has just sent you an payout request";
+   $url = "index?payouts&status=pending";
 
 }

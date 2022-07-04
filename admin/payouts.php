@@ -69,7 +69,7 @@ if(!isset($_SESSION['admin_email'])){
       </thead>
       <tbody>
       <?php
-        $i = 0;
+
         $per_page = 7;
         if(isset($_GET['payouts'])){
           $page = $input->get('payouts');
@@ -79,6 +79,7 @@ if(!isset($_SESSION['admin_email'])){
         }else{
           $page = 1;
         }
+        $i = ($page*$per_page)-7;
         $where = "status LIKE :status";
         if(!empty($_GET['ref'])){
           $payoutRef = $input->get('ref');

@@ -12,5 +12,5 @@ function removeJava($html){
       } 
     }
   }
-  return strip_tags($dom->saveHTML(),"<div><iframe><br><a><b><i><u><span><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
+  return strip_tags($dom->saveHTML(),"<div><table><tbody><thead><tr><th><td><iframe><br><a><b><i><u><span><img><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
 }

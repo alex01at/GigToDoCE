@@ -22,7 +22,22 @@ if(isset($_POST['dusupay'])){
 
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "orderTip";
+
+	if(isset($_POST['account_number'])){
+		$account_number = $input->post('account_number');
+		$data['account_number'] = $account_number;
+	}
+	
+	if(isset($_POST['voucher'])){
+		$voucher = $input->post('voucher');
+		$data['voucher'] = $voucher;
+	}
+
 	$data['name'] = "Order Tip Payment";
+	$data['content_id'] = $order_id;
+	$data['message'] = $_SESSION['tipMessage'];
+	$data['price'] = $amount;
 	$data['amount'] = $amount+$processing_fee;
 	$data['redirect_url'] = "$site_url/orderIncludes/charge/order/dusupay?orderTip=1";
 

@@ -10,7 +10,7 @@ if(!isset($_SESSION['seller_user_name'])){
 }
 
 if(isset($_POST['paypal'])){
-	$select_offers = $db->select("messages_offers",array("offer_id" => $_SESSION['c_message_offer_id']));
+	$select_offers = $db->select("messages_offers",array("offer_id"=>$_SESSION['c_message_offer_id']));
 	$row_offers = $select_offers->fetch();
 	$proposal_id = $row_offers->proposal_id;
 	$amount = $row_offers->amount;
@@ -22,14 +22,20 @@ if(isset($_POST['paypal'])){
 
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "message_offer";
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
+	$data['content_id'] = $_SESSION['c_message_offer_id'];
 	$data['name'] = $proposal_title;
 	$data['qty'] = 1;
 	$data['price'] = $amount;
 	$data['sub_total'] = $amount;
 	$data['total'] = $amount + $processing_fee;
-	$data['cancel_url'] = "$site_url/conversations/inbox?single_message_id={$_SESSION['c_single_message_id']}";
-	$data['redirect_url'] = "$site_url/paypal_order?message_offer_id={$_SESSION['c_message_offer_id']}";
+
+	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
+	$data['redirect_url'] = "$site_url/paypal_order?reference_no=$reference_no";
 	$payment->paypal($data,$processing_fee);
+
 }else{
 	echo "<script>window.open('../index','_self');</script>";
 }

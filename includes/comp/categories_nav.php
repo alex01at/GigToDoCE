@@ -55,7 +55,7 @@
           </ul>
           <ul class="list-unstyled display-inline-block col-xs-3 p-xs-3 pl-xs-5" role="presentation">
             <?php
-            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 10,20");
+            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 10,10");
             while($row_child_cat = $get_child_cat->fetch()){
             $child_id = $row_child_cat->child_id;
             $child_url = $row_child_cat->child_url;
@@ -72,7 +72,7 @@
           </ul>
           <ul class="list-unstyled display-inline-block col-xs-3 p-xs-3 pl-xs-5" role="presentation">
             <?php
-            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 20,30");
+            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 20,10");
             while($row_child_cat = $get_child_cat->fetch()){
             $child_id = $row_child_cat->child_id;
             $child_url = $row_child_cat->child_url;
@@ -90,7 +90,7 @@
           </ul>
           <ul class="list-unstyled display-inline-block col-xs-3 p-xs-3 pl-xs-5" role="presentation">
             <?php
-            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 30,40");
+            $get_child_cat = $db->query("select * from categories_children where child_parent_id='$cat_id' LIMIT 30,10");
             while($row_child_cat = $get_child_cat->fetch()){
             $child_id = $row_child_cat->child_id;
             $child_url = $row_child_cat->child_url;

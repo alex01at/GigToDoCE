@@ -29,14 +29,17 @@
    if($insert_tip){
 
       if($payment_method == "shopping_balance"){
-         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"amount"=>$amount,"date"=>$date,"method"=>$payment_method));
+         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"reason"=>"order_tip","amount"=>$amount,"date"=>$date,"method"=>$payment_method));
       }else{
-         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"amount"=>$total_amount,"date"=>$date,"method"=>$payment_method));
+         $insert_purchase = $db->insert("purchases",array("seller_id"=>$buyer_id,"order_id"=>$order_id,"reason"=>"order_tip","amount"=>$total_amount,"date"=>$date,"method"=>$payment_method));
       }
+
+      // update seller account
+      $update_seller_account = $db->query("update seller_accounts set pending_clearance=pending_clearance+:p_plus,month_earnings=month_earnings+:m_plus where seller_id='$seller_id'",array("p_plus"=>$amount,"m_plus"=>$amount));
 
       // insert seller revenue
       $revenue_date = date("F d, Y", strtotime(" + $days_before_withdraw days"));
-      $end_date = date("F d, Y h:i:s", strtotime(" + $days_before_withdraw days"));
+      $end_date = date("F d, Y H:i:s", strtotime(" + $days_before_withdraw days"));
 
       $insert_revenue = $db->insert("revenues",array("seller_id" => $seller_id,"order_id" => $order_id,"reason" => "order_tip","amount" => $amount,"date" => $revenue_date,"end_date" => $end_date,"status" => "pending"));
 

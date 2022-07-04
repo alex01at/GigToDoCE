@@ -64,15 +64,10 @@ echo "<script>window.open('login','_self');</script>";
 
                             <div class="col-md-6">
                                 <select name="library" class="form-control">
-                                    <?php if($library == 'php_mailer'){ ?>
-                                        <option value="php_mailer"> Php Mailer </option>
-                                        <option value="swift_mailer"> Swift Mailer </option>
-                                    <?php }elseif($library == 'swift_mailer'){ ?>
-                                        <option value="swift_mailer"> Swift Mailer </option>
-                                        <option value="php_mailer"> Php Mailer </option>
-                                    <?php } ?>
+                                    <option value="php_mailer"> Php Mailer </option>
+                                    <option value="swift_mailer" <?= ($library == "swift_mailer")?"selected":""; ?>> Swift Mailer </option>
                                 </select>
-                                <small class="text-muted">If you select <b>swift mailer</b> then you must need to enable stmp also for it to work.</small>
+                                <small class="text-muted">If you select <b>Swift Mailer</b>, you need to enable SMTP also for it to work.</small>
                             </div>
 
                         </div><!--- form-group row Ends --->

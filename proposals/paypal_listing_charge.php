@@ -19,14 +19,19 @@ if(isset($_POST['paypal'])){
 	
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "featured_listing";
+	$data['content_id'] = $_SESSION['f_proposal_id'];
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
 	$data['name'] = $proposal_title;
 	$data['qty'] = 1;
 	$data['price'] = $featured_fee;
 	$data['sub_total'] = $featured_fee;
 	$data['total'] = $featured_fee + $processing_fee;
-	$data['cancel_url'] = "$site_url/proposals/view_proposals";
-	$data['redirect_url'] = "$site_url/paypal_order?proposal_id={$_SESSION['f_proposal_id']}&featured_listing=1";
+	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
+	$data['redirect_url'] = "$site_url/paypal_order?reference_no=$reference_no";
 	$payment->paypal($data,$processing_fee);
+
 }else{
 	echo "<script>window.open('../ndex','_self');</script>";
 }

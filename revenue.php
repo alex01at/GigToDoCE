@@ -139,17 +139,17 @@ $withdrawLimitText = "";
 				<i class="fa fa-paypal"></i> Paypal Account
 			</button>
 			<?php } ?>
-			<?php if($wish_do_manual_payouts == 1 & $enable_payoneer == 1) { ?>
+			<?php if($enable_payoneer == 1) { ?>
 			<button class="btn btn-success ml-2" data-toggle="modal" data-target="#payoneer_withdraw_modal">
 				<i class="fa fa-paper-plane-o"></i> Payoneer Account
 			</button>
 			<?php } ?>
-			<?php if($wish_do_manual_payouts == 1 & $enable_bank_transfer == "yes"){ ?>
+			<?php if($enable_bank_transfer == "yes"){ ?>
 			<button class="btn btn-success ml-2" data-toggle="modal" data-target="#bank_account_modal">
 				<i class="fa fa-university"></i> Bank Account
 			</button>
 			<?php } ?>
-			<?php if($wish_do_manual_payouts == 1 & $enable_moneygram == "yes"){ ?>
+			<?php if($enable_moneygram == "yes"){ ?>
 			<button class="btn btn-success ml-2" data-toggle="modal" data-target="#moneygram_modal">
 				<i class="fa fa-credit-card"></i> Moneygram
 			</button>
@@ -179,13 +179,13 @@ $withdrawLimitText = "";
 			</button>
 			<?php } ?>
 			
-			<?php if($wish_do_manual_payouts == 1 & $enable_bank_transfer == "yes"){ ?>
+			<?php if($enable_bank_transfer == "yes"){ ?>
 			<button class="btn btn-default ml-2" <?= $withdrawLimitText; ?>>
 				<i class="fa fa-university"></i> Bank Account
 			</button>
 			<?php } ?>
 
-			<?php if($wish_do_manual_payouts == 1 & $enable_moneygram == "yes"){ ?>
+			<?php if($enable_moneygram == "yes"){ ?>
 			<button class="btn btn-default ml-2" <?= $withdrawLimitText; ?>>
 				<i class="fa fa-credit-card"></i> Moneygram
 			</button>
@@ -259,17 +259,14 @@ $withdrawLimitText = "";
 					</div>
 					<div class="modal-body"><!-- modal-body Starts -->
 						<center><!-- center Starts -->
-                        <?php if(empty($login_seller_paypal_email)){ ?>
+                     <?php if(empty($login_seller_paypal_email)){ ?>
 							<p class="lead">
 								In order to transfer funds to your PayPal account, you will need to add your PayPal email in your
-								<a href="<?= $site_url; ?>/settings?account_settings" class="text-success">
-								account settings 
-								</a>
-								tab.
+								<a href="<?= $site_url; ?>/settings?account_settings" class="text-success">account settings</a> tab.
 							</p>
-                            <?php }else{ ?>
+                     <?php }else{ ?>
 							<p class="lead">
-								Your revenue funds will be transferred to:
+								Your revenue funds will be transferred to: 
 								<br> <strong> <?= $login_seller_paypal_email; ?> </strong>
 							</p>
 							<form action="<?= ($wish_do_manual_payouts == 1)?"withdraw_manual":"paypal_adaptive"; ?>" method="post">
@@ -289,7 +286,7 @@ $withdrawLimitText = "";
 									</div>
 								</div>
 							</form>
-                            <?php } ?>
+                     <?php } ?>
 						</center>
 					</div>
 					<div class="modal-footer">

@@ -72,10 +72,8 @@ while($row_notifications = $select_notofications->fetch()){
 		<?php 
 			if($reason == "message_spam" OR $reason == "order_spam"){
 				echo "View Conversation";
-			}elseif($reason == "seller_id"){
-				echo "View Id"; 
-			}elseif($reason == "offline_payment"){
-				echo "View Payment"; 
+			}elseif($reason == "payout_request"){
+				echo "View Payout"; 
 			}elseif($reason == "order" or $reason == "cancellation_request" or $reason == "decline_cancellation_request" or $reason == "accept_cancellation_request"){
 				echo "View Order"; 
 			}else{

@@ -50,7 +50,7 @@ require_once("functions/functions.php");
       <?php require_once("includes/top_sidebar.php"); ?>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-12 <?=($lang_dir == "right" ? 'order-1 order-sm-2':'')?>">
-      <div class="row flex-wrap" id="top_proposals">
+      <div class="row flex-wrap proposals" id="top_proposals">
       <?php get_top_proposals(); ?>
       </div>
       <div id="wait"></div>

@@ -19,7 +19,6 @@ $login_seller_id = $row_login_seller->seller_id;
 @$order_id = $input->get('order_id');
 
 $site_email_address = $row_general_settings->site_email_address;  
-$site_logo = $row_general_settings->site_logo;
 $order_auto_complete = $row_general_settings->order_auto_complete;
 
 $get_orders = $db->select("orders",array("order_id" => $order_id));
@@ -133,7 +132,7 @@ if(!empty($file)){
   }
 
   echo "
-    <a href='$d_file' class='d-block mt-2 ml-1' download>
+    <a href='orderIncludes/download?order_id=$order_id&c_id=$c_id' class='d-block mt-2 ml-1' target='_blank'>
       <i class='fa fa-download'></i> $file_name
     </a>
   ";
@@ -249,7 +248,7 @@ if(!empty($file)){
   }
 
   echo "
-    <a href='$d_file' class='d-block mt-2 ml-1' download>
+    <a href='orderIncludes/download?order_id=$order_id&c_id=$c_id' class='d-block mt-2 ml-1' target='_blank'>
       <i class='fa fa-download'></i> $file_name
     </a>
   ";
@@ -321,14 +320,11 @@ echo "message-div";
 
 <?php if(!empty($file)){ ?>
 
-<a href="<?= getImageUrl("order_conversations",$file); ?>" class="d-block mt-2 ml-1" download>
-
-<i class="fa fa-download"></i> <?= $file; ?>
-
+<a href="<?= "orderIncludes/download?order_id=$order_id&c_id=$c_id"; ?>" class="d-block mt-2 ml-1" target='_blank'>
+  <i class="fa fa-download"></i> <?= $file; ?>
 </a>
 
 <?php }else{ ?>
-
 
 <?php } ?>
 
@@ -389,7 +385,7 @@ echo "message-div";
 
 <?php if(!empty($file)){ ?>
 
-<a href="<?= getImageUrl("order_conversations",$file); ?>" class="d-block mt-2 ml-1" download>
+<a href="<?= "orderIncludes/download?order_id=$order_id&c_id=$c_id"; ?>" class="d-block mt-2 ml-1" target='_blank'>
 
 <i class="fa fa-download"></i> <?= $file; ?>
 
@@ -530,7 +526,7 @@ if($sender_id == $login_seller_id){
 
 <?php if(!empty($file)){ ?>
 
-<a href="<?= getImageUrl("order_conversations",$file); ?>" class="d-block mt-2 ml-1" download>
+<a href="<?= "orderIncludes/download?order_id=$order_id&c_id=$c_id"; ?>" class="d-block mt-2 ml-1" target='_blank'>
 
 <i class="fa fa-download"></i> <?= $file; ?>
 
@@ -618,7 +614,7 @@ echo "message-div";
 
 <?php if(!empty($file)){ ?>
 
-<a href="<?= getImageUrl("order_conversations",$file); ?>" class="d-block mt-2 ml-1" download>
+<a href="<?= "orderIncludes/download?order_id=$order_id&c_id=$c_id"; ?>" class="d-block mt-2 ml-1" target='_blank'>
   <i class="fa fa-download"></i> <?= $file; ?>
 </a>
 
@@ -688,7 +684,6 @@ The order funds have been refunded to your Shopping Balance.
 
   <p>
   Payment For This Order Was Refunded To Buyer's Shopping Balance. <br>
-
   For Any Further Assistance, Please Contact Our <a href="/customer_support" class="link">Customer Support.</a>
   </p>
 
@@ -722,9 +717,9 @@ The order funds have been refunded to your Shopping Balance.
     <div class="card-body">
       <center>
         <h4>  
-          <img src="images/svg/tip.svg" class="order-icon"/> Your buyer has given you a tip
+          <img src="images/svg/tip.svg" class="order-icon"/> <?= $lang['order_details']['seller_tip']['title']; ?>
         </h4>
-        <p class="text-muted">Congrats! You've just received a tip of</p>
+        <p class="text-muted"><?= $lang['order_details']['seller_tip']['desc']; ?></p>
         <h3 class="text-success mb-1"><?= showPrice($tip_amount); ?></h3>
       </center>
       <?php if(!empty($tip_message)){ ?>
@@ -754,7 +749,10 @@ The order funds have been refunded to your Shopping Balance.
     <div class="card-body text-center">
       <h4> 
         <img src="images/svg/tip.svg" class="order-icon" width="15" height="15"/>
-        You have given <?= showPrice($tip_amount); ?> tip to seller. 
+        <?php  
+          $t_amount = showPrice($tip_amount);
+          echo str_replace("{amount}",$t_amount,$lang['order_details']['tip_given']); 
+        ?>
       </h4>
     </div>
   </div>

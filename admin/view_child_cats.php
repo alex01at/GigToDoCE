@@ -95,8 +95,6 @@ echo "<script>window.open('login','_self');</script>";
 
                     <?php
 
-                        $i = 0;
-
                         $per_page = 10;
 
                         if(isset($_GET['view_child_cats'])){
@@ -110,6 +108,8 @@ echo "<script>window.open('login','_self');</script>";
                         $page = 1;
                             
                         }
+
+                        $i = ($page*$per_page)-10;
 
                         /// Page will start from 0 and multiply by per page
 

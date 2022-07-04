@@ -272,18 +272,23 @@ echo "<script>window.open('login','_self');</script>";
   <?php if($a_customer_support == 1){ ?>
 
   <li class="menu-item-has-children dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" title="Customer Support"> <i class="menu-icon fa fa-phone-square"></i> Customer Support</a>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" title="Customer Support"> <i class="menu-icon fa fa-phone-square"></i> Customer Support
+        <?php if(!$count_support_tickets == 0){ ?>
+          <span class="badge badge-success mr-3"><?= $count_support_tickets; ?></span>
+        <?php } ?>
+      </a>
       <ul class="sub-menu children dropdown-menu">
-          <li><i class="fa  fa-arrow-circle-right"></i><a href="index?customer_support_settings" title="Customer Support Settings">Support Settings
-          </a>
+          <li>
+            <i class="fa  fa-arrow-circle-right"></i>
+            <a href="index?customer_support_settings" title="Customer Support Settings">
+              Support Settings
+            </a>
           </li>
           <li><i class="fa  fa-arrow-circle-right"></i><a href="index?view_support_requests" title="Customer Support Requests">
               Support Requests
-              <?php
-                  if(!$count_support_tickets == 0){
-              ?>
-      <span class="badge badge-success"><?= $count_support_tickets; ?></span>
-             <?php } ?>
+              <?php if(!$count_support_tickets == 0){ ?>
+                <span class="badge badge-success"><?= $count_support_tickets; ?></span>
+              <?php } ?>
               </a>
           </li>
           <li><i class="fa  fa-arrow-circle-right"></i><a href="index?insert_enquiry_type"> Insert Enquiry Type</a>

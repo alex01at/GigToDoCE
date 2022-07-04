@@ -7,10 +7,10 @@ if(isset($_SESSION['seller_user_name'])){
 	echo "<script> window.open('index.php','_self'); </script>";
 }
 
-$code = $input->get('code');
 $username = $input->get('username');
+$code = $input->get('code');
 
-$select_seller = $db->select("sellers",array("seller_user_name" => $username));
+$select_seller = $db->select("sellers",array("seller_user_name" => $username,"seller_pass" => $code));
 $count_seller = $select_seller->rowCount();
 if($count_seller == 0){
 	echo "
@@ -18,6 +18,7 @@ if($count_seller == 0){
 	  	alert('Your Change-Password Link Is Invalid.');
 		window.open('index.php','_self');
 	</script>";
+   exit();
 }
 
 $row_seller = $select_seller->fetch();

@@ -107,7 +107,7 @@ echo "<script>window.open('notifications','_self')</script>";
 					$sender_user_name = @$row_sender->seller_user_name;
 					$sender_image = @getImageUrl2("sellers","seller_image",$row_sender->seller_image);
 
-					if( strpos($sender_id,'admin') !== false){
+					if(strpos($sender_id,'admin') !== false){
 						$admin_id = trim($sender_id, "admin_");
 						$get_admin = $db->select("admins",array("admin_id" => $admin_id));
 						$sender_user_name = "Admin";

@@ -48,5 +48,5 @@
   <?php require_once("userMenuLinks.php"); ?>
 </li>
 <li class="logged-in-link mr-lg-0 mr-2 d-none d-sm-block d-md-block d-lg-block">
-  <a class="menuItem btn btn-success text-white"><?php showPrice($current_balance); ?></a>
+  <a class="menuItem btn btn-success text-white"><?= showPrice($current_balance); ?></a>
 </li>

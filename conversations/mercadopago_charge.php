@@ -23,11 +23,20 @@ if(isset($_POST['mercadopago'])){
 
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "message_offer";
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
+	$data['content_id'] = $_SESSION['c_message_offer_id'];
 	$data['title'] = $proposal_title;
 	$data['qty'] = 1;
 	$data['price'] = $amount+$processing_fee;
-	$data['cancel_url'] = "$site_url/conversations/inbox?single_message_id={$_SESSION['c_single_message_id']}";
-	$data['redirect_url'] = "$site_url/mercadopago_order?message_offer_id={$_SESSION['c_message_offer_id']}";
+	$data['sub_total'] = $amount;
+	$data['total'] = $amount+$processing_fee;
+
+   $lastId = $db->query("SHOW TABLE STATUS LIKE 'temp_orders'")->fetch(PDO::FETCH_ASSOC)['Auto_increment'];
+
+   $data['cancel_url'] = "$site_url/cancel_payment?id=$lastId";
+	$data['redirect_url'] = "$site_url/mercadopago_order?reference_no=$reference_no";
 	$payment->mercadopago($data,$processing_fee);
 
 }else{

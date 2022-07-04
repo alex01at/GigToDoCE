@@ -54,10 +54,12 @@ $count_seller = $select_seller->rowCount();
   <link href="styles/owl.carousel.css" rel="stylesheet">
   <link href="styles/owl.theme.default.css" rel="stylesheet">
   <link href="styles/sweat_alert.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles/chosen.css">
   <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
   <script src="js/ie.js"></script>
   <script type="text/javascript" src="js/sweat_alert.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js"></script>
   <?php if(!empty($site_favicon)){ ?>
   <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
@@ -176,37 +178,71 @@ $count_seller = $select_seller->rowCount();
 </div> <!-- Container ends -->
 <?php require_once("includes/footer.php"); ?>
 <script type="text/javascript">
+
+$("select[name='language_id']").chosen({width: "100%"});
+$("select[name='skill_id']").chosen({width: "100%"});
+
+$("select[name='language_id']").change(function(){
+  var value = $(this).val();
+  if(value == "custom"){
+    $('.language-title').removeClass("d-none");
+    $('.language-title input').attr('required','required');
+  }else{
+    $('.language-title').addClass("d-none");
+    $('.language-title input').removeAttr('required');
+  }
+});
+
+$("select[name='skill_id']").change(function(){
+
+  var value = $(this).val();
+  if(value == "custom"){
+    $('.skill-name').removeClass("d-none");
+    $('.skill-name input').attr('required','required');
+  }else{
+    $('.skill-name').addClass("d-none");
+    $('.skill-name input').removeAttr('required');
+  }
+
+});
+
 $(document).ready(function(){
+
 $('#good').hide();
 $('#bad').hide();
+
 $('.all').click(function(){
-$("#dropdown-button").html("Most Recent");
-$(".all").attr('class','dropdown-item all active');
-$(".bad").attr('class','dropdown-item bad');
-$(".good").attr('class','dropdown-item good');
-$("#all").show();
-$("#good").hide();
-$("#bad").hide();
-}); 
-$('.good').click(function(){
-$("#dropdown-button").html("Positive Reviews");
-$(".all").attr('class','dropdown-item all');
-$(".bad").attr('class','dropdown-item bad');
-$(".good").attr('class','dropdown-item good active');
-$("#all").hide();
-$("#good").show();
-$("#bad").hide();
-}); 
-$('.bad').click(function(){
-$("#dropdown-button").html("Negative Reviews");
-$(".all").attr('class','dropdown-item all');
-$(".bad").attr('class','dropdown-item bad active');
-$(".good").attr('class','dropdown-item good');
-$("#all").hide();
-$("#good").hide();
-$("#bad").show();
-}); 
+  $("#dropdown-button").html("Most Recent");
+  $(".all").attr('class','dropdown-item all active');
+  $(".bad").attr('class','dropdown-item bad');
+  $(".good").attr('class','dropdown-item good');
+  $("#all").show();
+  $("#good").hide();
+  $("#bad").hide();
 });
+
+$('.good').click(function(){
+  $("#dropdown-button").html("Positive Reviews");
+  $(".all").attr('class','dropdown-item all');
+  $(".bad").attr('class','dropdown-item bad');
+  $(".good").attr('class','dropdown-item good active');
+  $("#all").hide();
+  $("#good").show();
+  $("#bad").hide();
+}); 
+
+$('.bad').click(function(){
+  $("#dropdown-button").html("Negative Reviews");
+  $(".all").attr('class','dropdown-item all');
+  $(".bad").attr('class','dropdown-item bad active');
+  $(".good").attr('class','dropdown-item good');
+  $("#all").hide();
+  $("#good").hide();
+  $("#bad").show();
+}); 
+
+});
+
 </script>
 </body>
 </html>

@@ -226,7 +226,7 @@ $s3 = S3Client::factory(
 	return false;
 }
 
-function uploadToS3($KeyFile,$fileTmp,$fileContent=""){
+function uploadToS3($KeyFile,$fileTmp,$fileContent="",$private=''){
 	global $config;
 	global $dir;
 	global $s3;
@@ -235,13 +235,19 @@ function uploadToS3($KeyFile,$fileTmp,$fileContent=""){
 	global $s3_access_sceret;
 	global $s3_bucket;
 
-	if ($enable_s3 == 1 and (!empty($s3_access_key) and !empty($s3_access_sceret) and !empty($s3_bucket))) {
-      
+	if($enable_s3 == 1 and (!empty($s3_access_key) and !empty($s3_access_sceret) and !empty($s3_bucket))) {
+
+      if(strpos($KeyFile,'order_files') !== false){
+			$ACL = "private";
+		}else{
+			$ACL = "public-read";
+		}
+
 	   $object = array(
-	    'Bucket'=> $config["bucket"],
+	    'Bucket' => $config["bucket"],
 	    'Key' =>  $KeyFile,
 	    'StorageClass' => 'STANDARD',
-	    'ACL'    => 'public-read'
+	    'ACL' => $ACL
 		);
 
 		if (empty($fileContent)) {
@@ -251,12 +257,12 @@ function uploadToS3($KeyFile,$fileTmp,$fileContent=""){
 		}
 
 		// echo $enable_s3;
-		try {
+		try{
 		  $s3->putObject($object);
 		  return true;
-		} catch (S3Exception $error) {
+		}catch(S3Exception $error) {
 		  return false;
-		} catch (Exception $error) {
+		}catch(Exception $error) {
 		  return false;
 		}
 

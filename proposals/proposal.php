@@ -16,6 +16,16 @@ if($deviceType == "phone"){
 	$proposals_stylesheet = '<link href="styles/desktop_proposals.css" rel="stylesheet">'; 
 }
 
+function isHTML($string){
+ if($string != strip_tags($string)){
+  // is HTML
+  return true;
+ }else{
+  // not HTML
+  return false;
+ }
+}
+
 // $deviceType = "phone";
 
 $username = $input->get('username');
@@ -28,9 +38,9 @@ $proposal_url = urlencode($input->get('proposal_url'));
 if(isset($_SESSION['admin_email'])){
 	$get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' AND NOT proposal_status='deleted'",array("url"=>$proposal_url));
 }elseif(isset($_SESSION['seller_user_name']) AND $_SESSION['seller_user_name'] == $username){
-	$get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('trash')",array("url"=>$proposal_url));
+	$get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('trash','deleted')",array("url"=>$proposal_url));
 }else{
-	$get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('draft','pause','pending','trash','declined','modification')",array("url"=>$proposal_url));
+	$get_proposal = $db->query("select * from proposals where proposal_url=:url and proposal_seller_id='$proposal_seller_id' and not proposal_status in ('draft','admin_pause','pause','pending','trash','declined','modification','trash','deleted')",array("url"=>$proposal_url));
 }
 $count_proposal = $get_proposal->rowCount();
 if($count_proposal == 0){
@@ -50,12 +60,16 @@ $proposal_img1 = $row_proposal->proposal_img1;
 $proposal_img2 = $row_proposal->proposal_img2;
 $proposal_img3 = $row_proposal->proposal_img3;
 $proposal_img4 = $row_proposal->proposal_img4;
+$proposal_video = $row_proposal->proposal_video;
 if($paymentGateway == 1){
 	$proposal_video_type = $row_proposal->proposal_video_type;
 }else{
 	$proposal_video_type = "uploaded";
+	if(isHTML($proposal_video)){
+		$proposal_video = "";
+	}
 }
-$proposal_video = $row_proposal->proposal_video;
+
 $proposal_desc = $row_proposal->proposal_desc;
 $proposal_short_desc = strip_tags(substr($row_proposal->proposal_desc,0,160));
 $proposal_tags = $row_proposal->proposal_tags;
@@ -202,6 +216,8 @@ if($videoPlugin == 1){
 	$enableVideo = 0;
 }
 
+$show_img1 = getImageUrl2("proposals","proposal_img1",$proposal_img1);
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -212,6 +228,7 @@ if($videoPlugin == 1){
 <meta name="description" content="<?= $proposal_short_desc; ?>">
 <meta name="keywords" content="<?= $proposal_tags; ?>">
 <meta name="author" content="<?= $proposal_seller_user_name; ?>">
+<meta property="og:image" content="<?= $show_img1; ?>"/>
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 <link href="../../styles/bootstrap.css" rel="stylesheet">
 <link href="../../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
@@ -272,50 +289,50 @@ if($deviceType == "phone"){
 </div><!-- report-modal modal fade Ends -->
 
 <div id="report-modal" class="modal fade"><!-- report-modal modal fade Starts -->
-<div class="modal-dialog"><!-- modal-dialog Starts -->
-<div class="modal-content"><!-- modal-content Starts -->
-<div class="modal-header p-2 pl-3 pr-3"><!-- modal-header Starts -->
-Report This Proposal <button class="close" data-dismiss="modal"><span>&times;</span></button>
-</div><!-- modal-header Ends -->
-<div class="modal-body"><!-- modal-body p-0 Starts -->
-<h6>Let us know why you would like to report this Proposal.</h6>
-<form action="" method="post">
-<div class="form-group mt-3"><!--- form-group Starts --->
-<select class="form-control float-right" name="reason" required="">
-<option value="">Select</option>
-<option>Non Original Content</option>
-<option>Inappropriate Proposal</option>
-<option>Trademark Violation</option>
-<option>Copyrights Violation</option>
-</select>
-</div><!--- form-group Ends --->
-<br>
-<br>
-<div class="form-group mt-1 mb-3"><!--- form-group Starts --->
-<label> Additional Information </label>
-<textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
-</div><!--- form-group Ends --->
-<button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">Submit Report</button>
-</form>
-<?php 
-if(isset($_POST['submit_report'])){
-	$reason = $input->post('reason');
-	$additional_information = $input->post('additional_information');
-	$date = date("F d, Y");
-	$insert = $db->insert("reports",array("reporter_id"=>$login_seller_id,"content_id"=>$proposal_id,"content_type"=>"proposal","reason"=>$reason,"additional_information"=>$additional_information,"date"=>$date));
+	<div class="modal-dialog"><!-- modal-dialog Starts -->
+	<div class="modal-content"><!-- modal-content Starts -->
+		<div class="modal-header p-2 pl-3 pr-3"><!-- modal-header Starts -->
+			Report This Proposal <button class="close" data-dismiss="modal"><span>&times;</span></button>
+		</div><!-- modal-header Ends -->
+		<div class="modal-body"><!-- modal-body p-0 Starts -->
+			<h6>Let us know why you would like to report this Proposal.</h6>
+			<form action="" method="post">
+			<div class="form-group mt-3"><!--- form-group Starts --->
+			<select class="form-control float-right" name="reason" required="">
+			<option value="">Select</option>
+			<option>Non Original Content</option>
+			<option>Inappropriate Proposal</option>
+			<option>Trademark Violation</option>
+			<option>Copyrights Violation</option>
+			</select>
+			</div><!--- form-group Ends --->
+			<br>
+			<br>
+			<div class="form-group mt-1 mb-3"><!--- form-group Starts --->
+			<label> Additional Information </label>
+			<textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
+			</div><!--- form-group Ends --->
+			<button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">Submit Report</button>
+			</form>
+			<?php 
+			if(isset($_POST['submit_report'])){
+				$reason = $input->post('reason');
+				$additional_information = $input->post('additional_information');
+				$date = date("F d, Y");
+				$insert = $db->insert("reports",array("reporter_id"=>$login_seller_id,"content_id"=>$proposal_id,"content_type"=>"proposal","reason"=>$reason,"additional_information"=>$additional_information,"date"=>$date));
 
-	$insert_notification = $db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $proposal_id,"reason" => "proposal_report","date" => $date,"status" => "unread"));
+				$insert_notification = $db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $proposal_id,"reason" => "proposal_report","date" => $date,"status" => "unread"));
 
-	if($insert_notification){
-		send_report_email("proposal",$proposal_seller_user_name,$proposal_url,$date);
-		echo "<script>alert('Your Report Has Been Successfully Submitted.')</script>";
-		echo "<script>window.open('$proposal_url','_self')</script>";
-	}
-}
-?>
-</div><!-- modal-body p-0 Ends -->
-</div><!-- modal-content Ends -->
-</div><!-- modal-dialog Ends -->
+				if($insert_notification){
+					send_report_email("proposal",$proposal_seller_user_name,$proposal_url,$date);
+					echo "<script>alert('Your Report Has Been Successfully Submitted.')</script>";
+					echo "<script>window.open('$proposal_url','_self')</script>";
+				}
+			}
+			?>
+			</div><!-- modal-body p-0 Ends -->
+		</div><!-- modal-content Ends -->
+	</div><!-- modal-dialog Ends -->
 </div><!-- report-modal modal fade Ends -->
 <script type="text/javascript">
 

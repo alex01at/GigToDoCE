@@ -1,3 +1,4 @@
+
 <?php if($seller_id == $login_seller_id){ ?>
 
 <?php if($order_status == "progress" or $order_status == "revision requested" or $order_status == "delivered"){ ?>
@@ -60,6 +61,9 @@
                   uploadToS3("order_files/$d_file",$d_file_tmp);
                 }
               
+              }else{
+                $watermark = 0;
+                $watermark_file = "";
               }
 
               $last_update_date = date("h:m: F d Y");
@@ -115,7 +119,11 @@
 
         <?php if($order_revisions != "unlimited" AND $order_revisions == $order_revisions_used){ ?>
           
-          <p class="lead">You have exhausted all your revision requests for this order. <b><?= $seller_user_name; ?></b> only provisioned <?= $order_revisions; ?> revisions for this order</p>
+          <?php if($order_revisions == 0){ ?>
+            <p class="lead">This Order Has No Revisions.</p>
+          <?php }else{ ?>
+            <p class="lead">You have exhausted all your revision requests for this order. <b><?= $seller_user_name; ?></b> only provisioned <?= $order_revisions; ?> revisions for this order</p>
+          <?php } ?>
 
         <?php }else{ ?>
 
@@ -145,7 +153,11 @@
             }else{
 
               if(!empty($revison_file)){
+
+                $revison_file = pathinfo($revison_file, PATHINFO_FILENAME);
+                $revison_file = $revison_file."_".time().".$file_extension";
                 uploadToS3("order_files/$revison_file",$revison_file_tmp);
+                
               }
               // move_uploaded_file($revison_file_tmp,"order_files/$revison_file");
 
@@ -159,8 +171,10 @@
                 $insert_notification = $db->insert("notifications",array("receiver_id" => $seller_id,"sender_id" => $buyer_id,"order_id" => $order_id,"reason" => "order_revision","date" => $n_date,"status" => "unread"));
 
                 $update_order = $db->update("orders",array("order_status"=>"revision requested"),array("order_id"=>$order_id));
-
-                $update_order = $db->query("update orders set order_revisions_used=order_revisions_used+1 AND order_id='$order_id'");
+                
+                if($order_revisions != "unlimited"){
+                  $update_order = $db->query("update orders set order_revisions_used=order_revisions_used+1 Where order_id='$order_id'");
+                }
 
                 $data = [];
                 $data['template'] = "revision_requested";

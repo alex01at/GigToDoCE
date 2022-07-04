@@ -2541,17 +2541,17 @@ screen and (orientation: landscape) and (min-device-height: 740px) {
 }
 
 @media only screen and (min-width: 280px) and (max-width: 479px) {
-    .is-responsive .gnav-header .loggedInLogo {
+/*    .is-responsive .gnav-header .loggedInLogo {
         margin: 0px !important;
         width: 8px !important;
         cursor: pointer;
-    }
+    }*/
 }
 
 @media only screen and (min-width: 480px) and (max-width: 639px) {
     .is-responsive .gnav-header .loggedInLogo {
-        margin: 0px !important;
-        width: 8px !important;
+        /*margin: 0px !important;*/
+        width: 20px !important;
         cursor: pointer;
     }
     .ui-toolkit #gnav-header #gnav-header-inner .search-browse-wrapper {
@@ -2563,11 +2563,11 @@ screen and (orientation: landscape) and (min-device-height: 740px) {
 }
 
 @media only screen and (min-width: 640px) and (max-width: 1024px) {
-    .is-responsive .gnav-header .loggedInLogo {
+    /*.is-responsive .gnav-header .loggedInLogo {
         margin: 0px !important;
         width: 8px !important;
         cursor: pointer;
-    }
+    }*/
     .ui-toolkit #gnav-header #gnav-header-inner .search-browse-wrapper {
         padding: 0 18px;
         margin: 0 -12px;
@@ -10257,6 +10257,14 @@ body.is-global-nav #new-seller-header {
     
 }
 
+.gigtodo-logo-svg-logged-in .text-logo {
+    width: 150px;
+    margin-top: 20px;
+    font-size: 30px;
+    position: relative;
+    top: 18px;
+}
+
 @media screen and (min-width: 901px) {
     .gigtodo-logo-svg-logged-in .desktop{
        margin-top: 21px;
@@ -10269,9 +10277,9 @@ body.is-global-nav #new-seller-header {
        display: none;
     }
     .gigtodo-logo-svg-logged-in .mobile{
-        margin-top: 16px;
-        margin-left: -1px;
-       display: unset !important;
+        margin-top: 18px;
+        margin-left: -9px;
+        display: unset !important;
     }
     
     .gigtodo-logo-svg-logged-in .mobile-full{
@@ -10822,10 +10830,10 @@ body.is-global-nav #new-seller-header {
 }
 
 @media screen and (max-width: 420px) {
-        .gigtodo-logo-svg-logged-in .mobile{
-        margin-top: 0px;
-        margin-left: 3px;
-       display: unset !important;
+    .gigtodo-logo-svg-logged-in .mobile{
+        margin-top: -4px;
+        margin-left: -9px;
+        display: unset !important;
     }
 
     .gnav-header #mobilemenu{
@@ -10840,10 +10848,10 @@ body.is-global-nav #new-seller-header {
         display: unset !important;
     }
     .is-responsive .gnav-header .loggedInLogo{
-        margin: 0px !important;
+        /*margin: 0px !important;
         margin-right: 2px !important;
         width: 8px !important;
-        cursor: pointer;
+        cursor: pointer;*/
     }
     .gnav-header #gigtodo-logo {
         margin-right: 5px !important;

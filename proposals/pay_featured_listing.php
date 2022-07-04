@@ -19,6 +19,9 @@ $paypal_sandbox = $row_payment_settings->paypal_sandbox;
 $featured_fee = $row_payment_settings->featured_fee;
 $featured_duration = $row_payment_settings->featured_duration;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
+$dusupay_method = $row_payment_settings->dusupay_method;
+$dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
+
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_mercadopago = $row_payment_settings->enable_mercadopago;
 $payza_test = $row_payment_settings->payza_test;
@@ -68,7 +71,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 					<h4><b>SUMMARY:</b></h4>
 					<p><b>Proposal Title:</b> <?= $proposal_title; ?></p>
 					<p><b>Feature Listing Fee:</b> <?= showPrice($featured_fee); ?></p>
-					<p><b>Processing Fee:</b> <?= showPrice($processing_fee); ?></p>
+					<p class="processing-fee"><b>Processing Fee:</b> <?= showPrice($processing_fee); ?></p>
 					<p><b>Listing Duration:</b> <?= $featured_duration; ?> Days.</p>
 				</div>
 			</div>
@@ -253,163 +256,180 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
       </form>
       <?php } ?>
 
-    <?php if($enable_coinpayments == "yes"){ ?>
-		<form action="https://www.coinpayments.net/index.php" method="post" id="coinpayments-form">
-			<input type="hidden" name="cmd" value="_pay_simple">
-			<input type="hidden" name="reset" value="1">
-			<input type="hidden" name="merchant" value="<?= $coinpayments_merchant_id; ?>">
-			<input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
-			<input type="hidden" name="item_desc" value="Feature Listing Payment">
-			<input type="hidden" name="item_number" value="1">
-			<input type="hidden" name="currency" value="<?= $coinpayments_currency_code; ?>">
-			<input type="hidden" name="amountf" value="<?= $featured_fee; ?>">
-			<input type="hidden" name="want_shipping" value="0">
-			<input type="hidden" name="taxf" value="<?= $processing_fee; ?>">
-			<input type="hidden" name="success_url" value="<?= $site_url; ?>/crypto_order?proposal_id=<?= $proposal_id; ?>&featured_listing=1">
-			<input type="hidden" name="cancel_url" value="<?= $site_url; ?>/proposals/view_proposals.php">
-			<input type="submit" class="btn btn-success btn-block" value="<?= $lang['button']['pay_with_coinpayments']; ?>">
-		</form>
-        <?php } ?>
+      <?php if($enable_coinpayments == "yes"){ ?>
+
+      <form action="crypto_charge" method="post" id="coinpayments-form">
+         <button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
+      </form>
+
+      <?php } ?>
+
 		<?php if($enable_paystack == "yes"){ ?>
 		<form action="paystack_listing_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
-		 <button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
+   		<button type="submit" name="paystack" class="btn btn-success">
+            <?= $lang['button']['pay_with_paystack']; ?>
+         </button>
 		</form><!--- paystack-form Ends --->
 		<?php } ?>
-        <?php if($enable_dusupay == "yes"){ ?>
-		<form method="post" action="dusupay_charge" id="mobile-money-form">
-		<input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-success">
-		</form>
-        <?php } ?>
-        </div>
+
+      <?php 
+         if($enable_dusupay == "yes"){
+            $main_modal = "featured-listing-modal";
+            $form_action = "dusupay_charge";
+            include("../includes/comp/dusupay_method2.php");
+         }
+      ?>
+
+      </div>
 	</div>
 </div>
 </div>
+
+<?php include("../includes/comp/mobile_money_modal.php"); ?>
+
 <script>
 $(document).ready(function(){
-$("#featured-listing-modal").modal("show");
-<?php if($current_balance >= $featured_fee){ ?>
-$('#paypal-form').hide();
-$('#credit-card-form').hide();
-$('#2checkout-form').hide();
-$('#coinpayments-form').hide();
-$('#paystack-form').hide();
-$('#mercadopago-form').hide();
-$('#mobile-money-form').hide();
-<?php }else{ ?>
-$('#shopping-balance-form').hide();
-<?php } ?>
+   $("#featured-listing-modal").modal("show");
 
-<?php if($current_balance < $featured_fee){ ?>
-<?php if($enable_paypal == "yes"){ ?>
-$('#credit-card-form').hide();
-$('#2checkout-form').hide();
-$('#mobile-money-form').hide();
-$('#mercadopago-form').hide();
-$('#coinpayments-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "yes"){ ?>
-$('#2checkout-form').hide();
-$('#coinpayments-form').hide();
-$('#mercadopago-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
-$('#coinpayments-form').hide();
-$('#mercadopago-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
-$('#coinpayments-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
-$('#mobile-money-form').hide();
-<?php } ?>
-<?php } ?>
+   <?php if($current_balance >= $featured_fee){ ?>
+      $('.processing-fee').hide();
+      $('#paypal-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
+   <?php }else{ ?>
+      $('#shopping-balance-form').hide();
+   <?php } ?>
 
-$('#shopping-balance').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').show();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').hide();
-});
-$('#paypal').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').show();
-	$('#shopping-balance-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').hide();
-});
-$('#credit-card').click(function(){
-	$('#credit-card-form').show();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-   $('#2checkout-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').hide();
-});
-$('#2checkout').click(function(){
-	$('.processing-fee').show();
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').show();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-});
-$('#coinpayments').click(function(){
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-    $('#coinpayments-form').show();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#shopping-balance-form').hide();
-});
-$('#mercadopago').click(function(){
-	$('#mobile-money-form').hide();
-	$('#paypal-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').show();
-	$('#shopping-balance-form').hide();
-});
-$('#paystack').click(function(){
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').show();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-});
-$('#mobile-money').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').show();
-});
+   <?php if($current_balance < $featured_fee){ ?>
+      <?php if($enable_paypal == "yes"){ ?>
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#mobile-money-form').hide();
+      $('#mercadopago-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "yes"){ ?>
+      $('#2checkout-form').hide();
+      $('#coinpayments-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
+      $('#coinpayments-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
+      $('#coinpayments-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
+      $('#mobile-money-form').hide();
+      <?php } ?>
+   <?php } ?>
+
+   $('#shopping-balance').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').show();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').hide();
+      $('.processing-fee').hide();
+   });
+
+   $('#paypal').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').show();
+   	$('#shopping-balance-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').hide();
+      $('.processing-fee').show();
+   });
+
+   $('#credit-card').click(function(){
+   	$('#credit-card-form').show();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+      $('#2checkout-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').hide();
+      $('.processing-fee').show();
+   });
+
+   $('#2checkout').click(function(){
+   	$('.processing-fee').show();
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').show();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+      $('.processing-fee').show();
+   });
+
+   $('#coinpayments').click(function(){
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+       $('#coinpayments-form').show();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#shopping-balance-form').hide();
+   });
+
+   $('#mercadopago').click(function(){
+   	$('#mobile-money-form').hide();
+   	$('#paypal-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').show();
+   	$('#shopping-balance-form').hide();
+      $('.processing-fee').show();
+   });
+
+   $('#paystack').click(function(){
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').show();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+      $('.processing-fee').show();
+   });
+
+   $('#mobile-money').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').show();
+      $('.processing-fee').show();
+   });
+
 });
 </script>

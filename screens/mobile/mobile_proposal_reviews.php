@@ -4,7 +4,7 @@
 
 <?php
 
-$select_buyer_reviews = $db->select("buyer_reviews",array("proposal_id" => $proposal_id));
+$select_buyer_reviews = $db->select("buyer_reviews",array("proposal_id" => $proposal_id),"DESC");
 
 $count_reviews = $select_buyer_reviews->rowCount();
 
@@ -140,7 +140,7 @@ echo " <img class='rating' src='../../images/user_rate_blank.png' > ";
 
 <?php
 
-$select_buyer_reviews = $db->query("select * from buyer_reviews where proposal_id='$proposal_id' AND (buyer_rating='5' or buyer_rating='4')");
+$select_buyer_reviews = $db->query("select * from buyer_reviews where proposal_id='$proposal_id' AND (buyer_rating='5' or buyer_rating='4') order by 1 DESC");
 
 $count_reviews = $select_buyer_reviews->rowCount();
 
@@ -281,7 +281,7 @@ echo " <img class='rating' src='../../images/user_rate_blank.png' > ";
 
 <?php
 
-$select_buyer_reviews = $db->query("select * from buyer_reviews where proposal_id='$proposal_id' AND (buyer_rating='1' or buyer_rating='2' or buyer_rating='3')");
+$select_buyer_reviews = $db->query("select * from buyer_reviews where proposal_id='$proposal_id' AND (buyer_rating='1' or buyer_rating='2' or buyer_rating='3') order by 1 DESC");
 
 $count_reviews = $select_buyer_reviews->rowCount();
 

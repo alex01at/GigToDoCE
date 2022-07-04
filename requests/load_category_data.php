@@ -75,22 +75,18 @@ $request_budget = $row_requests->request_budget;
 $request_file = $row_requests->request_file;
 $request_date = $row_requests->request_date;
 
-
 $get_meta = $db->select("cats_meta",array("cat_id" => $cat_id, "language_id" => $siteLanguage));
 $row_meta = $get_meta->fetch();
 $cat_title = $row_meta->cat_title;
-
 
 $get_meta = $db->select("child_cats_meta",array("child_id" => $child_id, "language_id" => $siteLanguage));
 $row_meta = $get_meta->fetch();
 $child_title = $row_meta->child_title;
 
-
 $select_request_seller = $db->select("sellers",array("seller_id" => $seller_id));
 $row_request_seller = $select_request_seller->fetch();
 $request_seller_user_name = $row_request_seller->seller_user_name;
 $request_seller_image = getImageUrl2("sellers","seller_image",$row_request_seller->seller_image);
-
 
 $count_send_offers = $db->count("send_offers",array("request_id" => $request_id));
 $count_offers = $db->count("send_offers",array("request_id" => $request_id,"sender_id" => $login_seller_id));
@@ -103,13 +99,9 @@ if($count_offers == 0){
 <td>
 
 <?php if(!empty($request_seller_image)){ ?>
-
-<img src="../user_images/<?= $request_seller_image; ?>" class="request-img rounded-circle" >
-
+	<img src="<?= $request_seller_image; ?>" class="request-img rounded-circle" >
 <?php }else{ ?>
-
-<img src="../user_images/empty-image.png" class="request-img rounded-circle" >
-
+	<img src="../user_images/empty-image.png" class="request-img rounded-circle" >
 <?php } ?>
 
 <div class="request-description"><!-- request-description Starts -->
@@ -169,13 +161,13 @@ $<?php if(!empty($request_budget)){ ?>
 <?php if($login_seller_offers == "0"){ ?>
 
 <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>" data-toggle="modal" data-target="#quota-finish">
-Send Offer
+<?= $lang['button']['send_offer']; ?>
 </button>
 
 <?php }else{ ?>
 
 <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>">
-Send Offer
+<?= $lang['button']['send_offer']; ?>
 </button>
 
 <?php } ?>

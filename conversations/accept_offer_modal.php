@@ -1,10 +1,12 @@
 <?php
+
 session_start();
 require_once("../includes/db.php");
 require_once("../functions/processing_fee.php");
 if(!isset($_SESSION['seller_user_name'])){
-echo "<script>window.open('../login','_self')</script>";
+  echo "<script>window.open('../login','_self')</script>";
 }
+
 $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
@@ -16,13 +18,18 @@ $enable_paypal = $row_payment_settings->enable_paypal;
 $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;
+
 if($paypal_sandbox == "on"){
-   $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+  $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 }elseif($paypal_sandbox == "off"){
-   $paypal_url = "https://www.paypal.com/cgi-bin/webscr";	
+  $paypal_url = "https://www.paypal.com/cgi-bin/webscr";	
 }
+
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
+$dusupay_method = $row_payment_settings->dusupay_method;
+$dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
+
 $enable_mercadopago = $row_payment_settings->enable_mercadopago;
 $payza_test = $row_payment_settings->payza_test;
 $payza_currency_code = $row_payment_settings->payza_currency_code;
@@ -33,6 +40,16 @@ $coinpayments_currency_code = $row_payment_settings->coinpayments_currency_code;
 $enable_paystack = $row_payment_settings->enable_paystack;
 if($paymentGateway == 1){
 	$enable_2checkout = $row_payment_settings->enable_2checkout;
+
+   $get_plugin = $db->query("select * from plugins where folder='paymentGateway'");
+   $row_plugin = $get_plugin->fetch();
+   $paymentGatewayVersion = $row_plugin->version;
+   if($paymentGatewayVersion >= 1.2){
+      $enable_2checkout = $row_payment_settings->enable_2checkout;
+   }else{
+      $enable_2checkout = "no";
+   }
+
 }else{
 	$enable_2checkout = "no"; 
 }
@@ -242,18 +259,18 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 		data-allow-remember-me="false">
 		<script>
 		$(document).ready(function() {
-		            $('.stripe-submit').on('click', function(event) {
-		                event.preventDefault();
-		                var $button = $(this),
-		                    $form = $button.parents('form');
-		                var opts = $.extend({}, $button.data(), {
-		                    token: function(result) {
-		                        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-		                    }
-		                });
-		                StripeCheckout.open(opts);
-		            });
-		        });
+         $('.stripe-submit').on('click', function(event) {
+                event.preventDefault();
+                var $button = $(this),
+                    $form = $button.parents('form');
+                var opts = $.extend({}, $button.data(), {
+                    token: function(result) {
+                        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
+                    }
+                });
+                StripeCheckout.open(opts);
+            });
+        });
 		</script>
 		</form><!--- credit-card-form Ends --->
 		<?php } ?>
@@ -270,36 +287,34 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
       <?php } ?>
 
       <?php if($enable_coinpayments == "yes"){ ?>
-		<form action="https://www.coinpayments.net/index.php" method="post" id="coinpayments-form">
-			<input type="hidden" name="cmd" value="_pay_simple">
-			<input type="hidden" name="reset" value="1">
-			<input type="hidden" name="merchant" value="<?= $coinpayments_merchant_id; ?>">
-			<input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
-			<input type="hidden" name="item_desc" value="Proposal Payment">
-			<input type="hidden" name="item_number" value="1">
-			<input type="hidden" name="currency" value="<?= $coinpayments_currency_code; ?>">
-			<input type="hidden" name="amountf" value="<?= $amount; ?>">
-			<input type="hidden" name="want_shipping" value="0">
-			<input type="hidden" name="taxf" value="<?= $processing_fee; ?>">
-			<input type="hidden" name="success_url" value="<?= $site_url; ?>/crypto_order?message_offer_id=<?= $offer_id; ?>">
-			<input type="hidden" name="cancel_url" value="<?= $site_url; ?>/conversations/insert_message.php?single_message_id=<?= $single_message_id; ?>">
-			<input type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_coinpayments']; ?>">
-		</form>
-        <?php } ?>
+
+      <form action="crypto_charge" method="post" id="coinpayments-form">
+         <button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
+      </form>
+
+      <?php } ?>
+
 		<?php if($enable_paystack == "yes"){ ?>
 		<form action="paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
 		 <button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
 		</form><!--- paystack-form Ends --->
 		<?php } ?>
-      <?php if($enable_dusupay == "yes"){ ?>
-		<form method="post" action="dusupay_charge" id="mobile-money-form">
-		 <input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-success">
-		</form>
-      <?php } ?>
+
+      <?php 
+         if($enable_dusupay == "yes"){
+            $main_modal = "accept-offer-modal";
+            $form_action = "dusupay_charge";
+            include("../includes/comp/dusupay_method2.php");
+         }
+      ?>
+      
 </div><!-- modal-footer Ends -->
 </div><!-- modal-content Ends -->
 </div><!-- modal-dialog Ends -->
 </div><!-- accpet-offer-modal Ends -->
+
+<?php include("../includes/comp/mobile_money_modal.php"); ?>
+
 <script>
 $(document).ready(function(){
    $("#accept-offer-modal").modal('show');

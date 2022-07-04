@@ -3,6 +3,7 @@ $(document).ready(function(){
 	var seller_id = $("#custom-js").data("logged-id");
 	var enable_sound = $("#custom-js").data("enable-sound");
 	var enable_notifications = $("#custom-js").data("enable-notifications");
+	var disable_messages = $("#custom-js").data("disable-messages");
 
 	// Langauge
 	$("#languageSelect").change(function(){
@@ -27,6 +28,10 @@ $(document).ready(function(){
 		$("#announcement_bar").slideUp();
 		$("#announcement_bar_margin").slideUp();
 	});
+
+	var a_height = $("#announcement_bar").height()+25;
+
+	$("#announcement_bar_margin").css({'margin-bottom': a_height+'px' });
 
   // cookies alert
   $(".cookies_footer .btn").click(function(){
@@ -250,6 +255,7 @@ $(document).ready(function(){
 		$(".col-md-8 .messages .inboxMsg").each(function(i, value){
 			height += parseInt($(this).height());
 		});
+		height += 2000;
 
 	  // messages-bells
 	  setInterval(function(){
@@ -261,10 +267,8 @@ $(document).ready(function(){
 		  	if(data != ""){
 			  	if(!isNaN(data)){
 					  if(enable_sound == "yes"){
-					  	play.play();
-					  	// scroll down
-					  	height += 2000;
-							$(".col-md-8 .messages").animate({scrollTop: height});
+					  		play.play();
+					  		scroll = 1;
 					  }
 					  setTimeout(stop_audio, 2000);
 				  }
@@ -376,7 +380,7 @@ $(document).ready(function(){
 	    url: base_url+"/includes/messagePopup",
 	    data: {seller_id: seller_id}
 	    }).done(function(data){
-	    	if(enable_notifications == 1){
+	    	if(enable_notifications == 1 & disable_messages == 0){
 		      result = $.parseJSON(data);
 		      html = '';
 		      for(i in result){

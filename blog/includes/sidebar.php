@@ -38,7 +38,7 @@
 				$image = $cat->cat_image;
 			?>
 				<li>
-					<a href="index?cat_id=<?= $cat->cat_name; ?>">
+					<a href="index?cat_id=<?= $cat->id; ?>">
 						<?php if(!empty($image)){ ?>
 							<img src="../blog_cat_images/<?= $image; ?>" width="18" class='mr-1'>
 						<?php }else{ ?>

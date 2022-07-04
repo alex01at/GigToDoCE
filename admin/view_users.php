@@ -187,8 +187,6 @@ if(!isset($_SESSION['admin_email'])){
     </div>
     <!--- 2 row Ends --->
 
-
 </div>
-
 
 <?php } ?>

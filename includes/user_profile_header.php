@@ -90,17 +90,22 @@ $count_proposals = $db->count("proposals",["proposal_seller_id" => $seller_id,"p
     <?php } ?>
   </div> 
   <?php if($count_proposals != 0){ ?>
-  <?php if(!isset($_SESSION['seller_user_name'])){ ?>
-  <a class="btn btn-success mt-3" href="login.php"> Contact <small>(<?= $seller_user_name; ?>)</small></a>
+    <?php if(!isset($_SESSION['seller_user_name'])){ ?>
+    <a class="btn btn-success mt-3" href="login.php"> Contact <small>(<?= $seller_user_name; ?>)</small></a>
+    <?php }else{ ?>
+    <?php if($_SESSION['seller_user_name'] != $seller_user_name){ ?>
+    <a class="btn btn-success mt-3" href="<?= $site_url; ?>/conversations/message?seller_id=<?= $seller_id ?>"> 
+    Contact <small>(<?= $seller_user_name; ?>)</small>
+    </a>
+    <?php } ?>
+    <?php } ?>
   <?php }else{ ?>
-  <?php if($_SESSION['seller_user_name'] != $seller_user_name){ ?>
-  <a class="btn btn-success mt-3" href="<?= $site_url; ?>/conversations/message?seller_id=<?= $seller_id ?>"> 
-  Contact <small>(<?= $seller_user_name; ?>)</small>
-  </a>
+    <br><br>
+    <?= (empty($seller_headline) AND check_status($seller_id) != "Online")?"<br><br>":""; ?>
   <?php } ?>
-  <?php } ?>
-  <?php } ?>
+
 </div>
+
 <div class="col-md-12 user-status" >
   <ul>
     <li>

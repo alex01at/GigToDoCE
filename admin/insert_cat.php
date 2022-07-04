@@ -191,7 +191,7 @@ function slug($string, $space="-") {
 
         $string = utf8_encode($string);
         if (function_exists('iconv')) {
-          $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
+          // $string = iconv('UTF-8', 'ASCII//TRANSLIT', mb_strtolower($string));
         }
 
         $string = preg_replace("/[^a-zA-Z0-9 \-]/", "", $string);

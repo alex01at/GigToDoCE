@@ -32,6 +32,7 @@ if(isset($_POST["proposal_id"])){
 
 	}
 
+
 	if($videoPlugin == 1){
 		require_once("$dir/plugins/videoPlugin/proposals/checkVideo2.php");
 	}
@@ -41,9 +42,28 @@ if(isset($_POST["proposal_id"])){
 	$data = $input->post();
 	unset($data['proposal_id']);
 
+
+	if(isset($_POST['proposal_title'])){
+
+		include("../sanitize_url.php");
+
+		$proposal_title = $input->post('proposal_title');
+		$sanitize_url = proposalUrl($proposal_title);
+
+		$select_proposal = $db->query("select * from proposals where proposal_seller_id='$login_seller_id' AND proposal_url='$sanitize_url' AND NOT proposal_id='$proposal_id'");
+		$count_proposal = $select_proposal->rowCount();
+
+		if($count_proposal ==  1){
+			$error = "error_title";
+		}else{
+			$data['proposal_url'] = $sanitize_url;
+		}
+
+ 	}
+
 	if(isset($_POST['proposal_desc'])){
 
-		$data['proposal_desc'] = removeJava($_POST['proposal_desc'],"<div><iframe><br><a><b><i><u><span><img><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
+		$data['proposal_desc'] = removeJava($_POST['proposal_desc'],"<div><table><tbody><thead><tr><th><td><iframe><br><a><b><i><u><span><img><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
 
 	}
 

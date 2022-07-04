@@ -523,7 +523,7 @@ $cat_title = $get_meta->fetch()->cat_title;
 
 </td>
 
-<?php }elseif($proposal_status == "pause"){ ?>
+<?php }elseif($proposal_status == "pause" or $proposal_status == "admin_pause"){ ?>
 
 <td>
 

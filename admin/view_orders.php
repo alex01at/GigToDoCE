@@ -135,7 +135,7 @@ echo "<script>window.open('login','_self');</script>";
           <thead>
               <!--- thead Starts --->
               <tr>
-                  <th> Id </th>
+                  <th> No </th>
                   <th> Order Number </th>
                   <th> Order Total </th>
                   <th> Order Qty </th>
@@ -148,13 +148,14 @@ echo "<script>window.open('login','_self');</script>";
         <tbody>
             <!--- tbody Starts --->
             <?php
-            $per_page = 7;
+            $per_page = 8;
             if(isset($_GET['view_orders'])){
             $page = $input->get('view_orders');
             if($page == 0){ $page = 1; }
             }else{
             $page = 1;
             }
+            $i = ($page*$per_page)-8;
             /// Page will start from 0 and multiply by per page
             $start_from = ($page-1) * $per_page;
             $sel_orders = $db->query("select * from orders order by 1 DESC LIMIT :limit OFFSET :offset","",array("limit"=>$per_page,"offset"=>$start_from));
@@ -165,13 +166,11 @@ echo "<script>window.open('login','_self');</script>";
             $order_qty = $row_orders->order_qty;
             $order_date = $row_orders->order_date;
             $order_status = $row_orders->order_status;
+            $i++;
             ?>
             <tr>
-                <td>#<?= $order_id; ?>
-                </td>
-                <td>#
-                    <?= $order_number; ?>
-                </td>
+                <td><?= $i; ?></td>
+                <td>#<?= $order_number; ?></td>
                 <td><?= showPrice($order_price); ?>
                 </td>
                 <td>

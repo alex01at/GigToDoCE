@@ -70,7 +70,7 @@
     <img src="<?= getImageUrl2("proposals","proposal_img4",$d_proposal_img4); ?>" class='img-fluid' alt="">
     <span><?= $lang['proposals']['remove']; ?></span>
     <input type="hidden" name="proposal_img4" value="<?= $d_proposal_img4; ?>">
-    <input type="hidden" name="proposal_img4_s3" value="<?= $d_proposal_img3_s4; ?>">
+    <input type="hidden" name="proposal_img4_s3" value="<?= $d_proposal_img4_s3; ?>">
     </div>
     <?php } ?>
     </div><!--- col-md-3 Ends --->
@@ -99,8 +99,11 @@
           <i class="fa fa-trash fa-2x delete-video" title="<?= $lang['proposals']['remove_video']; ?>"></i>
         </span>
         <?php } ?>
-        <input type='hidden' name='proposal_video' value='<?= $d_proposal_video; ?>' id='v_file'> 
       </div>
+
+      <input type='hidden' name='proposal_video' value='<?= $d_proposal_video; ?>' id='v_file'> 
+      <input type='hidden' name='proposal_video_s3' value='<?= $d_proposal_video_s3; ?>' id='v_file_s3'> 
+
     </div><!--- col-md-3 Ends --->
   </div><!--- row gallery Ends --->
   
@@ -276,6 +279,15 @@ $(document).ready(function(){
       span = $(this);
       uploader.click();
       uploader.on('change', function(){ 
+
+        swal({
+          type: 'success',
+          text: 'File Is Uploading.',
+          onOpen: function(){
+           swal.showLoading();
+          }
+        });
+
         var form_data = new FormData();
         form_data.append("file", this.files[0]);
         $.ajax({
@@ -286,8 +298,15 @@ $(document).ready(function(){
           cache:false,
           processData:false,
         }).done(function(data){
-          $("#v_file").val(data);
-          span.removeClass('chose').html("<i class='fa fa-video-camera fa-2x mb-2'></i><br>"+data+"<i class='fa fa-trash fa-2x delete-video'></i>");
+          swal.close();
+          if(data == "error"){
+            alert("<?= $lang['alert']['extension_not_supported']; ?>");
+          }else{
+            $("#v_file").val(data);
+            $("#v_file_s3").val(<?= $enable_s3; ?>);
+            span.removeClass('chose').html("<i class='fa fa-video-camera fa-2x mb-2'></i><br>"+data+"<i class='fa fa-trash fa-2x delete-video'></i>");
+          }
+
         });
       });
     <?php } ?>
@@ -295,6 +314,7 @@ $(document).ready(function(){
 
   gallery.on('click', '.delete-video', function () {
     $("#v_file").val("");
+    $("#v_file_s3").val(0);
     $(this).parent().parent().prepend("<span class='chose'><i class='fa fa-video-camera fa-2x mb-2'></i><br> <?= $lang['proposals']['add_video']; ?></span>");
     $(this).parent().remove();
     $(".video-added").addClass("add-video").removeClass("video-added");

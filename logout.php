@@ -44,7 +44,7 @@
 <?php
   $seller_user_name = $_SESSION['seller_user_name'];
   $login_seller_status = $row_login_seller->seller_status;
-  if($login_seller_status != "block-ban"){
+  if($login_seller_status != "block-ban" AND $login_seller_status != "deactivated"){
     $update_seller_status = $db->update("sellers",array("seller_status"=>'offline'),array("seller_user_name"=>$seller_user_name));
   }
   unset($_SESSION['seller_user_name']);

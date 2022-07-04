@@ -14,6 +14,9 @@ $row_payment_settings = $get_payment_settings->fetch();
 $enable_paypal = $row_payment_settings->enable_paypal;
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
+$dusupay_method = $row_payment_settings->dusupay_method;
+$dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
+
 $enable_coinpayments = $row_payment_settings->enable_coinpayments;
 $coinpayments_merchant_id = $row_payment_settings->coinpayments_merchant_id;
 $coinpayments_currency_code = $row_payment_settings->coinpayments_currency_code;
@@ -249,38 +252,32 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
         <?php } ?>
 
         <?php if($enable_paystack == "yes"){ ?>
-        <form action="orderIncludes/charge/paystackCharge" method="post" id="paystack-form"><!--- paystack-form Starts --->
+        <form action="orderIncludes/charge/paystack" method="post" id="paystack-form"><!--- paystack-form Starts --->
           <button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
         </form><!--- paystack-form Ends --->
         <?php } ?>
-        
-        <?php if($enable_dusupay == "yes"){ ?>
-        <form method="post" action="orderIncludes/charge/dusupayCharge" id="mobile-money-form">
-          <input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-success">
-        </form>
-        <?php } ?>
+
+        <?php 
+           if($enable_dusupay == "yes"){
+              $main_modal = "payment-modal";
+              $form_action = "orderIncludes/charge/dusupay";
+              include("../../includes/comp/dusupay_method2.php");
+           }
+        ?>
 
         <?php if($enable_coinpayments == "yes"){ ?>
-        <form action="https://www.coinpayments.net/index.php" method="post" id="coinpayments-form">
-          <input type="hidden" name="cmd" value="_pay_simple">
-          <input type="hidden" name="reset" value="1">
-          <input type="hidden" name="merchant" value="<?= $coinpayments_merchant_id; ?>">
-          <input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
-          <input type="hidden" name="item_desc" value="Proposal Payment">
-          <input type="hidden" name="item_number" value="1">
-          <input type="hidden" name="currency" value="<?= $coinpayments_currency_code; ?>">
-          <input type="hidden" name="amountf" value="<?= $amount; ?>">
-          <input type="hidden" name="want_shipping" value="0">
-          <input type="hidden" name="taxf" value="<?= $processing_fee; ?>">
-          <input type="hidden" name="success_url" value="<?= "$site_url/orderIncludes/charge/order/coinpayments?extendTime=1"; ?>">
-          <input type="hidden" name="cancel_url" value="<?= $site_url; ?>/order_details?order_id=<?= $order_id; ?>">
-          <input type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_coinpayments']; ?>">
+
+        <form action="orderIncludes/charge/crypto" method="post" id="coinpayments-form">
+          <button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
         </form>
+
         <?php } ?>
       </div>
     </div>
   </div>
 </div>
+
+<?php include("../../includes/comp/mobile_money_modal.php"); ?>
 
 <script>
   
@@ -289,7 +286,7 @@ $(document).ready(function(){
   // $("#payment-modal").modal('show');
 
   $('#payment-modal').modal({ backdrop: 'static', show: true });
-
+  
   $("body").css('overflowY', 'hidden');
 
   $('#payment-modal').on('hidden.bs.modal', function (e) {
@@ -304,6 +301,7 @@ $(document).ready(function(){
     $('#paystack-form').hide();
     $('#mercadopago-form').hide();
     $('#mobile-money-form').hide();
+    $('.processing-fee').hide();
   <?php }else{ ?>
     $('#shopping-balance-form').hide();
   <?php } ?>
@@ -351,6 +349,7 @@ $(document).ready(function(){
     $('#coinpayments-form').hide();
     $('#mercadopago-form').hide();
     $('#paystack-form').hide();
+    $('.processing-fee').hide();
   });
 
   $('#paypal').click(function(){
@@ -364,6 +363,7 @@ $(document).ready(function(){
     $('#coinpayments-form').hide();
     $('#mercadopago-form').hide();
     $('#paystack-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#credit-card').click(function(){
@@ -372,10 +372,12 @@ $(document).ready(function(){
     $('#mobile-money-form').hide();
     $('#credit-card-form').show();
     $('#paypal-form').hide();
+    $('#2checkout-form').hide();
     $('#shopping-balance-form').hide();
     $('#coinpayments-form').hide();
     $('#mercadopago-form').hide();
     $('#paystack-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#2checkout').click(function(){
@@ -388,6 +390,7 @@ $(document).ready(function(){
     $('#coinpayments-form').hide();
     $('#paystack-form').hide();
     $('#mercadopago-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#mercadopago').click(function(){
@@ -401,6 +404,7 @@ $(document).ready(function(){
     $('#mercadopago-form').show();
     $('#shopping-balance-form').hide();
     $('#2checkout-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#coinpayments').click(function(){
@@ -414,6 +418,7 @@ $(document).ready(function(){
     $('#paystack-form').hide();
     $('#mercadopago-form').hide();
     $('#shopping-balance-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#paystack').click(function(){
@@ -427,6 +432,7 @@ $(document).ready(function(){
     $('#paystack-form').show();
     $('#paypal-form').hide();
     $('#shopping-balance-form').hide();
+    $('.processing-fee').show();
   });
 
   $('#mobile-money').click(function(){
@@ -440,6 +446,7 @@ $(document).ready(function(){
     $('#coinpayments-form').hide();
     $('#paystack-form').hide();
     $('#mercadopago-form').hide();
+    $('.processing-fee').show();
   });
 
 });

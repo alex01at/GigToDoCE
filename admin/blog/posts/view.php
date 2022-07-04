@@ -32,7 +32,9 @@ if(!isset($_SESSION['admin_email'])){
 <h4 class="h3 mb-0">Posts</h4>
 </div><!-- card-header Ends -->
 <div class="card-body"><!-- card-body Starts -->
-	<p class="lead font-weight-bold"> Posts <a href="index?insert_post" class="btn btn-secondary"> Add Post </a> </p>
+	<p class="lead font-weight-bold"> Posts 
+		<a href="index?insert_post" class="btn btn-success"> <i class="fa fa-plus-circle"></i> Add Post </a> 
+	</p>
 	<div class="table-responsive"><!--- table-responsive Starts -->
 	<table class="table table-bordered table-hover table-striped"><!--- table table-bordered table-hover table-striped Starts -->
 	<thead>
@@ -49,6 +51,12 @@ if(!isset($_SESSION['admin_email'])){
 		while($post = $posts->fetch()){
 			$i++;
 			$url = preg_replace('#[ -]+#', '-', $post->title);
+
+			/// Get Category Details
+			$get_cat = $db->select("post_categories",['id'=>$post->cat_id]);
+			$row_cat = $get_cat->fetch();
+			$cat_name = $row_cat->cat_name;
+
 		?>
 		<tr>
 		<td><?= $i; ?></td>
@@ -56,7 +64,7 @@ if(!isset($_SESSION['admin_email'])){
 		<td width="800">
 			<strong><?= $post->title; ?></strong>
 			<p class="mt-2"><?= strip_tags(substr($post->content, 0,300)); ?>...</p>
-			<p class="text-lead mb-0">Published on: <?= $post->date_time; ?> | Category: <?= $post->cat_id; ?></p>
+			<p class="text-lead mb-0">Published on: <?= $post->date_time; ?> | Category: <?= $cat_name; ?></p>
 		</td>
 		<td>
 

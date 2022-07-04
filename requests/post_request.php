@@ -53,7 +53,7 @@ Please confirm your email to use this feature.
     <?= $lang["titles"]["post_request"]; ?>
   </h1>
   <div class="row"><!--- row Starts --->
-    <div class="col-xl-8 col-lg-8 post-request col-md-12">
+    <div class="col-xl-8 col-lg-8 post-request col-md-12 ">
       <?php 
 		$form_errors = Flash::render("form_errors");
 		$form_data = Flash::render("form_data");

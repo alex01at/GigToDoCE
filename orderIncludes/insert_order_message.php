@@ -4,7 +4,7 @@
 require_once("../includes/db.php");
 
 if(!isset($_SESSION['seller_user_name'])){
-	echo "<script>window.open('login','_self')</script>";
+	echo "<script>window.open('../login','_self')</script>";
 }
 
 $login_seller_user_name = $_SESSION['seller_user_name'];

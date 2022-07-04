@@ -14,15 +14,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Install Script - Step Two</title>
+    <title>Install Script - Step Two</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
     <link href="styles/bootstrap.css" rel="stylesheet">
-    <link href="styles/style.css" rel="stylesheet">
-    <link href="styles/category_nav_style.css" rel="stylesheet">
+    <link href="styles/styles.css" rel="stylesheet">
     <link href="styles/sweat_alert.css" rel="stylesheet">
     <!--- stylesheet width modifications --->
-    <link href="styles/custom.css" rel="stylesheet">
     <link href="font_awesome/css/font-awesome.css" rel="stylesheet">
     <script src="js/jquery.min.js"></script>
     <script src="js/sweat_alert.js"></script>

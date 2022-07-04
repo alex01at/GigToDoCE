@@ -375,7 +375,7 @@ $lang['proposals']['remove_video'] = "Remove Video";
 
 // Gigtodo 2.0
 
-$lang["pages"] = "Pages";
+$lang["pages"] = "PAGES";
 
 // Blog
 $lang["blog"]['title'] = "Blog";
@@ -498,6 +498,10 @@ $lang['warning']['dont_match'] = "Passwords don't match. Please try again.";
 $lang['button']['register'] = "Register Now";
 $lang['button']['login_now'] = "Login Now";
 $lang['button']['login'] = "Login";
+$lang['button']['load_more'] = "Load More";
+$lang['button']['send_offer'] = "Send Offer";
+$lang['button']['send_an_offer'] = "Send An Offer";
+
 $lang['button']['change_password'] = "Change Password";
 $lang['button']['continue_shopping'] = "Continue Shopping";
 $lang['button']['add_new_proposal'] = "Add New Proposal";
@@ -731,6 +735,7 @@ $lang['buying_orders']['no_cancelled'] = "No proposals/services have been cancel
 /// View Proposals Page
 
 $lang['view_proposals']['vacation_mode'] = "Vacation Mode";
+$lang['view_proposals']['admin_pause_proposal'] = "Unfortunately we paused this proposal from our end. Clicking on ‘ok’ will send the proposal to us to re-check and potentially approve. Sorry for the inconvenience.";
 
 
 /// Create Coupon Page
@@ -757,6 +762,20 @@ $lang['edit_proposal']['instant_delivery']['alert2'] = "
    <p class='mb-1'>Accepted Files: jpeg, jpg, gif, png, tif, avi, mpeg, mpg, mov, rm, 3gp, flv, mp4, zip, rar, mp3, wav, docx, csv, xls, pptx, pdf, txt</p>
    <p class='mb-0'>Max Upload Size: 100mb</p>
 ";
+
+$lang['edit_proposal']['pricing']['warning1'] = "If you want to use packages, you need to set this field value to 0.";
+$lang['edit_proposal']['pricing']['warning2'] = "Set to 0 if your proposal is configured for instant delivery.";
+$lang['edit_proposal']['pricing']['warning3'] = "Please select 1 day if this is for an instant delivery.";
+
+
+/// Order Details
+
+$lang['order_details']['order_not_started'] = "Buyer Hasn't Started The Order Yet. Buyer Will Have To Reply To This Order So It Get Started.";
+
+$lang['order_details']['tip_given'] = "You have given {amount} tip to seller. ";
+
+$lang['order_details']['seller_tip']['title'] = "Your buyer has given you a tip";
+$lang['order_details']['seller_tip']['desc'] = "Congrats! You've just received a tip of";
 
 
 /// Manage Contacts Page

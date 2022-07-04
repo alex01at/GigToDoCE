@@ -9,41 +9,38 @@ echo "<script>window.open('login','_self');</script>";
 	
 }else{
     
-	
-if(isset($_GET['single_seller'])){
-	
-$seller_id = $input->get('single_seller');
+    if(isset($_GET['single_seller'])){
+    	
+        $seller_id = $input->get('single_seller');
+        $get_seller = $db->select("sellers",array("seller_id" => $seller_id)); 
+        $row_seller = $get_seller->fetch();
+        $seller_name = $row_seller->seller_name;
+        $seller_user_name = $row_seller->seller_user_name;
+        $seller_level = $row_seller->seller_level;
+        $seller_email = $row_seller->seller_email;
+        $seller_image = getImageUrl2("sellers","seller_image",$row_seller->seller_image);
+        $seller_about = $row_seller->seller_about;
+        $seller_verification = $row_seller->seller_verification;
+        $seller_headline = $row_seller->seller_headline;
+        $seller_country = $row_seller->seller_country;
+        $seller_ip = $row_seller->seller_ip;
+        $seller_register_date = $row_seller->seller_register_date;
+        $seller_language = $row_seller->seller_language;
 
+        $select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $seller_id));
+        $row_seller_accounts = $select_seller_accounts->fetch();
+        $withdrawn = $row_seller_accounts->withdrawn;
+        $used_purchases = $row_seller_accounts->used_purchases;
+        $pending_clearance = $row_seller_accounts->pending_clearance;
+        $current_balance = $row_seller_accounts->current_balance;
+            
+        $get_seller_languages = $db->select("seller_languages",array("language_id" => $seller_language));
+        $row_seller_languages = $get_seller_languages->fetch();
+        @$language_title = $row_seller_languages->language_title;
 
-$get_seller = $db->select("sellers",array("seller_id" => $seller_id)); 
-$row_seller = $get_seller->fetch();
-$seller_name = $row_seller->seller_name;
-$seller_user_name = $row_seller->seller_user_name;
-$seller_level = $row_seller->seller_level;
-$seller_email = $row_seller->seller_email;
-$seller_image = getImageUrl2("sellers","seller_image",$row_seller->seller_image);
-$seller_about = $row_seller->seller_about;
-$seller_verification = $row_seller->seller_verification;
-$seller_headline = $row_seller->seller_headline;
-$seller_country = $row_seller->seller_country;
-$seller_ip = $row_seller->seller_ip;
-$seller_register_date = $row_seller->seller_register_date;
-$seller_language = $row_seller->seller_language;
+        $level_title = $db->select("seller_levels_meta",array("level_id"=>$seller_level,"language_id"=>$adminLanguage))->fetch()->title;
 
-$select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $seller_id));
-$row_seller_accounts = $select_seller_accounts->fetch();
-$withdrawn = $row_seller_accounts->withdrawn;
-$used_purchases = $row_seller_accounts->used_purchases;
-$pending_clearance = $row_seller_accounts->pending_clearance;
-$current_balance = $row_seller_accounts->current_balance;
-    
-$get_seller_languages = $db->select("seller_languages",array("language_id" => $seller_language));
-$row_seller_languages = $get_seller_languages->fetch();
-@$language_title = $row_seller_languages->language_title;
-
-$level_title = $db->select("seller_levels_meta",array("level_id"=>$seller_level,"language_id"=>$adminLanguage))->fetch()->title;
-
-}
+    }
 
 ?>
 

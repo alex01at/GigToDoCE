@@ -55,13 +55,13 @@ function showPrice($price,$class='',$show_symbol=''){
    if($show_symbol == 'yes'){
 
       if($currency_position == "left"){
-         echo $site_currency.$price;
+         return $site_currency.$price;
       }else{
-         echo $price.$site_currency;
+         return $price.$site_currency;
       }
 
    }else{
-      echo $price;
+      return $price;
    }
 
 }

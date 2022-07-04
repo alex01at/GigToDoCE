@@ -20,7 +20,7 @@ if(isset($_POST["proposal_id"])){
 
 	if(!in_array($file_extension,$allowed) & !empty($file)){
 		
-		echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
+		$data["status"] = "error_file";
 		
 	}else{
 
@@ -31,7 +31,7 @@ if(isset($_POST["proposal_id"])){
 			$data['file'] = $file;
 			$data['isS3'] = $enable_s3;
 		}else{
-			$file = ""; 
+			$file = "";
 		}
 
 		if($input->post('enable')){
@@ -42,10 +42,11 @@ if(isset($_POST["proposal_id"])){
 		
 		$update = $db->update("instant_deliveries",$data,["proposal_id"=>$proposal_id]);
 		if($update){
-			echo "success";
-			print_r($data);
+			$data["status"] = "success";
 		}
 
 	}
+
+	echo json_encode($data);
 
 }

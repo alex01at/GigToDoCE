@@ -88,10 +88,10 @@ if(isset($_SESSION['message_offer_id'])){
 	$total_amount = $order_price + $processing_fee;
 	if($payment_method == "shopping_balance"){
 		$adminProfit = 0;
-		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
+		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
 	}else{
 		$adminProfit = $processing_fee;
-		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"amount"=>$total_amount,"date"=>$order_date,"method"=>$payment_method));
+		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","amount"=>$total_amount,"date"=>$order_date,"method"=>$payment_method));
 	}
 
 	// Insert Sale Here

@@ -1,13 +1,9 @@
 <?php
 
 session_start();
-
 require_once("../../includes/db.php");
-
 if(!isset($_SESSION['seller_user_name'])){
-
-echo "<script>window.open('../login','_self')</script>";
-
+	echo "<script>window.open('../login','_self')</script>";
 }
 
 if(isset($_FILES["file"]["name"])){
@@ -19,12 +15,12 @@ if(isset($_FILES["file"]["name"])){
 	$file_extension = pathinfo($file, PATHINFO_EXTENSION);
 
 	if(!in_array($file_extension,$allowed)){
-		echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
+		echo "error";
 	}else{
 		$file_extension = pathinfo($file, PATHINFO_EXTENSION);
 		$file = pathinfo($file, PATHINFO_FILENAME);
 		$file = $file."_".time().".$file_extension";
-		move_uploaded_file($file_tmp, "../proposal_files/$file");
+		uploadToS3("proposal_files/$file",$file_tmp);
 		echo $file;
 	}
 

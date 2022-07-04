@@ -26,9 +26,11 @@
   $stripe_secret_key = $row_payment_settings->stripe_secret_key;
   $stripe_publishable_key = $row_payment_settings->stripe_publishable_key;
   $stripe_currency_code = $row_payment_settings->stripe_currency_code;
+  
   $enable_coinpayments = $row_payment_settings->enable_coinpayments;
   $coinpayments_merchant_id = $row_payment_settings->coinpayments_merchant_id;
   $coinpayments_currency_code = $row_payment_settings->coinpayments_currency_code;
+  $coinpayments_ipn_secret = $row_payment_settings->coinpayments_ipn_secret;
   $coinpayments_withdrawal_fee = $row_payment_settings->coinpayments_withdrawal_fee;
   $coinpayments_public_key = $row_payment_settings->coinpayments_public_key;
   $coinpayments_private_key = $row_payment_settings->coinpayments_private_key;
@@ -44,6 +46,7 @@
   $enable_dusupay = $row_payment_settings->enable_dusupay;
   $dusupay_sandbox = $row_payment_settings->dusupay_sandbox;
   $dusupay_currency_code = $row_payment_settings->dusupay_currency_code;
+  $dusupay_webhook_hash = $row_payment_settings->dusupay_webhook_hash;
   $dusupay_method = $row_payment_settings->dusupay_method;
   $dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
 
@@ -202,6 +205,7 @@
               </div>
             </div>
             <!--- form-group row Ends --->
+
             <div class="form-group row processing-feeType">
               <label class="col-md-3 control-label"> Processing Fee : </label>
               <div class="col-md-3">
@@ -613,13 +617,7 @@
             </div>
             <!--- form-group row Ends --->
             <hr>
-            <div class="form-group row"><!--- form-group row Starts --->
-                <label class="col-md-3 control-label"> Coinpayments Public Key : </label>
-                <div class="col-md-6">
-                    <input type="text" name="coinpayments_public_key" class="form-control" value="<?= $coinpayments_public_key; ?>">
-                </div>
-            </div>
-            <!--- form-group row Ends --->
+
             <div class="form-group row"><!--- form-group row Starts --->
                 <label class="col-md-3 control-label"> Coinpayments Private Key : </label>
                 <div class="col-md-6">
@@ -627,6 +625,15 @@
                 </div>
             </div>
             <!--- form-group row Ends --->
+
+            <div class="form-group row"><!--- form-group row Starts --->
+                <label class="col-md-3 control-label"> Coinpayments Public Key : </label>
+                <div class="col-md-6">
+                    <input type="text" name="coinpayments_public_key" class="form-control" value="<?= $coinpayments_public_key; ?>">
+                </div>
+            </div>
+            <!--- form-group row Ends --->
+
             <div class="form-group row"><!--- form-group row Starts --->
             <label class="col-md-3 control-label"> Coinpayments Withdrawal Fee : </label>
             <div class="col-md-6">
@@ -641,6 +648,32 @@
             </select>
             </div>
             </div>
+
+            <hr>
+
+            <!--- form-group row Ends --->
+            <div class="form-group row">
+              <!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Coinpayments Ipn Secret : </label>
+              <div class="col-md-6">
+                <input type="text" name="coinpayments_ipn_secret" value="<?= $coinpayments_ipn_secret; ?>" class="form-control"/>
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
+            <!--- form-group row Ends --->
+            <div class="form-group row">
+              <!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Coinpayments Ipn Url : </label>
+              <div class="col-md-6">
+                <input type="text" value="<?= "$site_url/crypto_ipn"; ?>" class="form-control" readonly="">
+                <small class="form-text text-muted">
+                Paste This Url In Coinpayments Merchant Settings Ipn Url Field
+                </small>
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
             <div class="form-group row">
               <!--- form-group row Starts --->
               <label class="col-md-3 control-label"> </label>
@@ -708,7 +741,7 @@
             <!--- form-group row Ends --->
             
             <div class="form-group row"><!--- form-group row Starts --->
-              <label class="col-md-3 control-label"> PayPal Sandbox : </label>
+              <label class="col-md-3 control-label"> Mercadopago Sandbox : </label>
               <div class="col-md-6">
                 <input type="radio" name="mercadopago_sandbox" value="1" required <?php if($mercadopago_sandbox=='1' ){ echo "checked"; }else{ } ?> >
                 <label> On </label>
@@ -843,6 +876,7 @@
               </div>
             </div>
             <!--- form-group row Ends --->
+            
             <div class="form-group row">
               <!--- form-group row Starts --->
               <label class="col-md-3 control-label"> Dusupay Secret Key : </label>
@@ -860,7 +894,8 @@
               <label class="col-md-3 control-label"> Payment Method : </label>
               <div class="col-md-6">
                 <select name="dusupay_method" class="form-control" required="">
-                  <option value="CARD"> CARD </option>
+                  <option value="MOBILE_MONEY"> Mobile Money </option>
+                  <option value="CARD" <?= ($dusupay_method == "CARD")?"selected":""; ?>> Card </option>
                   <option value="BANK" <?= ($dusupay_method == "BANK")?"selected":""; ?>> Bank </option>
                 </select>
               </div>
@@ -870,6 +905,9 @@
               <label class="col-md-3 control-label"> Provider Id : </label>
               <div class="col-md-6">
                 <input type="text" name="dusupay_provider_id" class="form-control" value="<?= $dusupay_provider_id; ?>">
+                <small class="text-muted">
+                  Click Here To Get <a class="text-success" target="_blank" href="index?get_provider_id">Provider Id</a>
+                </small>
               </div>
             </div><!--- form-group row Ends --->
 
@@ -890,6 +928,9 @@
               <label class="col-md-3 control-label"> Provider Id : </label>
               <div class="col-md-6">
                 <input type="text" name="dusupay_payout_provider_id" class="form-control" value="<?= $dusupay_payout_provider_id; ?>">
+                  <small class="text-muted">
+                  Click Here To Get <a class="text-success" target="_blank" href="index?get_provider_id">Provider Id</a>
+                </small>
               </div>
             </div><!--- form-group row Ends --->
 
@@ -903,6 +944,33 @@
                 <input type="text" name="dusupay_currency_code" class="form-control" value="<?= $dusupay_currency_code; ?>">
                 <small class="form-text text-muted">
                 Currency code used for Dusupay payments and payouts. Complete list  <a class="text-success" href="https://developer.paypal.com/docs/classic/api/currency_codes/" target="_blank">here</a>
+                </small>
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
+            <!--- form-group row Ends --->
+            <div class="form-group row">
+              <!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Dusupay Webhook Hash : </label>
+              <div class="col-md-6">
+                <input type="text" name="dusupay_webhook_hash" class="form-control" value="<?= $dusupay_webhook_hash; ?>">
+                <small class="form-text text-muted">
+                  <!-- <span class="text-info">Required For Only Live Payments</span> <br> -->
+                  Enter Your Dusupay Wehbook Hash That You Added In Dusupay Api Settings.
+                </small>
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
+            <!--- form-group row Ends --->
+            <div class="form-group row">
+              <!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Dusupay Webhook Url : </label>
+              <div class="col-md-6">
+                <input type="text" value="<?= "$site_url/dusupay_ipn"; ?>" class="form-control" readonly="">
+                <small class="form-text text-muted">
+                Paste This Url In Dusupay Api Settings WebHook Url Field
                 </small>
               </div>
             </div>
@@ -1035,17 +1103,6 @@ $(document).ready(function(){
   if(isset($_POST['update_payoneer_settings'])){
     $data = $input->post();
     unset($data['update_payoneer_settings']);
-    $update_stripe_settings = $db->update("payment_settings",$data);
-    if($update_stripe_settings){
-      $insert_log = $db->insert_log($admin_id,"payoneer_settings","","updated");   
-      echo "<script>alert_success('Payoneer Settings Updated Successfully!','index?payment_settings');</script>"; 
-    } 
-  }
-
-
-  if(isset($_POST['update_paypal'])){
-    $data = $input->post();
-    unset($data['update_paypal']);
     $update_stripe_settings = $db->update("payment_settings",$data);
     if($update_stripe_settings){
       $insert_log = $db->insert_log($admin_id,"payoneer_settings","","updated");   

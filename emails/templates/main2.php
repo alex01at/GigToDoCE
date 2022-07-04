@@ -40,7 +40,7 @@
 </head>
 <body>
 
-<?php include($data['template'].".php"); ?>
+<?php include("$dir/emails/templates/".$data['template'].".php"); ?>
 
 </body>
 </html>

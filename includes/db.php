@@ -42,11 +42,14 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$site_desc = $row_general_settings->site_desc;
 	$site_keywords = $row_general_settings->site_keywords;
 	$site_author = $row_general_settings->site_author;
+	$enable_mobile_logo = $row_general_settings->enable_mobile_logo;
+	
 	$site_favicon = getImageUrl2("general_settings","site_favicon",$row_general_settings->site_favicon);
 	$site_logo_type = $row_general_settings->site_logo_type;
 	$site_logo_text = $row_general_settings->site_logo_text;
 	$site_logo_image = getImageUrl2("general_settings","site_logo_image",$row_general_settings->site_logo_image);
 	$site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
+	$site_mobile_logo = getImageUrl2("general_settings","site_mobile_logo",$row_general_settings->site_mobile_logo);
 	$site_timezone = $row_general_settings->site_timezone;
 	$tinymce_api_key = $row_general_settings->tinymce_api_key;
 	$enable_social_login = $row_general_settings->enable_social_login;
@@ -62,6 +65,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$language_switcher = $row_general_settings->language_switcher;
 	$google_analytics = $row_general_settings->google_analytics;
 	$site_watermark = $row_general_settings->site_watermark;
+	$jwplayer_code = $row_general_settings->jwplayer_code;
 
 	$get_currencies = $db->select("currencies",array("id" => $site_currency));
 	$row_currencies = $get_currencies->fetch();

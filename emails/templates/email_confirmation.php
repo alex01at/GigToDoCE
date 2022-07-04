@@ -11,7 +11,7 @@
          <tr>
             <td width="100%" align="left" style="vertical-align:top">
                <a href="<?= $site_url; ?>" target="_blank">
-                  <img src="<?= base_url("images/email/banner.jpg"); ?>" class='banner' alt="<?= $site_name; ?>">
+                  <img src="<?= img_url("banner.jpg"); ?>" class='banner' alt="<?= $site_name; ?>">
                </a>
             </td>
          </tr>
@@ -34,7 +34,7 @@
                                  </tr>
                                  <tr>
                                     <td width="54" align="left" style="vertical-align:middle">
-                                       <img src="<?= base_url("images/email/work.jpg"); ?>" alt="Ad-free videos" style="display:block" width="54" border="0">
+                                       <img src="<?= img_url("work.jpg"); ?>" alt="Ad-free videos" style="display:block" width="54" border="0">
                                     </td>
                                     <td width="20"></td>
                                     <td align="left" style="vertical-align:middle" width="316">
@@ -49,7 +49,7 @@
                                  </tr>
                                  <tr>
                                     <td width="54" align="left" style="vertical-align:middle">
-                                       <img src="<?= base_url("images/email/freelancer.jpg"); ?>" alt="Save offline" style="display:block" width="54" border="0">
+                                       <img src="<?= img_url("freelancer.jpg"); ?>" alt="Save offline" style="display:block" width="54" border="0">
                                     </td>
                                     <td width="20"></td>
                                     <td align="left" style="vertical-align:middle" width="316">
@@ -65,7 +65,7 @@
                                  </tr>
                                  <tr>
                                     <td width="54" align="left" style="vertical-align:middle">
-                                       <img src="<?= base_url("images/email/affiliate.jpg"); ?>" alt="Background play" style="display:block" width="54" border="0">
+                                       <img src="<?= img_url("affiliate.jpg"); ?>" alt="Background play" style="display:block" width="54" border="0">
                                     </td>
                                     <td width="20"></td>
                                     <td align="left" style="vertical-align:middle" width="316">
@@ -93,7 +93,7 @@
                      <tr>
                         <td width="100%" align="center" style="vertical-align:top">
                            <a href="<?= $data['verification_link']; ?>" target="_blank">
-                              <img src="<?= base_url("images/email/confirm.jpg"); ?>" border="0" alt="Confirm Now" width="180" style="display:block;padding-bottom:20px">
+                              <img src="<?= img_url("confirm.jpg"); ?>" border="0" alt="Confirm Now" width="180" style="display:block;padding-bottom:20px">
                            </a>
                            <p style="font-family:'Roboto',Arial,Helvetica,sans-serif;font-size:18px;font-weight:400;color:#333333;margin:0px!important;padding:0px!important;line-height:21px">
                               Click the button to continue<br>

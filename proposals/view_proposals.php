@@ -92,41 +92,41 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 			</a>
 			<div class="clearfix"></div>
 			<ul class="nav nav-tabs flex-column flex-sm-row mt-4">
-                <?php
-                  $count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'active'));
-                ?>
+            <?php
+               $count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'active'));
+            ?>
 				<li class="nav-item">
 					<a href="#active-proposals" data-toggle="tab" class="nav-link active make-black">
 			         <?= $lang['tabs']['active_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
 					</a>
 				</li>
-                <?php
-                    $count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'pause'));
-                ?>
+            <?php
+               $count_proposals = $db->query("select * from proposals where proposal_seller_id=$login_seller_id and (proposal_status='pause' or proposal_status='admin_pause')")->rowCount();
+            ?>
 				<li class="nav-item">
 					<a href="#pause-proposals" data-toggle="tab" class="nav-link make-black">
 						<?= $lang['tabs']['pause_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
 					</a>
 				</li>
-                <?php
+            <?php
 				$count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'pending'));
-                ?>
+            ?>
 				<li class="nav-item">
 					<a href="#pending-proposals" data-toggle="tab" class="nav-link make-black">
 					<?= $lang['tabs']['pending_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
 					</a>
 				</li>
-                <?php
+            <?php
 				$count_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'modification'));
-                ?>
+            ?>
 				<li class="nav-item">
 					<a href="#modification-proposals" data-toggle="tab" class="nav-link make-black">
 					<?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
 					</a>
 				</li>
-                <?php
-				$count_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'draft'));
-                ?>
+            <?php
+               $count_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'draft'));
+            ?>
 				<li class="nav-item">
 					<a href="#draft-proposals" data-toggle="tab" class="nav-link make-black">
 					<?= $lang['tabs']['draft']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
@@ -231,23 +231,34 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 								</tr>
 							</thead>
 							<tbody>
-                                <?php
-								$select_proposals = $db->select("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'pause'));
-                                $count_proposals = $select_proposals->rowCount();
-                                while($row_proposals = $select_proposals->fetch()){
-                                $proposal_id = $row_proposals->proposal_id;
-                                $proposal_title = $row_proposals->proposal_title;
-                                $proposal_views = $row_proposals->proposal_views;
-                                $proposal_price = $row_proposals->proposal_price;
-								if($proposal_price == 0){
-								$get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id,"package_name" => "Basic"));
-								$proposal_price = $get_p->fetch()->price;
-								}
-                                $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
-                                $proposal_url = $row_proposals->proposal_url;
-                                $proposal_featured = $row_proposals->proposal_featured;
-								$count_orders = $db->count("orders",array("proposal_id"=>$proposal_id));
-                                ?>
+                       <?php
+                       $select_proposals = $db->query("select * from proposals where proposal_seller_id=$login_seller_id and (proposal_status='pause' or proposal_status='admin_pause')");
+                       $count_proposals = $select_proposals->rowCount();
+                       while($row_proposals = $select_proposals->fetch()){
+                       $proposal_id = $row_proposals->proposal_id;
+                       $proposal_title = $row_proposals->proposal_title;
+                       $proposal_views = $row_proposals->proposal_views;
+                       $proposal_price = $row_proposals->proposal_price;
+         					if($proposal_price == 0){
+         					$get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id,"package_name" => "Basic"));
+         					$proposal_price = $get_p->fetch()->price;
+         					}
+                       $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
+                       $proposal_url = $row_proposals->proposal_url;
+                       $proposal_featured = $row_proposals->proposal_featured;
+                       $proposal_status = $row_proposals->proposal_status;
+					        
+                       $count_orders = $db->count("orders",array("proposal_id"=>$proposal_id));
+                        
+                        if($proposal_status == "admin_pause"){
+                           $onclick = <<<EOT
+                           onclick="return confirm('{$lang['view_proposals']['admin_pause_proposal']}')"
+EOT;
+                        }else{
+                           $onclick = "";
+                        }
+
+                       ?>
 								<tr>
 									<td class="proposal-title"> <?= $proposal_title; ?> </td>
 									<td class="text-success"> <?= showPrice($proposal_price); ?> </td>
@@ -258,7 +269,13 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 										<button class="btn btn-success dropdown-toggle" data-toggle="dropdown"></button>
 										<div class="dropdown-menu">
 										<a href="<?= $login_seller_user_name; ?>/<?= $proposal_url; ?>" class="dropdown-item"> Preview </a>
-										<a href="activate_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Activate Proposal </a>
+										<a 
+                              href="activate_proposal?proposal_id=<?= $proposal_id; ?>" 
+                              class="dropdown-item"
+                              <?= $onclick; ?>
+                              > 
+                              Activate
+                              </a>
 										<a href="view_referrals?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> View Referrals</a>
 										<a href="edit_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Edit </a>
 										<a href="delete_proposal?proposal_id=<?= $proposal_id; ?>" class="dropdown-item"> Delete </a>

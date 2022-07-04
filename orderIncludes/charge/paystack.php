@@ -21,10 +21,16 @@ if(isset($_POST['paystack'])){
 	$processing_fee = processing_fee($amount);
 	
 	$payment = new Payment();
+
 	$data = [];
-	$data['type'] = 'orderExtendTime';
-	$data['amount'] = $amount+$processing_fee;
-	$data['redirect_url'] = "$site_url/orderIncludes/charge/order/paystack?orderTip=1";
+	$data['type'] = "orderTip";
+	$data['content_id'] = $_SESSION['tipOrderId'];
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
+	$data['sub_total'] = $amount;
+	$data['total'] = $amount+$processing_fee;
+
+	$data['redirect_url'] = "$site_url/orderIncludes/charge/order/paystack?reference_no=$reference_no";
 	$payment->paystack($data);
 
 }else{

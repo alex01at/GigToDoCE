@@ -13,12 +13,11 @@ if(isset($_SESSION["db_host"])){
 <!DOCTYPE html>
 <html>
 <head>
-<title> Install Script - Step One</title>
+<title>Install Script - Step One</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 <link href="styles/bootstrap.css" rel="stylesheet">
-<link href="styles/style.css" rel="stylesheet">
-<link href="styles/category_nav_style.css" rel="stylesheet">
+<link href="styles/styles.css" rel="stylesheet">
 <link href="styles/sweat_alert.css" rel="stylesheet">
 <!--- stylesheet width modifications --->
 <link href="styles/custom.css" rel="stylesheet">
@@ -128,7 +127,7 @@ if(isset($_POST["install"])){
       $_SESSION["db_username"] = $uname;
       $_SESSION["db_pass"] = $pass;
       $_SESSION["db_name"] = $database;
-      echo "<script> window.open('install2','_self'); </script>";
+      echo "<script>window.open('install2','_self'); </script>";
     }
   }catch(PDOException $ex){
     echo "<h2 class='text-white text-center mb-3'>Something Wrong In Fields</h2>";  

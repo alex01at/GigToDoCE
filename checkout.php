@@ -18,6 +18,8 @@
 	$paypal_currency_code = $row_payment_settings->paypal_currency_code;
 	$paypal_sandbox = $row_payment_settings->paypal_sandbox;
 	$enable_dusupay = $row_payment_settings->enable_dusupay;
+	$dusupay_method = $row_payment_settings->dusupay_method;
+	$dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
 
 	if($paypal_sandbox == "on"){
 		$paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
@@ -228,12 +230,28 @@ if(isset($_POST['code'])){
 			}else{
 				$update_coupon = $db->query("update coupons set coupon_used=coupon_used+1 where proposal_id=:p_id and coupon_code=:c_code",array("p_id"=>$proposal_id,"c_code"=>$coupon_code));
 				if($coupon_type == "fixed_price"){
+					
 					$proposal_price = $input->post('proposal_price');
-					$proposal_price = $coupon_price;
+
+					if($coupon_price > $proposal_price){
+						$numberToAdd = 0;
+						$proposal_price = 0;
+					}else{
+						$numberToAdd = $coupon_price;
+						$proposal_price = $proposal_price-$coupon_price;
+					}
+					
+					if(isset($_POST['proposal_extras'])){
+						$proposal_price += $extra_price;
+					}
+
 				}else{
 					$proposal_price = $input->post('proposal_price');
 					$numberToAdd = ($proposal_price / 100) * $coupon_price;
 					$proposal_price = $proposal_price - $numberToAdd;
+					if(isset($_POST['proposal_extras'])){
+						$proposal_price += $extra_price;
+					}
 				}
 				$proposal_qty = $input->post('proposal_qty');
 				$sub_total = $proposal_price * $proposal_qty;
@@ -429,6 +447,7 @@ if(isset($_POST['code'])){
 					<h5> <i class="fa fa-file-text-o"></i> Order Summary </h5>
 				</div>
 				<div class="card-body">
+					
 					<div class="row">
 						<div class="col-md-4 mb-3">
 						<img src="<?= $proposal_img1; ?>" class="img-fluid">
@@ -437,7 +456,9 @@ if(isset($_POST['code'])){
 						<h5><?= $proposal_title; ?></h5>
 						</div>
 					</div>
+
 					<hr>
+
 					<h6>Proposal's Price: <span class="float-right"><?= showPrice($single_price); ?> </span></h6>
 
 					<?php if(isset($_POST['proposal_extras'])){ ?>
@@ -463,7 +484,11 @@ if(isset($_POST['code'])){
 					<h6>Appy Coupon Code:</h6>
 					<form class="input-group" method="post">
 						<input type="hidden" name="proposal_id" value="<?= $proposal_id; ?>">
+						<?php if(isset($_POST['proposal_extras'])){ ?>
+					  	<input type="hidden" name="proposal_price" value="<?= $proposal_price-$extra_price; ?>">
+						<?php }else{ ?>
 					  	<input type="hidden" name="proposal_price" value="<?= $proposal_price; ?>">
+						<?php } ?>
 						<input type="hidden" name="proposal_qty" value="<?= $proposal_qty; ?>">
 						<?php if(isset($_POST['package_id'])){ ?>
 						<input type="hidden" name="package_id" value="<?= $input->post('package_id');?>">

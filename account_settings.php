@@ -43,7 +43,7 @@ if(isset($_POST['submit_paypal_email'])){
 }
 
 if($paymentGateway == 1){ 
-  // include("plugins/paymentGateway/account_settings.php");
+  include("plugins/paymentGateway/account_settings.php");
 } 
 
 ?>

@@ -88,7 +88,7 @@ $total = $select->fetch()->total;
 
 $total = $total > 0 || $total!==null ? $total : "0";
 
-showPrice($total);
+echo showPrice($total);
 
 ?>
 </div>
@@ -115,7 +115,7 @@ $total = $select->fetch()->total;
 
 $total = $total > 0 || $total!==null ? $total : "0";
 
-showPrice($total);
+echo showPrice($total);
 
 ?>
 
@@ -143,7 +143,7 @@ $total = $select->fetch()->total;
 
 $total = $total > 0 || $total!==null ? $total : "0";
 
-showPrice($total);
+echo showPrice($total);
 
 ?>
 

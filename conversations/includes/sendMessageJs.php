@@ -4,12 +4,14 @@ var height = 0;
 $(".col-md-8 .messages .inboxMsg").each(function(i, value){
 	height += parseInt($(this).height());
 });
-height += 2000;
+height += 20000;
 $(".col-md-8 .messages").animate({scrollTop: height});
 
 var login_seller_id = "<?= $login_seller_id; ?>";
 var seller_id = "<?= $seller_id; ?>";
 var message_group_id = "<?= $message_group_id ?>";
+
+var scroll = 0;
 
 $(document).off('submit').on('submit','#insert-message-form', function(event){
 	event.preventDefault();
@@ -22,9 +24,9 @@ function sendMessage(){
 	$("#send-msg").html("<i class='fa fa-spinner fa-pulse fa-lg fa-fw'></i>");
 	message = $('.emojionearea-editor').html();
 	if(message==""){
-    swal({
-	    type: 'warning',
-	    text: 'Message can\'t be empty!',
+   	swal({
+	   	type: 'warning',
+	   	text: 'Message can\'t be empty!',
 	 	});
 		$("#send-msg").prop("disabled", false);
 		$("#send-msg").html("Send");
@@ -41,8 +43,9 @@ function sendMessage(){
 				$('.files').html('');
 				$("#send-msg").prop("disabled", false);
 				$("#send-msg").html("Send");
-				height += 2000;
-				$(".col-md-8 .messages").animate({scrollTop: height});
+				scroll = 1;
+				// height += 2000;
+				// $(".col-md-8 .messages").animate({scrollTop: height});
 			}
 		});
 	}
@@ -60,7 +63,7 @@ $(document).on('change','#file', function(){
 		cache:false,
 		processData:false,
 	}).done(function(data){
-		if(data=="<?= $lang['alert']['extension_not_supported']; ?>"){
+		if(data=="Your File Format Extension Is Not Supported."){
 			alert(data);
 		}else{
 			var file = "<span class='border rounded p-1'>"+name.name+"</span>";
@@ -118,9 +121,13 @@ setInterval(function(){
 	}).done(function(data){
 		$('.specfic .messages').empty();
 		$('.specfic .messages').append(data);
-		// height += 2000;
-		// $(".col-md-8 .messages").animate({scrollTop: height});
+		
+		if(scroll == 1){
+			height += 2000;
+			$(".col-md-8 .messages").animate({scrollTop: height});
+			scroll = 0;
+		}
+
 	});
 }, 2000);
-
 </script>

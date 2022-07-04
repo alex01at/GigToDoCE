@@ -188,45 +188,42 @@ $('textarea').summernote({
 
 <?php
 
+require_once("includes/removeJava.php");
+
 if(isset($_POST['submit'])){
 
-$rules = array(
-"article_heading" => "required",
-"article_status" => "required",
-"cat_id" => "required",
-"article_body" => "required");
+  $rules = array(
+  "article_heading" => "required",
+  "article_status" => "required",
+  "cat_id" => "required",
+  "article_body" => "required");
 
-$messages = array("cat_id" => "You must need to select a category for Article.");
+  $messages = array("cat_id" => "You must need to select a category for Article.");
+  $val = new Validator($_POST,$rules,$messages);
 
-$val = new Validator($_POST,$rules,$messages);
+  if($val->run() == false){
 
-if($val->run() == false){
+    Flash::add("form_errors",$val->get_all_errors());
+    Flash::add("form_data",$_POST);
+    echo "<script> window.open('index?insert_article','_self');</script>";
 
-Flash::add("form_errors",$val->get_all_errors());
+  }else{
 
-Flash::add("form_data",$_POST);
+    $article_heading = $input->post('article_heading');
 
-echo "<script> window.open('index?insert_article','_self');</script>";
-
-}else{
-
-
-$article_heading = $input->post('article_heading');
-
-class SanitizeUrl {
-
-    public static function slug($string, $space="-"){
-      
+    function sanitizeUrl($string, $space="-"){
       if(preg_match('/[اأإء-ي]/ui', $string)){
         return urlencode($string);
       }else{
 
         $turkcefrom = array("/Ğ/","/Ü/","/Ş/","/İ/","/Ö/","/Ç/","/ğ/","/ü/","/ş/","/ı/","/ö/","/ç/");
         $turkceto = array("G","U","S","I","O","C","g","u","s","i","o","c");
+
         $string = utf8_encode($string);
-        if(function_exists('iconv')) { 
-          $string = iconv('UTF-8','ASCII//TRANSLIT', $string); 
+        if (function_exists('iconv')) {
+          // $string = iconv('UTF-8', 'ASCII//TRANSLIT', mb_strtolower($string));
         }
+
         $string = preg_replace("/[^a-zA-Z0-9 \-]/", "", $string);
         $string = trim(preg_replace("/\\s+/", " ", $string));
         $string = strtolower($string);
@@ -241,96 +238,69 @@ class SanitizeUrl {
         $string = preg_replace("/^-/","",$string);
         $string = preg_replace("/-$/","",$string);
         return $string;
+     }
+    } 
+
+    $article_url = sanitizeUrl($article_heading);
+
+    $cat_id = $input->post('cat_id');
+    $article_status = $input->post('article_status');
+    $article_body = removeJava($_POST['article_body']);
+
+    $right_image = $_FILES['right_image']['name'];
+    $right_image_tmp = $_FILES['right_image']['tmp_name'];
+
+    $top_image = $_FILES['top_image']['name'];
+    $top_image_tmp = $_FILES['top_image']['tmp_name'];
+
+    $bottom_image = $_FILES['bottom_image']['name'];
+    $bottom_image_tmp = $_FILES['bottom_image']['tmp_name'];
+
+    $right_extension = pathinfo($right_image, PATHINFO_EXTENSION);
+    $top_extension = pathinfo($top_image, PATHINFO_EXTENSION);
+    $bottom_extension = pathinfo($bottom_image, PATHINFO_EXTENSION);
+
+    $allowed = array('jpeg','jpg','gif','png','tif','ico','webp');
+
+    if(!in_array($right_extension,$allowed) & !empty($right_image) or !in_array($top_extension,$allowed) & !empty($top_image) or !in_array($bottom_extension,$allowed) & !empty($bottom_image)){
+
+      echo "<script>alert('Your File Format Extension Is Not Supported.')</script>";
+      
+    }else{
+
+      if(!empty($right_image)){
+        $right_image = pathinfo($right_image, PATHINFO_FILENAME);
+        $right_image = $right_image."_".time().".$file_extension";
+        uploadToS3("article_images/$right_image",$right_image_tmp);
+      }
+
+      if(!empty($top_image)){
+        $top_image = pathinfo($top_image, PATHINFO_FILENAME);
+        $top_image = $top_image."_".time().".$file_extension";
+        uploadToS3("article_images/$top_image",$top_image_tmp);
+      }
+
+      if(!empty($bottom_image)){
+        $bottom_image = pathinfo($bottom_image, PATHINFO_FILENAME);
+        $bottom_image = $bottom_image."_".time().".$file_extension";
+        uploadToS3("article_images/$bottom_image",$bottom_image_tmp);
+      }
+
+      $insert_article = $db->insert("knowledge_bank",array("language_id" => $adminLanguage,"cat_id"=>$cat_id,"article_url"=>$article_url,"article_heading"=>$article_heading,"article_body"=>$article_body,"right_image"=>$right_image,"top_image"=>$top_image,"bottom_image"=>$bottom_image,"right_image_s3"=>$enable_s3,"top_image_s3"=>$enable_s3,"bottom_image_s3"=>$enable_s3,"article_status"=>$article_status));
+
+      if($insert_article){
+
+        $insert_id = $db->lastInsertId();
+        $insert_log = $db->insert_log($admin_id,"article",$insert_id,"inserted");
+
+        echo "<script>alert('Article inserted successfully.');</script>";
+        echo "<script>window.open('index?view_articles','_self');</script>";
 
       }
 
     }
-} 
-
-function removeJava($html){
-  
-  $attrs = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavaible', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragdrop', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterupdate', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmoveout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
-
-  $dom = new DOMDocument;
-  @$dom->loadHTML($html);
-  $nodes = $dom->getElementsByTagName('*');//just get all nodes, 
-
-  foreach($nodes as $node){
-
-    foreach ($attrs as $attr) { 
-      if ($node->hasAttribute($attr)){ $node->removeAttribute($attr);  } 
-    }
 
   }
-
-  return strip_tags($dom->saveHTML(),"<div><iframe><br><a><b><i><u><span><img><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
-
-}
-
-$article_url = SanitizeUrl::slug($article_heading);
-$cat_id = $input->post('cat_id');
-$article_status = $input->post('article_status');
-$article_body = removeJava($_POST['article_body']);
-
-
-$right_image = $_FILES['right_image']['name'];
-$right_image_tmp = $_FILES['right_image']['tmp_name'];
-
-$top_image = $_FILES['top_image']['name'];
-$top_image_tmp = $_FILES['top_image']['tmp_name'];
-
-$bottom_image = $_FILES['bottom_image']['name'];
-$bottom_image_tmp = $_FILES['bottom_image']['tmp_name'];
-
-
-$right_extension = pathinfo($right_image, PATHINFO_EXTENSION);
-
-$top_extension = pathinfo($top_image, PATHINFO_EXTENSION);
-
-$bottom_extension = pathinfo($bottom_image, PATHINFO_EXTENSION);
-
-
-$allowed = array('jpeg','jpg','gif','png','tif','ico','webp');
-
-if(!in_array($right_extension,$allowed) & !empty($right_image) or !in_array($top_extension,$allowed) & !empty($top_image) or !in_array($bottom_extension,$allowed) & !empty($bottom_image)){
-
-echo "<script>alert('Your File Format Extension Is Not Supported.')</script>";
-  
-}else{
-
-  if(!empty($right_image)){
-    $right_image = pathinfo($right_image, PATHINFO_FILENAME);
-    $right_image = $right_image."_".time().".$file_extension";
-    uploadToS3("article_images/$right_image",$right_image_tmp);
-  }
-
-  if(!empty($top_image)){
-    $top_image = pathinfo($top_image, PATHINFO_FILENAME);
-    $top_image = $top_image."_".time().".$file_extension";
-    uploadToS3("article_images/$top_image",$top_image_tmp);
-  }
-
-  if(!empty($bottom_image)){
-    $bottom_image = pathinfo($bottom_image, PATHINFO_FILENAME);
-    $bottom_image = $bottom_image."_".time().".$file_extension";
-    uploadToS3("article_images/$bottom_image",$bottom_image_tmp);
-  }
-
-  $insert_article = $db->insert("knowledge_bank",array("language_id" => $adminLanguage,"cat_id"=>$cat_id,"article_url"=>$article_url,"article_heading"=>$article_heading,"article_body"=>$article_body,"right_image"=>$right_image,"top_image"=>$top_image,"bottom_image"=>$bottom_image,"right_image_s3"=>$enable_s3,"top_image_s3"=>$enable_s3,"bottom_image_s3"=>$enable_s3,"article_status"=>$article_status));
-
-  if($insert_article){
-
-    $insert_id = $db->lastInsertId();
-    $insert_log = $db->insert_log($admin_id,"article",$insert_id,"inserted");
-
-    echo "<script>alert('Article inserted successfully.');</script>";
-    echo "<script>window.open('index?view_articles','_self');</script>";
-
-  }
-
-}
-
-}
 
 }
 

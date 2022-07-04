@@ -47,7 +47,7 @@
 								<?php
 								   $get_cats = $db->select("post_categories");
 									while($cat = $get_cats->fetch()){
-										echo "<option>$cat->cat_name</option>";
+										echo "<option value='$cat->id'>$cat->cat_name</option>";
 									}
 								?>
 								</select>

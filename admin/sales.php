@@ -156,10 +156,11 @@ if(!isset($_SESSION['admin_email'])){
   	  $page = 1;
   	}
 
+    $i = ($page*$per_page)-10;
+
   	/// Page will start from 0 and multiply by per page
   	$start_from = ($page-1) * $per_page;
   	$sales = $db->query("select * from sales $filter_q order by 1 DESC LIMIT :limit OFFSET :offset","",array("limit"=>$per_page,"offset"=>$start_from));
-    $i = 0;
   	while($sale = $sales->fetch()){
   		$buyer = $db->select("sellers",array("seller_id" => $sale->buyer_id))->fetch();
   		if($sale->action=="featured_fee"){

@@ -17,7 +17,7 @@ $count_featured_proposals = $db->count("proposals",array("proposal_status" => "a
 
 $count_pending_proposals = $db->count("proposals",array("proposal_status" => "pending"));
 
-$count_pause_proposals = $db->count("proposals",array("proposal_status" => "pause"));
+$count_pause_proposals = $db->query("select * from proposals where proposal_status='pause' or proposal_status='admin_pause'")->rowCount();
 
 $count_trash_proposals = $db->count("proposals",array("proposal_status" => "trash"));
 
@@ -255,7 +255,7 @@ Trash (<?= $count_trash_proposals; ?>)
 
 <?php
 
-$get_proposals = $db->query("select * from proposals where proposal_status='pause' order by 1 DESC");
+$get_proposals = $db->query("select * from proposals where proposal_status='pause' or proposal_status='admin_pause' order by 1 DESC");
 
 while($row_proposals = $get_proposals->fetch()){
 

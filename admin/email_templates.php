@@ -56,7 +56,7 @@ echo "<script>window.open('login','_self');</script>";
                <ul class="nav nav-tabs card-header-tabs">
                  
                  <li class="nav-item">
-                   <a class="nav-link active" data-toggle="tab" href="#forgot">Forgot Password</a>
+                   <a class="nav-link" data-toggle="tab" href="#forgot">Forgot Password</a>
                  </li>
 
                  <li class="nav-item">
@@ -69,7 +69,11 @@ echo "<script>window.open('login','_self');</script>";
 
                  <li class="nav-item">
                    <a class="nav-link" data-toggle="tab" href="#customer-support">Customer Support</a>
-                 </li>      
+                 </li>
+
+                 <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#ticket-closed">Ticket Closed Email</a>
+                 </li>
 
                  <li class="nav-item">
                    <a class="nav-link" data-toggle="tab" href="#order-receipt">Order Email Receipt To Buyer</a>
@@ -77,6 +81,14 @@ echo "<script>window.open('login','_self');</script>";
 
                  <li class="nav-item">
                    <a class="nav-link" data-toggle="tab" href="#order-email">Order Email</a>
+                 </li>        
+
+                 <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#dusupay-order">Coinpayments/Dusupay Order Email</a>
+                 </li>
+
+                 <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#dusupay-order-completed">Coinpayments/Dusupay Completed Order Email</a>
                  </li>
 
                  <li class="nav-item">
@@ -131,13 +143,35 @@ echo "<script>window.open('login','_self');</script>";
                    <a class="nav-link" data-toggle="tab" href="#payout-request">Admin Payout Request</a>
                  </li>
                 
+                 <li class="nav-item">
+                   <a class="nav-link active" data-toggle="tab" href="#header">Email Header</a>
+                 </li>
+
+                 <li class="nav-item">
+                   <a class="nav-link" data-toggle="tab" href="#footer">Email Footer</a>
+                 </li>
+
                </ul>
              </div>
 
                <div class="card-body tab-content"><!--- card-body Starts --->
 
                
-               <div class="tab-pane fade show active" id="forgot"><!--- tab-pane fade show active Starts --->
+               <div class="tab-pane fade show active" id="header"><!--- tab-pane fade show active Starts --->
+
+               <?php include("email_content/header.php"); ?>
+
+               </div><!--- tab-pane fade show active Ends --->
+
+
+               <div class="tab-pane fade" id="footer"><!--- tab-pane fade show active Starts --->
+
+               <?php include("email_content/footer.php"); ?>
+
+               </div><!--- tab-pane fade show active Ends --->
+
+
+               <div class="tab-pane fade" id="forgot"><!--- tab-pane fade show active Starts --->
 
                <?php include("email_content/forgot_pass.php"); ?>
 
@@ -156,9 +190,17 @@ echo "<script>window.open('login','_self');</script>";
 
                </div><!--- tab-pane fade Ends --->
 
+
                <div class="tab-pane fade" id="customer-support"><!--- tab-pane fade Starts --->
 
                <?php include("email_content/customer_support.php"); ?>
+
+               </div><!--- tab-pane fade Ends --->
+
+
+               <div class="tab-pane fade" id="ticket-closed"><!--- tab-pane fade Starts --->
+
+               <?php include("email_content/ticket_closed.php"); ?>
 
                </div><!--- tab-pane fade Ends --->            
 
@@ -172,6 +214,20 @@ echo "<script>window.open('login','_self');</script>";
                <div class="tab-pane fade" id="order-email"><!--- tab-pane fade Starts --->
 
                <?php include("email_content/order_email.php"); ?>
+
+               </div><!--- tab-pane fade Ends --->           
+
+
+               <div class="tab-pane fade" id="dusupay-order"><!--- tab-pane fade Starts --->
+
+               <?php include("email_content/dusupay_order.php"); ?>
+
+               </div><!--- tab-pane fade Ends --->           
+
+
+               <div class="tab-pane fade" id="dusupay-order-completed"><!--- tab-pane fade Starts --->
+
+               <?php include("email_content/dusupay_order_completed.php"); ?>
 
                </div><!--- tab-pane fade Ends --->           
 

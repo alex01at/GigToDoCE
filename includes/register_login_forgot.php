@@ -271,7 +271,7 @@ if(isset($_POST['forgot'])){
 		$data['to'] = $forgot_email;
 		$data['subject'] = "$site_name: Password Reset";
 		$data['user_name'] = $seller_user_name;
-		$data['forgot_link'] = "$site_url/change_password?code=$seller_pass&username=$seller_user_name";
+		$data['forgot_link'] = "$site_url/change_password?username=$seller_user_name&code=$seller_pass";
 
 		if(send_mail($data)){
 			echo "

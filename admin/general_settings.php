@@ -16,15 +16,19 @@ $site_favicon = getImageUrl2("general_settings","site_favicon",$row_general_sett
 $site_logo_type = $row_general_settings->site_logo_type;
 $site_logo_text = $row_general_settings->site_logo_text;
 $site_name = $row_general_settings->site_name;
+$enable_mobile_logo = $row_general_settings->enable_mobile_logo;
 
 $site_logo_image = getImageUrl2("general_settings","site_logo_image",$row_general_settings->site_logo_image);
+$site_mobile_logo = getImageUrl2("general_settings","site_mobile_logo",$row_general_settings->site_mobile_logo);
 $site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
 
 $s_favicon = $row_general_settings->site_favicon;
 $s_logo_image = $row_general_settings->site_logo_image;
+$s_mobile_logo = $row_general_settings->site_mobile_logo;
 $s_logo = $row_general_settings->site_logo;
 
 $s_favicon_s3 = $row_general_settings->site_favicon_s3;
+$s_mobile_logo_s3 = $row_general_settings->site_mobile_logo_s3;
 $s_logo_image_s3 = $row_general_settings->site_logo_image_s3;
 $s_logo_s3 = $row_general_settings->site_logo_s3;
 
@@ -141,7 +145,7 @@ require 'timezones.php';
 </div><!--- form-group row Ends --->
 
 <div class="form-group row"><!--- form-group row Starts --->
-<label class="col-md-3 control-label"> Do you wish to do Manual Payouts : </label>
+<label class="col-md-3 control-label"> Do you wish to do All Manual Payouts : </label>
 <div class="col-md-6">
   <div class="input-group">
   <span class="input-group-addon"><b><i class="fa fa-link" aria-hidden="true"></i></b></span>
@@ -250,6 +254,36 @@ require 'timezones.php';
 </div>
 </div>
 <!--- form-group row Ends --->
+
+
+
+<div class="form-group row">
+<!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Enable Mobile Logo : </label>
+<div class="col-md-6">
+<select name="enable_mobile_logo" class="form-control" required="">
+  <option value="1"> Yes </option>
+  <option value="0" <?= ($enable_mobile_logo == 0)?"selected":""; ?>> No </option>
+</select>
+</div>
+</div>
+<!--- form-group row Ends --->
+
+
+<div class="form-group row"><!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Site Mobile Logo : </label>
+<div class="col-md-6">
+<div class="input-group">
+<span class="input-group-addon">
+<b><i class="fa fa-paper-plane"></i></b>
+</span>
+<input type="file" name="site_mobile_logo" class="form-control">
+</div>
+<img class="mt-1" src="<?= $site_mobile_logo; ?>" width="25" height="25">
+<br>
+</div>
+</div><!--- form-group row Ends --->
+
 
 <div class="form-group row"><!--- form-group row Starts --->
 <label class="col-md-3 control-label"> Site Email Logo : </label>
@@ -374,7 +408,7 @@ require 'timezones.php';
 
 <div class="form-group row"><!--- form-group row Starts --->
 <label class="col-md-3 control-label"> Google Recaptcha Site Key : <br/>
-<small><a target="_blank" href="http://help.gigtodoscript.com/knowledge/details/9/How-to-get-Google-Recaptcha-site-and-secret-key.html" class="text-success">How To?</a></small>    
+<small><a target="_blank" href=https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html" class="text-success">How To?</a></small>    
 </label>
 <div class="col-md-6">
 <div class="input-group">
@@ -386,7 +420,7 @@ require 'timezones.php';
 
 <div class="form-group row"><!--- form-group row Starts --->
 <label class="col-md-3 control-label"> Google Re captcha Secret Key  : <br/>
-<small><a target="_blank" href="http://help.gigtodoscript.com/knowledge/details/9/How-to-get-Google-Recaptcha-site-and-secret-key.html" class="text-success">How To?</a></small>
+<small><a target="_blank" href="https://help.gigtodoscript.com/knowledge/details/12/Steps%20on%20Getting%20Google%20reCaptcha%20key%20%20secret.html" class="text-success">How To?</a></small>
 </label>
 <div class="col-md-6">
 <div class="input-group">
@@ -398,9 +432,7 @@ require 'timezones.php';
 
 <div class="form-group row">
 <!--- form-group row Starts --->
-<label class="col-md-3 control-label"> JwPlayer Code : <br>
-<small><a target="_blank" href="http://help.gigtodoscript.com/knowledge/details/3/.html" class="text-success">How To?</a></small>
-</label>
+<label class="col-md-3 control-label"> JwPlayer Code :</label>
 <div class="col-md-6">
 <div class="input-group">
 <span class="input-group-addon">
@@ -962,7 +994,8 @@ if(isset($_POST['general_settings_update'])){
   $wish_do_manual_payouts = $input->post('wish_do_manual_payouts');
 
 	$site_name = $input->post('site_name');
-	$site_logo_type = $input->post('site_logo_type');
+	$enable_mobile_logo = $input->post('enable_mobile_logo');
+  $site_logo_type = $input->post('site_logo_type');
 	$site_logo_text = $input->post('site_logo_text');
 	$site_desc = $input->post('site_desc');
 	$site_keywords = $input->post('site_keywords');
@@ -993,7 +1026,10 @@ if(isset($_POST['general_settings_update'])){
 	$site_favicon_tmp = $_FILES['site_favicon']['tmp_name'];
 	
   $site_logo = $_FILES['site_logo']['name'];
-	$site_logo_tmp = $_FILES['site_logo']['tmp_name'];
+	$site_logo_tmp = $_FILES['site_logo']['tmp_name']; 
+
+  $site_mobile_logo = $_FILES['site_mobile_logo']['name'];
+  $site_mobile_logo_tmp = $_FILES['site_mobile_logo']['tmp_name'];
 	
   $site_logo_image = $_FILES['site_logo_image']['name'];
 	$site_logo_image_tmp = $_FILES['site_logo_image']['tmp_name'];
@@ -1026,6 +1062,14 @@ if(isset($_POST['general_settings_update'])){
       $site_logo_s3 = $enable_s3;
     }
 
+    if(empty($site_mobile_logo)){
+      $site_mobile_logo = $s_mobile_logo;
+      $site_mobile_logo_s3 = $s_mobile_logo_s3;
+    }else{
+      uploadToS3("images/$site_mobile_logo",$site_mobile_logo_tmp);
+      $site_mobile_logo_s3 = $enable_s3;
+    }
+
     if(empty($site_logo_image)){
       $site_logo_image = $s_logo_image;
       $site_logo_image_s3 = $s_logo_image_s3;
@@ -1040,7 +1084,48 @@ if(isset($_POST['general_settings_update'])){
       move_uploaded_file($site_watermark_tmp, "../images/$site_watermark");
     }
 
-		$update_general_settings = $db->update("general_settings",array("site_title" => $site_title,"site_www" => $site_www,"site_name" => $site_name,"site_favicon" => $site_favicon,"site_logo_type" => $site_logo_type,"site_logo_text" => $site_logo_text,"site_logo_image" => $site_logo_image,"site_logo" => $site_logo,"site_favicon_s3" => $site_favicon_s3,"site_logo_s3" => $site_logo_s3,"site_logo_image_s3" => $site_logo_image_s3,"site_watermark" => $site_watermark,"site_desc" => $site_desc,"site_keywords" => $site_keywords,"site_author" => $site_author,"site_url" => $site_url,"site_email_address" => $site_email_address,"language_switcher" => $language_switcher,"site_copyright" => $site_copyright,"site_timezone"=>$site_timezone,"site_currency" => $site_currency,"currency_position" => $currency_position,"currency_format" => $currency_format,"recaptcha_site_key" => $recaptcha_site_key,"recaptcha_secret_key" => $recaptcha_secret_key,"jwplayer_code" => $jwplayer_code,"approve_proposals" => $approve_proposals,"enable_referrals" => $enable_referrals,"knowledge_bank" => $knowledge_bank,"referral_money" => $referral_money,"enable_maintenance_mode"=>$enable_maintenance_mode,"order_auto_complete" => $order_auto_complete,"wish_do_manual_payouts"=>$wish_do_manual_payouts,"site_color"=>$site_color,"site_hover_color"=>$site_hover_color,"site_border_color"=>$site_border_color,"google_analytics"=>$google_analytics));
+		$update_general_settings = $db->update("general_settings",array(
+      "site_title" => $site_title,
+      "site_www" => $site_www,
+      "site_name" => $site_name,
+      "site_favicon" => $site_favicon,
+      "site_logo_type" => $site_logo_type,
+      "site_logo_text" => $site_logo_text,
+      "site_logo_image" => $site_logo_image,
+      "enable_mobile_logo"=>$enable_mobile_logo,
+      "site_mobile_logo"=>$site_mobile_logo,
+      "site_logo" => $site_logo,
+      "site_favicon_s3" => $site_favicon_s3,
+      "site_logo_s3" => $site_logo_s3,
+      "site_logo_image_s3" => $site_logo_image_s3,
+      "site_mobile_logo_s3" => $site_mobile_logo_s3,
+      "site_watermark" => $site_watermark,
+      "site_desc" => $site_desc,
+      "site_keywords" => $site_keywords,
+      "site_author" => $site_author,
+      "site_url" => $site_url,
+      "site_email_address" => $site_email_address,
+      "language_switcher" => $language_switcher,
+      "site_copyright" => $site_copyright,
+      "site_timezone"=>$site_timezone,
+      "site_currency" => $site_currency,
+      "currency_position" => $currency_position,
+      "currency_format" => $currency_format,
+      "recaptcha_site_key" => $recaptcha_site_key,
+      "recaptcha_secret_key" => $recaptcha_secret_key,
+      "jwplayer_code" => $jwplayer_code,
+      "approve_proposals" => $approve_proposals,
+      "enable_referrals" => $enable_referrals,
+      "knowledge_bank" => $knowledge_bank,
+      "referral_money" => $referral_money,
+      "enable_maintenance_mode"=>$enable_maintenance_mode,
+      "order_auto_complete" => $order_auto_complete,
+      "wish_do_manual_payouts"=>$wish_do_manual_payouts,
+      "site_color"=>$site_color,
+      "site_hover_color"=>$site_hover_color,
+      "site_border_color"=>$site_border_color,
+      "google_analytics"=>$google_analytics
+    ));
 
 		if($update_general_settings){
 			$insert_log = $db->insert_log($admin_id,"general_settings","","updated");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2020 at 03:28 PM
+-- Generation Time: Jun 09, 2020 at 07:00 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.2.22
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gigtodo-install`
+-- Database: `gigtodo-empty`
 --
 
 -- --------------------------------------------------------
@@ -138,7 +138,7 @@ INSERT INTO `admin_rights` (`id`, `admin_id`, `settings`, `plugins`, `pages`, `b
 
 CREATE TABLE `announcement_bar` (
   `id` int(10) NOT NULL,
-  `enable_bar` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enable_bar` int(10) NOT NULL,
   `bg_color` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `text_color` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `bar_text` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -151,7 +151,7 @@ CREATE TABLE `announcement_bar` (
 --
 
 INSERT INTO `announcement_bar` (`id`, `enable_bar`, `bg_color`, `text_color`, `bar_text`, `last_updated`, `language_id`) VALUES
-(1, '0', '', '', '', '', 1);
+(1, 0, '#2ca35b', '#ffffff', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -193,7 +193,7 @@ CREATE TABLE `app_info` (
 --
 
 INSERT INTO `app_info` (`id`, `version`, `r_date`) VALUES
-(1, '1.5.0', '2 May 2020');
+(1, '1.5.1', '9 May 2020');
 
 -- --------------------------------------------------------
 
@@ -1135,6 +1135,31 @@ INSERT INTO `delivery_times` (`delivery_id`, `delivery_title`, `delivery_proposa
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `dusupay_orders`
+--
+
+CREATE TABLE `dusupay_orders` (
+  `id` int(10) NOT NULL,
+  `order_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `reference_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `buyer_id` int(10) NOT NULL,
+  `content_id` int(10) NOT NULL,
+  `qty` int(10) NOT NULL,
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `delivery_id` int(10) NOT NULL,
+  `revisions` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `minutes` int(10) NOT NULL,
+  `extras` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `enquiry_types`
 --
 
@@ -1225,11 +1250,11 @@ INSERT INTO `footer_links` (`link_id`, `language_id`, `icon_class`, `link_title`
 (12, 1, 'fa-facebook', '', '#', 'follow'),
 (13, 1, 'fa-linkedin', '', '#', 'follow'),
 (14, 1, 'fa-pinterest', '', '#', 'follow'),
-(15, 1, 'fa-comments', 'Customer Support', '/customer_support', 'about'),
+(15, 1, 'fa fa-life-ring', 'Customer Support', '/customer_support', 'about'),
 (16, 1, 'fa-question-circle', 'How It Works', '/how-it-works', 'about'),
-(17, 1, 'fa-book', 'Knowledge Bank', '/knowledge_bank', 'about'),
-(18, 1, 'fa-rss', 'Blog', '/blog', 'about'),
-(19, 1, 'fa-commenting-o', 'Feedback', '/feedback', 'about');
+(17, 1, 'fa-book', 'Knowledge Bank', '/knowledge_bank/', 'about'),
+(18, 1, 'fa-rss', 'Blog', '/blog/', 'about'),
+(19, 1, 'fa fa-comments-o', 'Feedback', '/feedback/', 'about');
 
 -- --------------------------------------------------------
 
@@ -1246,9 +1271,12 @@ CREATE TABLE `general_settings` (
   `site_logo_type` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_logo_text` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_logo_image` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `enable_mobile_logo` int(10) NOT NULL,
+  `site_mobile_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_logo` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `site_favicon_s3` int(10) NOT NULL,
   `site_logo_image_s3` int(10) NOT NULL,
+  `site_mobile_logo_s3` int(10) NOT NULL,
   `site_logo_s3` int(10) NOT NULL,
   `site_watermark` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `google_analytics` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1303,8 +1331,8 @@ CREATE TABLE `general_settings` (
 -- Dumping data for table `general_settings`
 --
 
-INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`) VALUES
-(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 'logo1.png', 0, 0, 0, 'watermark.jpg', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 2, 1, '', 0);
+INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `enable_mobile_logo`, `site_mobile_logo`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_mobile_logo_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`) VALUES
+(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 1, 'mobile-logo.png', 'logo1.png', 0, 0, 0, 0, 'watermark.png', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 2, 1, '', 0);
 
 -- --------------------------------------------------------
 
@@ -1355,7 +1383,7 @@ INSERT INTO `home_cards` (`card_id`, `language_id`, `card_title`, `card_desc`, `
 CREATE TABLE `home_section` (
   `section_id` int(10) NOT NULL,
   `language_id` int(10) NOT NULL,
-  `section_heading` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `section_heading` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `section_short_heading` text COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -1384,10 +1412,10 @@ CREATE TABLE `home_section_slider` (
 --
 
 INSERT INTO `home_section_slider` (`slide_id`, `slide_name`, `slide_image`, `isS3`) VALUES
+(1, 'Slide 1', 'main.png', 0),
 (2, 'Slide 2', '1.png', 0),
 (3, 'Slide 3', '2.jpg', 0),
-(4, 'Slide 4', '3.jpg', 0),
-(6, 'Slide 1', 'main.png', 0);
+(4, 'Slide 4', '3.jpg', 0);
 
 -- --------------------------------------------------------
 
@@ -1714,6 +1742,7 @@ CREATE TABLE `payment_settings` (
   `dusupay_currency_code` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_api_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_secret_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dusupay_webhook_hash` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_provider_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_payout_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1728,6 +1757,7 @@ CREATE TABLE `payment_settings` (
   `coinpayments_withdrawal_fee` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `coinpayments_public_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `coinpayments_private_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `coinpayments_ipn_secret` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enable_paystack` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `paystack_public_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `paystack_secret_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1741,8 +1771,8 @@ CREATE TABLE `payment_settings` (
 -- Dumping data for table `payment_settings`
 --
 
-INSERT INTO `payment_settings` (`id`, `min_proposal_price`, `comission_percentage`, `days_before_withdraw`, `withdrawal_limit`, `featured_fee`, `featured_duration`, `featured_proposal_while_creating`, `processing_feeType`, `processing_fee`, `enable_paypal`, `paypal_email`, `paypal_currency_code`, `paypal_app_client_id`, `paypal_app_client_secret`, `paypal_sandbox`, `enable_payoneer`, `enable_stripe`, `stripe_secret_key`, `stripe_publishable_key`, `stripe_currency_code`, `enable_dusupay`, `dusupay_sandbox`, `dusupay_currency_code`, `dusupay_api_key`, `dusupay_secret_key`, `dusupay_method`, `dusupay_provider_id`, `dusupay_payout_method`, `dusupay_payout_provider_id`, `enable_payza`, `payza_email`, `payza_currency_code`, `payza_test`, `enable_coinpayments`, `coinpayments_merchant_id`, `coinpayments_currency_code`, `coinpayments_withdrawal_fee`, `coinpayments_public_key`, `coinpayments_private_key`, `enable_paystack`, `paystack_public_key`, `paystack_secret_key`, `enable_mercadopago`, `mercadopago_access_token`, `mercadopago_currency`, `mercadopago_sandbox`) VALUES
-(1, 5, 12, 1, 5, 10, 1, 1, 'fixed', 2, 'no', '', '', '', '', 'on', 1, 'no', '', '', '', 'no', 'on', '', '', '', '', '', '', '', 'no', '', 'USD', 'off', 'no', '', '', 'sender', '', '', 'no', '', '', 0, '', '', 0);
+INSERT INTO `payment_settings` (`id`, `min_proposal_price`, `comission_percentage`, `days_before_withdraw`, `withdrawal_limit`, `featured_fee`, `featured_duration`, `featured_proposal_while_creating`, `processing_feeType`, `processing_fee`, `enable_paypal`, `paypal_email`, `paypal_currency_code`, `paypal_app_client_id`, `paypal_app_client_secret`, `paypal_sandbox`, `enable_payoneer`, `enable_stripe`, `stripe_secret_key`, `stripe_publishable_key`, `stripe_currency_code`, `enable_dusupay`, `dusupay_sandbox`, `dusupay_currency_code`, `dusupay_api_key`, `dusupay_secret_key`, `dusupay_webhook_hash`, `dusupay_method`, `dusupay_provider_id`, `dusupay_payout_method`, `dusupay_payout_provider_id`, `enable_payza`, `payza_email`, `payza_currency_code`, `payza_test`, `enable_coinpayments`, `coinpayments_merchant_id`, `coinpayments_currency_code`, `coinpayments_withdrawal_fee`, `coinpayments_public_key`, `coinpayments_private_key`, `coinpayments_ipn_secret`, `enable_paystack`, `paystack_public_key`, `paystack_secret_key`, `enable_mercadopago`, `mercadopago_access_token`, `mercadopago_currency`, `mercadopago_sandbox`) VALUES
+(1, 5, 12, 1, 5, 10, 1, 1, 'fixed', 2, 'no', '', '', '', '', 'on', 1, 'no', '', '', '', 'no', 'on', '', '', '', '', '', '', '', '', 'no', '', 'USD', 'off', 'no', '', '', 'sender', '', '', '', 'no', '', '', 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -1950,6 +1980,7 @@ CREATE TABLE `purchases` (
   `purchase_id` int(10) NOT NULL,
   `seller_id` int(10) NOT NULL,
   `order_id` int(10) NOT NULL,
+  `reason` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `amount` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `processing_fee` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `method` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -2114,11 +2145,11 @@ CREATE TABLE `sellers` (
 CREATE TABLE `seller_accounts` (
   `account_id` int(10) NOT NULL,
   `seller_id` int(10) NOT NULL,
-  `withdrawn` int(255) NOT NULL DEFAULT 0,
-  `current_balance` int(255) NOT NULL DEFAULT 0,
-  `used_purchases` int(255) NOT NULL DEFAULT 0,
-  `pending_clearance` int(255) NOT NULL DEFAULT 0,
-  `month_earnings` int(255) NOT NULL DEFAULT 0
+  `withdrawn` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `current_balance` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `used_purchases` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `pending_clearance` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0',
+  `month_earnings` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -2402,6 +2433,48 @@ CREATE TABLE `support_tickets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `temp_extras`
+--
+
+CREATE TABLE `temp_extras` (
+  `id` int(10) NOT NULL,
+  `reference_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `buyer_id` int(10) NOT NULL,
+  `item_id` int(10) NOT NULL,
+  `proposal_id` int(10) NOT NULL,
+  `name` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `price` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `temp_orders`
+--
+
+CREATE TABLE `temp_orders` (
+  `id` int(10) NOT NULL,
+  `reference_no` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `buyer_id` int(10) NOT NULL,
+  `content_id` int(10) NOT NULL,
+  `qty` int(10) NOT NULL,
+  `price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `delivery_id` int(10) NOT NULL,
+  `revisions` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `minutes` int(10) NOT NULL,
+  `video` int(10) NOT NULL,
+  `extras` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `currency` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `terms`
 --
 
@@ -2617,6 +2690,12 @@ ALTER TABLE `currency_converter_settings`
 --
 ALTER TABLE `delivery_times`
   ADD PRIMARY KEY (`delivery_id`);
+
+--
+-- Indexes for table `dusupay_orders`
+--
+ALTER TABLE `dusupay_orders`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `enquiry_types`
@@ -2997,6 +3076,18 @@ ALTER TABLE `support_tickets`
   ADD PRIMARY KEY (`ticket_id`);
 
 --
+-- Indexes for table `temp_extras`
+--
+ALTER TABLE `temp_extras`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `temp_orders`
+--
+ALTER TABLE `temp_orders`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `terms`
 --
 ALTER TABLE `terms`
@@ -3179,6 +3270,12 @@ ALTER TABLE `currency_converter_settings`
 --
 ALTER TABLE `delivery_times`
   MODIFY `delivery_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `dusupay_orders`
+--
+ALTER TABLE `dusupay_orders`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=115;
 
 --
 -- AUTO_INCREMENT for table `enquiry_types`
@@ -3557,6 +3654,18 @@ ALTER TABLE `starred_messages`
 --
 ALTER TABLE `support_tickets`
   MODIFY `ticket_id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `temp_extras`
+--
+ALTER TABLE `temp_extras`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+
+--
+-- AUTO_INCREMENT for table `temp_orders`
+--
+ALTER TABLE `temp_orders`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=124;
 
 --
 -- AUTO_INCREMENT for table `terms`

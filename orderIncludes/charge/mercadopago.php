@@ -20,10 +20,20 @@ if(isset($_POST['mercadopago'])){
 	$processing_fee = processing_fee($amount);
 
 	$data = [];
+	$data['type'] = "orderTip";
+	$data['content_id'] = $_SESSION['tipOrderId'];
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
 	$data['title'] = 'Order Tip Payment';
-	$data['price'] = $amount + $processing_fee;
-	$data['cancel_url'] = "$site_url/order_details?order_id=$order_id";
-	$data['redirect_url'] = "$site_url/order/mercadopago_order?cart_seller_id=$login_seller_id";
+	$data['price'] = $amount+$processing_fee;
+	$data['sub_total'] = $amount;
+	$data['total'] = $amount+$processing_fee;
+
+   $lastId = $db->query("SHOW TABLE STATUS LIKE 'temp_orders'")->fetch(PDO::FETCH_ASSOC)['Auto_increment'];
+
+   $data['cancel_url'] = "$site_url/cancel_payment?id=$lastId";
+	$data['redirect_url'] = "$site_url/orderIncludes/charge/order/mercadopago?reference_no=$reference_no";
+
 	$payment = new Payment();
 	$payment->mercadopago($data);
 

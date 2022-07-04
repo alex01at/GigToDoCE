@@ -102,7 +102,7 @@ $referral_money = $row_general_settings->referral_money;
 							$total = $select->fetch()->total;
 							$total = $total > 0 || $total!==null ? $total : "0";
 
-                     showPrice($total);
+                     echo showPrice($total);
 
                      ?>
                                                                 
@@ -128,7 +128,7 @@ $referral_money = $row_general_settings->referral_money;
 							$total = $select->fetch()->total;
                      $total = $total > 0 || $total!==null ? $total : "0";
 
-                     showPrice($total);
+                     echo showPrice($total);
 
                      ?>
 
@@ -154,7 +154,7 @@ $referral_money = $row_general_settings->referral_money;
 								$total = $select->fetch()->total;
                         $total = $total > 0 || $total!==null ? $total : "0";
 
-                        showPrice($total);
+                        echo showPrice($total);
 
                         ?>
                                     

@@ -61,7 +61,7 @@ if(!isset($_SESSION['admin_email'])){
 		<div class="dropdown"><!--- dropdown Starts --->
 		  <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Actions</button>
 		  <div class="dropdown-menu"><!--- dropdown-menu Starts --->
-		    <a class="dropdown-item" href="../<?= $page->url; ?>" target="_blank">
+		    <a class="dropdown-item" href="../pages/<?= $page->url; ?>" target="_blank">
 		      <i class="fa fa-eye"></i> Preview Page 
 		    </a>
 		    <a class="dropdown-item" href="index?edit_page=<?= $page->id; ?>">

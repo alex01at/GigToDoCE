@@ -137,6 +137,8 @@ function insertPackages($proposal_id){
   if($insertPackage3){return true;}
 }
 
+include("sanitize_url.php");
+
 if(isset($_POST['submit'])){
 
   $rules = array(
@@ -154,37 +156,6 @@ if(isset($_POST['submit'])){
     echo "<script> window.open('create_proposal','_self');</script>";
   }else{
     $proposal_title = $input->post('proposal_title');
-
-    function proposalUrl($string, $space="-"){
-       
-      if(preg_match('/[اأإء-ي]/ui', $string)){
-        return urlencode($string);
-      }else{
-        $turkcefrom = array("/Ğ/","/Ü/","/Ş/","/İ/","/Ö/","/Ç/","/ğ/","/ü/","/ş/","/ı/","/ö/","/ç/");
-        $turkceto = array("G","U","S","I","O","C","g","u","s","i","o","c");
-
-        $string = utf8_encode($string);
-        if(function_exists('iconv')) {
-          $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string);
-        }
-
-        $string = preg_replace("/[^a-zA-Z0-9 \-]/", "", $string);
-        $string = trim(preg_replace("/\\s+/", " ", $string));
-        $string = strtolower($string);
-        $string = str_replace(" ", $space, $string);
-
-        $string = preg_replace("/[^0-9a-zA-ZÄzÜŞİÖÇğüşıöç]/"," ",$string);
-        $string = preg_replace($turkcefrom,$turkceto,$string);
-        $string = preg_replace("/ +/"," ",$string);
-        $string = preg_replace("/ /","-",$string);
-        $string = preg_replace("/\s/","",$string);
-        $string = strtolower($string);
-        $string = preg_replace("/^-/","",$string);
-        $string = preg_replace("/-$/","",$string);
-        return $string;
-     }
-
-    }
 
     $sanitize_url = proposalUrl($proposal_title);
     $select_proposals = $db->select("proposals",array("proposal_seller_id" => $login_seller_id,"proposal_url" => $sanitize_url));
@@ -212,6 +183,8 @@ if(isset($_POST['submit'])){
         $data['proposal_enable_referrals'] = "no"; 
       }
 
+      $data['proposal_price'] = 0;
+      $data['delivery_id'] = $db->query("select * from delivery_times")->fetch()->delivery_id;
       $data['level_id'] = $login_seller_level;
       $data['language_id'] = $login_seller_language;
       $data['proposal_status'] = "draft";
@@ -225,6 +198,8 @@ if(isset($_POST['submit'])){
         $db->insert("instant_deliveries",["proposal_id"=>$proposal_id]);
 
         if($videoPlugin == 1){
+          $cat_id = $input->post("proposal_cat_id");
+          $child_id = $input->post("proposal_child_id");
           include("$dir/plugins/videoPlugin/proposals/checkVideo.php");
         }else{
           $redirect = "instant_delivery";

@@ -26,16 +26,19 @@ class Input{
 	public function post($data=''){
 		if(@is_array($_POST[$data]) or empty($data)){
 			if(empty($data)){
-				$array = $this->secure($_POST);
+				$array = $_POST;
 			}else{
-				$array = $this->secure($_POST[$data]);
+				$array = $_POST[$data];
 			}
+			// $array = call_user_func_array('mb_convert_encoding',array($array,'HTML-ENTITIES','UTF-8'));
 			$array = filter_var_array($array, FILTER_SANITIZE_STRING); 
 			return $array;
 		}else{
-			return htmlspecialchars(filter_input(INPUT_POST, $data), ENT_COMPAT, 'UTF-8'); 
+			$val = htmlspecialchars(filter_input(INPUT_POST,$data), ENT_COMPAT, 'UTF-8'); 
+			return $val;
 		}
 	}
+
 }
 
 $input = new input();

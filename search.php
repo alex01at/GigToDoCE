@@ -49,7 +49,7 @@
       <?php require_once("includes/search_sidebar.php");?>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-12 <?=($lang_dir == "right" ? 'order-1 order-sm-2':'')?>">
-      <div class="row flex-wrap" id="search_proposals">
+      <div class="row flex-wrap proposals" id="search_proposals">
         <?php get_search_proposals(); ?>
       </div>
       <div id="wait"></div>

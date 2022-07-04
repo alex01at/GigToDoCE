@@ -19,16 +19,25 @@ if(isset($_POST['paypal'])){
 	$row_proposals = $select_proposals->fetch();
 	$proposal_title = $row_proposals->proposal_title;
 
+	$reference_no = mt_rand();
+
 	$data = [];
+	$data['type'] = "request_offer";
+	$data['content_id'] = $_SESSION['c_offer_id'];
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
 	$data['name'] = $proposal_title;
 	$data['qty'] = 1;
 	$data['price'] = $amount;
 	$data['sub_total'] = $amount;
 	$data['total'] = $amount + $processing_fee;
-	$data['cancel_url'] = "$site_url/requests/view_offers?request_id=$request_id";
-	$data['redirect_url'] = "$site_url/paypal_order?view_offers=1&offer_id={$_SESSION['c_offer_id']}";
+
+	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
+	$data['redirect_url'] = "$site_url/paypal_order?reference_no=$reference_no";
+
 	$payment = new Payment();
 	$payment->paypal($data,$processing_fee);
+
 }else{
 	echo "<script>window.open('../index','_self');</script>";
 }

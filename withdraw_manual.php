@@ -49,10 +49,14 @@ if(isset($_POST['withdraw'])){
 			$insert_withdrawal = $db->insert("payouts",array("seller_id"=>$login_seller_id,"ref"=>$ref,"method"=>$method,"amount"=>$amount,"date"=>$date,"status"=>'pending'));
 
 			if($insert_withdrawal){
+				
+				$insert_id = $db->lastInsertId();
 
 				$update_seller_account = $db->query("update seller_accounts set current_balance=current_balance-:minus,withdrawn=withdrawn+:plus where seller_id='$login_seller_id'",array("minus"=>$amount,"plus"=>$amount));
 
 				$update_seller = $db->query("update sellers set seller_payouts=seller_payouts+1 where seller_id='$login_seller_id'");
+
+				$insert_notification = $db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $insert_id,"reason" => "payout_request","date" => $date,"status" => "unread"));
 
 				$get_admins = $db->select("admins");
 				while($row_admins = $get_admins->fetch()){

@@ -51,21 +51,17 @@ if(isset($_GET['decline_proposal'])){
     $insert_notification = $db->insert("notifications",["receiver_id"=>$proposal_seller_id,"sender_id"=>"admin_$admin_id","order_id"=>$proposal_id,"reason"=>"declined","date"=>$last_update_date,"status"=>"unread"]);
     if($insert_notification){
       $insert_log = $db->insert_log($admin_id,"proposal",$proposal_id,"declined");
-      echo "<script>
+      echo "
+      <script>
         swal({
         type: 'success',
         text: 'Proposal declined successfully!',
         timer: 3000,
         onOpen: function(){
-        swal.showLoading()
+          swal.showLoading()
         }
         }).then(function(){
-        if (
-          // Read more about handling dismissals
           window.open('index?view_proposals_active','_self')
-        ) {
-          console.log('Listing declined successfully.')
-        }
       })
       </script>";
     }

@@ -999,6 +999,73 @@ font-size:18px;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+
+
+@media(max-width: 1359px){
+
+   .seller-info-wrapper{
+      width: 68%;
+   }
+
+}
+
+@media(max-width: 1199px){
+
+   .seller-info-wrapper{
+      width: 72%;
+   }
+
+}
+
+@media(max-width: 991px){
+
+   .seller-info-wrapper{
+      width: 75%;
+   }
+
+}
+
+@media(max-width: 767px){
+
+   .seller-info-wrapper{
+      width: 80%;
+   }
+
+}
+
+@media(max-width: 577px){
+
+   .seller-info-wrapper{
+      width: 75%;
+   }
+
+}
+
+@media(max-width: 522px){
+
+   .seller-info-wrapper{
+      width: 71%;
+   }
+
+}
+
+@media(max-width: 479px){
+
+   .seller-info-wrapper{
+      width: 85%;
+   }
+
+}
+
+@media(max-width: 400px){
+
+   .seller-info-wrapper{
+      width: 80%;
+   }
+
+}
+
+
 .favoriteIcon{
 	/*width: 26%;*/
 }
@@ -2148,8 +2215,8 @@ margin-right:5px;
 .proposals [class*='col-md-'],
 .proposals [class*='col-lg-'],
 .proposals [class*='col-xl-'] {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding-left: 13px !important;
+	padding-right: 13px !important;
 }
 
 .user-proposals {
@@ -4277,9 +4344,9 @@ opacity: 0.8;
     height: 44px;
     line-height: 44px;
   }
-  .dd.ddcommon.borderRadius{
+  /*.dd.ddcommon.borderRadius{
     width: 300px !important;
-  }
+  }*/
 }
 
 footer h3{

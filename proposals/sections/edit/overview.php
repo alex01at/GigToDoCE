@@ -2,7 +2,7 @@
 
 $get_delivery_time =  $db->select("delivery_times",array('delivery_id' => $d_delivery_id));
 $row_delivery_time = $get_delivery_time->fetch();
-$delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
+@$delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
 
 $get_meta = $db->select("cats_meta",array("cat_id" => $d_proposal_cat_id,"language_id" => $siteLanguage));
 $row_meta = $get_meta->fetch();

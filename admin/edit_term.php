@@ -128,45 +128,33 @@ if(isset($_GET['edit_term'])){
           });
     </script>
 <?php
+
+require_once("includes/removeJava.php");
+
 if(isset($_POST['update'])){
 
-$rules = array(
-"term_title" => "required",
-"term_description" => "required",
-"term_link" => "required");
-$val = new Validator($_POST,$rules);
-if($val->run() == false){
-  Flash::add("form_errors",$val->get_all_errors());
-  Flash::add("form_data",$_POST);
-  echo "<script> window.open(window.location.href,'_self');</script>";
-}else{
+    $rules = array(
+    "term_title" => "required",
+    "term_description" => "required",
+    "term_link" => "required");
+    $val = new Validator($_POST,$rules);
+    if($val->run() == false){
+      Flash::add("form_errors",$val->get_all_errors());
+      Flash::add("form_data",$_POST);
+      echo "<script> window.open(window.location.href,'_self');</script>";
+    }else{
 
-function removeJava($html){
-  $attrs = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavaible', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragdrop', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterupdate', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmoveout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
-  $dom = new DOMDocument;
-  @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
-  $nodes = $dom->getElementsByTagName('*');//just get all nodes, 
-  foreach($nodes as $node){
-    foreach($attrs as $attr){ 
-      if($node->hasAttribute($attr)){
-        $node->removeAttribute($attr);  
-      } 
+        $term_title = $input->post('term_title');
+        $term_description = removeJava($_POST['term_description']);
+        $term_link = $input->post('term_link');
+        $update_term = $db->update("terms",array("term_title"=>$term_title,"term_title"=>$term_title,"term_description"=>$term_description,"term_link"=>$term_link),array("term_id"=>$term_id)); 
+        if($update_term){
+          $insert_log = $db->insert_log($admin_id,"term",$term_id,"updated");
+          echo "<script>alert('One Term has been Updated.');</script>";
+          echo "<script>window.open('index?view_terms','_self');</script>";
+        }
+
     }
-  }
-  return strip_tags($dom->saveHTML(),"<div><iframe><br><a><b><i><u><span><h1><h2><h3><h4><h5><h6><p><ul><ol><li>");
-}
-
-$term_title = $input->post('term_title');
-$term_description = removeJava($_POST['term_description']);
-$term_link = $input->post('term_link');
-$update_term = $db->update("terms",array("term_title"=>$term_title,"term_title"=>$term_title,"term_description"=>$term_description,"term_link"=>$term_link),array("term_id"=>$term_id)); 
-if($update_term){
-  $insert_log = $db->insert_log($admin_id,"term",$term_id,"updated");
-  echo "<script>alert('One Term has been Updated.');</script>";
-  echo "<script>window.open('index?view_terms','_self');</script>";
-}
-
-}
 
 }
 ?>

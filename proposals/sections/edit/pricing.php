@@ -26,11 +26,11 @@ if($enable_unlimited_revisions == 1){
   $revisions['unlimited'] = "Unlimited Revisions";
 }
 
-echo $d_delivery_id = $row_proposal->delivery_id;
+$d_delivery_id = $row_proposal->delivery_id;
 
-$get_delivery_time =  $db->select("delivery_times",array('delivery_id' => $d_delivery_id));
-$row_delivery_time = $get_delivery_time->fetch();
-$delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
+// $get_delivery_time =  $db->select("delivery_times",array('delivery_id' => $d_delivery_id));
+// $row_delivery_time = $get_delivery_time->fetch();
+// $delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
 
 ?>
 <h5 class="font-weight-normal float-left">Pricing</h5>
@@ -59,7 +59,7 @@ $delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
     </span>
     <input type="number" class="form-control" form="pricing-form" name="proposal_price" min="<?= $min_proposal_price; ?>" value="<?= $d_proposal_price; ?>">
     </div>
-    <small>If you want to use packages, you need to set this field value to 0. </small>
+    <small><?= $lang['edit_proposal']['pricing']['warning1']; ?></small>
   </div>
 </div>
 
@@ -74,7 +74,7 @@ $delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
       }
     ?>
     </select>
-    <small>Set to 0 if your proposal is configured for instant delivery</small>
+    <small><?= $lang['edit_proposal']['pricing']['warning2']; ?></small>
   </div>
   <small class="form-text text-danger"><?= ucfirst(@$form_errors['proposal_revisions']); ?></small>
 </div><!--- form-group row Ends --->
@@ -84,16 +84,18 @@ $delivery_proposal_title = $row_delivery_time->delivery_proposal_title;
   <div class="col-md-7">
     <label><?= $lang['label']['delivery_time']; ?></label>
     <select name="delivery_id" form="pricing-form" class="form-control" required="">
-    <option value="<?= $d_delivery_id; ?>"> <?= $delivery_proposal_title; ?> </option>
+    <option value="">Select Delivery Time</option>
     <?php 
-      $get_delivery_times = $db->query("select * from delivery_times where not delivery_id='$d_delivery_id'");
+      $get_delivery_times = $db->query("select * from delivery_times");
       while($row_delivery_times = $get_delivery_times->fetch()){
         $delivery_id = $row_delivery_times->delivery_id;
         $delivery_proposal_title = $row_delivery_times->delivery_proposal_title;
-        echo "<option value='$delivery_id'>$delivery_proposal_title</option>";
+        $selected = ($delivery_id == $d_delivery_id)?"selected":"";
+        echo "<option value='$delivery_id' $selected>$delivery_proposal_title</option>";
       }
     ?>
     </select>
+    <small><?= $lang['edit_proposal']['pricing']['warning3']; ?></small>
   </div>
   <small class="form-text text-danger"><?= ucfirst(@$form_errors['delivery_id']); ?></small>
 </div><!--- form-group row Ends --->
@@ -134,9 +136,16 @@ if(enable_delivery == 0){
 
   <?php if($d_proposal_price == "0" or isset($_POST["fixedPriceOff"])){ ?>
     $('.proposal-price').hide();
+    $('.proposal-price input[name="proposal_price"]').attr('min',0);
   <?php }else if($d_proposal_price != "0" and !isset($_POST["fixedPriceOff"])){ ?>
+    
+    $('.packages input[name="proposal_packages[1][price]"]').attr('min',0);
+    $('.packages input[name="proposal_packages[2][price]"]').attr('min',0);
+    $('.packages input[name="proposal_packages[3][price]"]').attr('min',0);
+    
     $('.packages').hide();
     $('.add-attribute').hide();
+
   <?php } ?>
 
 }else{

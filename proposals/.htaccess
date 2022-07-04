@@ -21,11 +21,11 @@ RewriteRule ^(.*)/([\s\S]+)$ proposal.php?username=$1&proposal_url=$2
 
 #RewriteRule ^(.*)/([0-9a-zA-Z-_-]+)$ proposal.php?username=$1&proposal_url=$2
 
-# RewriteCond %{HTTP_HOST} !=localhost
-# RewriteCond %{HTTP_HOST} !^www\.
-# RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI} [NC,L]
+RewriteCond %{HTTP_HOST} !=localhost
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI} [NC,L]
 
-# #Now, rewrite to HTTPS:
-# RewriteCond %{HTTPS} off
-# RewriteCond %{HTTP_HOST} !=localhost
-# RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [NC,L]
+#Now, rewrite to HTTPS:
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !=localhost
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [NC,L]

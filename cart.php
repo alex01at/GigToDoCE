@@ -88,7 +88,7 @@ if(isset($_GET['remove_proposal'])){
 					$proposal_id = $row_cart->proposal_id;
 					$proposal_price = $row_cart->proposal_price;
 					$proposal_qty = $row_cart->proposal_qty;
-					$video = $row_cart->video;
+					@$video = $row_cart->video;
 
 					$select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
 					$row_proposals = $select_proposals->fetch();
@@ -186,7 +186,13 @@ if(isset($_GET['remove_proposal'])){
 								$count_cart = $select_cart->rowCount();
 								if($count_cart == 1){
 									if($coupon_type == "fixed_price"){
-										$coupon_price = $coupon_price;
+
+										if($coupon_price > $proposal_price){
+											$coupon_price = 0;
+										}else{
+											$coupon_price = $proposal_price-$coupon_price;
+										}
+
 									}else{
 										$row_cart = $select_cart->fetch();
 										$proposal_price = $row_cart->proposal_price;

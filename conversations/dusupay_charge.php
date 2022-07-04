@@ -15,10 +15,25 @@ if(isset($_POST['dusupay'])){
 	
 	$payment = new Payment();
 	$data = [];
+	$data['type'] = "message_offer";
+
+	if(isset($_POST['account_number'])){
+		$account_number = $input->post('account_number');
+		$data['account_number'] = $account_number;
+	}
+	
+	if(isset($_POST['voucher'])){
+		$voucher = $input->post('voucher');
+		$data['voucher'] = $voucher;
+	}
+
 	$data['name'] = "Message Offer Payment";
+	$data['content_id'] = $_SESSION['c_message_offer_id'];
+	$data['price'] = $amount;
 	$data['amount'] = $amount + $processing_fee;
 	$data['redirect_url'] = "$site_url/dusupay_order?message_offer_id={$_SESSION['c_message_offer_id']}&";
 	$payment->dusupay($data);
+
 }else{
 	echo "<script>window.open('../index','_self');</script>";
 }

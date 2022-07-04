@@ -21,7 +21,9 @@ if($paypal_sandbox == "on"){
 }
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
-
+$dusupay_method = $row_payment_settings->dusupay_method;
+$dusupay_provider_id = $row_payment_settings->dusupay_provider_id;
+	
 $enable_mercadopago = $row_payment_settings->enable_mercadopago;
 $payza_test = $row_payment_settings->payza_test;
 $payza_currency_code = $row_payment_settings->payza_currency_code;
@@ -31,8 +33,18 @@ $enable_coinpayments = $row_payment_settings->enable_coinpayments;
 $coinpayments_merchant_id = $row_payment_settings->coinpayments_merchant_id;
 $coinpayments_currency_code = $row_payment_settings->coinpayments_currency_code;
 $enable_paystack = $row_payment_settings->enable_paystack;
+
 if($paymentGateway == 1){
-	$enable_2checkout = $row_payment_settings->enable_2checkout;
+
+	$get_plugin = $db->query("select * from plugins where folder='paymentGateway'");
+	$row_plugin = $get_plugin->fetch();
+	$paymentGatewayVersion = $row_plugin->version;
+	if($paymentGatewayVersion >= 1.2){
+		$enable_2checkout = $row_payment_settings->enable_2checkout;
+	}else{
+		$enable_2checkout = "no";
+	}
+
 }else{
 	$enable_2checkout = "no"; 
 }
@@ -130,7 +142,9 @@ if($seller_verification != "ok"){
 								<div class="col-11">
 									<p class="lead mt-2">
 					
-					                   Personal Balance - <b><?= $login_seller_user_name; ?></b> <span class="text-success font-weight-bold"><?= showPrice($current_balance); ?></span>
+					               Personal Balance - <b><?= $login_seller_user_name; ?></b> 
+					               <span class="text-success font-weight-bold"><?= showPrice($current_balance); ?></span>
+
 									</p>
 								</div>
 							</div>
@@ -177,12 +191,10 @@ if($seller_verification != "ok"){
 							<?php } ?>
 
 							<?php 
-							if($enable_2checkout == "yes"){ 
-								include("plugins/paymentGateway/paymentMethod1.php");
-							} 
+								if($enable_2checkout == "yes"){ 
+									include("plugins/paymentGateway/paymentMethod1.php");
+								} 
 							?>
-
-
 
 							<?php if($enable_mercadopago == "1"){ ?>
 							<?php if($enable_paypal == "yes" or $enable_stripe == "yes" or $enable_2checkout == "yes"){ ?>
@@ -289,26 +301,12 @@ if($seller_verification != "ok"){
 					</form>
 					<?php } ?>
 					<?php if($enable_paypal == "yes"){ ?>
-					<form action="" method="post" id="paypal-form"><!--- paypal-form Starts --->
+					<form action="cart_paypal_charge" method="post" id="paypal-form"><!--- paypal-form Starts --->
 					  <button type="submit" name="paypal" class="btn btn-lg btn-success btn-block">
 					  <?= $lang['button']['pay_with_paypal']; ?>
 					  </button>
 					</form><!--- paypal-form Ends --->
-					<?php 
-					if(isset($_POST['paypal'])){
-					$payment = new Payment();
-					$data = [];
-					$data['name'] = "All Cart Proposals Payment";
-					$data['qty'] = 1;
-					$data['price'] = $sub_total;
-					$data['sub_total'] = $sub_total;
-					$data['total'] = $total;
-					$data['cancel_url'] = "$site_url/cart_payment_options";
-					$data['redirect_url'] = "$site_url/paypal_order?cart_seller_id=$login_seller_id";
-					$payment->paypal($data,$processing_fee);
-					}
-					}
-					?>
+					<?php } ?>
 			    <?php if($enable_stripe == "yes"){ ?>
 			    <?php
 			    require_once("stripe_config.php");
@@ -356,43 +354,33 @@ if($seller_verification != "ok"){
 				</form>
 				<?php } ?>
 
-			  <?php if($enable_coinpayments == "yes"){ ?>
-					<form action="https://www.coinpayments.net/index.php" method="post" id="coinpayments-form">
-						<input type="hidden" name="cmd" value="_pay_simple">
-						<input type="hidden" name="reset" value="1">
-						<input type="hidden" name="merchant" value="<?= $coinpayments_merchant_id; ?>">
-						<input type="hidden" name="item_name" value="Cart">
-						<input type="hidden" name="item_desc" value="Cart Payment">
-						<input type="hidden" name="item_number" value="1">
-						<input type="hidden" name="currency" value="<?= $coinpayments_currency_code; ?>">
-						<input type="hidden" name="amountf" value="<?= $sub_total; ?>">
-						<input type="hidden" name="want_shipping" value="0">
-						<input type="hidden" name="taxf" value="<?= $processing_fee; ?>">
-						<input type="hidden" name="success_url" value="<?= $site_url; ?>/crypto_order?cart_seller_id=<?= $login_seller_id; ?>">
-						<input type="hidden" name="cancel_url" value="<?= $site_url; ?>/cart_payment_options.php">
-						<input type="submit" class="btn btn-lg btn-success btn-block" value="<?= $lang['button']['pay_with_coinpayments']; ?>">
+				  
+				  <?php if($enable_coinpayments == "yes"){ ?>
+
+					<form action="cart_crypto_charge" method="post" id="coinpayments-form">
+						<button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
 					</form>
-			        <?php } ?>
+
+			      <?php } ?>
+				
+
 					<?php if($enable_paystack == "yes"){ ?>
 					<form action="cart_paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
-					 <button type="submit" name="paystack" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
+					 
+					<button type="submit" name="paystack" class="btn btn-lg btn-success btn-block">
+						<?= $lang['button']['pay_with_paystack']; ?>
+					</button>
+
 					</form><!--- paystack-form Ends --->
 					<?php } ?>
-			 		<?php if($enable_dusupay == "yes"){ ?>
-					<form method="post" action="" id="mobile-money-form">
-						<input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-lg btn-success btn-block">
-					</form>
+
 					<?php 
-					if(isset($_POST['dusupay'])){
-					$payment = new Payment();
-					$data = [];
-					$data['name'] = "All Cart Proposals Payment";
-					$data['amount'] = $total;
-					$data['redirect_url'] = "$site_url/dusupay_order?cart_seller_id=$login_seller_id&";
-					$payment->dusupay($data);
-					}
+						if($enable_dusupay == "yes"){
+							$form_action = "cart_dusupay_charge";
+							include("includes/comp/dusupay_method.php");
+						}
 					?>
-			        <?php } ?>
+
             </div>
 			</div>
 		</div>

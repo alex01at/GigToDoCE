@@ -36,8 +36,12 @@ if($count_posts == 0){
 while($post = $posts->fetch()){
 
 $url = preg_replace('#[ -]+#','-', $post->title);
-
 $content = substr(strip_tags($post->content),0,250);
+
+/// Get Category Details
+$get_cat = $db->select("post_categories",['id'=>$post->cat_id]);
+$row_cat = $get_cat->fetch();
+$cat_name = $row_cat->cat_name;
 
 ?>
 
@@ -53,7 +57,7 @@ $content = substr(strip_tags($post->content),0,250);
 		   <p class="small mb-1 <?= $textRight; ?>">
 		   	<span class="text-muted">Published on:</span> <?= $post->date_time; ?> | 
 		   	<span class="text-muted">Category:</span> 
-		   	<a href="index?cat_id=<?= $post->cat_id; ?>"><?= $post->cat_id; ?></a> | 
+		   	<a href="index?cat_id=<?= $post->cat_id; ?>"><?= $cat_name; ?></a> | 
 		   	<span class="text-muted">Author:</span> 
 		   	<a href="index?author=<?= $post->author; ?>"><?= $post->author; ?></a> 
 		   </p>

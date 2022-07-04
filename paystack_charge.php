@@ -14,23 +14,29 @@ $login_seller_id = $row_login_seller->seller_id;
 $processing_fee = processing_fee($_SESSION['c_sub_total']);
 
 if(isset($_POST['paystack'])){
+
 	$payment = new Payment();
 	$data = [];
-	$data['amount'] = $_SESSION['c_sub_total'] + $processing_fee;
+	$data['type'] = "proposal";
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
+	$data['content_id'] = $_SESSION['c_proposal_id'];
+	$data['qty'] = $_SESSION['c_proposal_qty'];
+	$data['price'] = $_SESSION['c_proposal_price'];
+	$data['delivery_id'] = $_SESSION['c_proposal_delivery'];
+	$data['revisions'] = $_SESSION['c_proposal_revisions'];
+	$data['sub_total'] = $_SESSION['c_sub_total'];
+	$data['total'] = $_SESSION['c_sub_total'] + $processing_fee;
 
 	if(isset($_SESSION['c_proposal_extras'])){
-		$extras = "&proposal_extras=" . base64_encode(serialize($_SESSION['c_proposal_extras']));
-	}else{
-		$extras = "";
+		$data['extras'] = base64_encode(serialize($_SESSION['c_proposal_extras']));
 	}
 
 	if(isset($_SESSION['c_proposal_minutes'])){
-		$minutes = "proposal_minutes={$_SESSION['c_proposal_minutes']}";
-	}else{
-		$minutes = "";
+		$data['minutes'] = $_SESSION['c_proposal_minutes'];
 	}
 
-	$data['redirect_url'] = "$site_url/paystack_order?checkout_seller_id=$login_seller_id&proposal_id={$_SESSION['c_proposal_id']}&proposal_qty={$_SESSION['c_proposal_qty']}&proposal_price={$_SESSION['c_sub_total']}&proposal_delivery={$_SESSION['c_proposal_delivery']}&proposal_revisions={$_SESSION['c_proposal_revisions']}$extras&$minutes";
+	$data['redirect_url'] = "$site_url/paystack_order?reference_no=$reference_no";
 	$payment->paystack($data);
 
 }else{

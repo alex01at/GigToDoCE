@@ -22,8 +22,15 @@ if(isset($_POST['paystack'])){
 	$payment = new Payment();
 
 	$data = [];
-	$data['amount'] = $amount + $processing_fee;
-	$data['redirect_url'] = "$site_url/paystack_order?message_offer_id={$_SESSION['c_message_offer_id']}";
+	$data['type'] = "message_offer";
+	$reference_no = mt_rand();
+	$data['reference_no'] = $reference_no;
+	$data['content_id'] = $_SESSION['c_message_offer_id'];
+	$data['qty'] = 1;
+	$data['sub_total'] = $amount;
+	$data['total'] = $amount + $processing_fee;
+
+	$data['redirect_url'] = "$site_url/paystack_order?reference_no=$reference_no";
 	$payment->paystack($data);
 
 }else{

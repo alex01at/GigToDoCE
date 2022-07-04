@@ -37,10 +37,13 @@
 
   <div class="form-group float-left">
     <input type="file" id="deliveryFile" name="file" class="mb-3"/>
+    <div id="downloadFile">
     <?php if(!empty($delivery_file)){ ?>
-      <br>
-      <a href="<?= getImageUrl("instant_deliveries",$delivery_file); ?>"><i class="fa fa-download"></i> <?= $delivery_file; ?></a>
+      <a href="download?proposal_id=<?= $proposal_id; ?>" target="_blank">
+        <i class="fa fa-download"></i> <?= $delivery_file; ?>
+      </a>
     <?php } ?>
+    </div>
   </div>
 
   <?php if(@$enable_watermark == 1){ ?>
@@ -87,20 +90,53 @@ $(document).ready(function(){
   });
 
    $("#delivery-form").submit(function(event){
-     event.preventDefault();
-     var form_data = new FormData(this);
-     form_data.append('proposal_id',<?= $proposal_id; ?>);
-     $('#wait').addClass("loader");
-     $.ajax({
+
+    var file_input = $("#delivery-form input[type='file']")[0].files;
+    // alert(length);
+
+    if(file_input.length != 0){
+      swal({
+       type: 'success',
+       text: 'File Is Uploading.',
+       onOpen: function(){
+         swal.showLoading();
+       }
+      });
+      timeout = 1000;
+    }else{
+      timeout = 100;
+    }
+
+    event.preventDefault();
+    var form_data = new FormData(this);
+    form_data.append('proposal_id',<?= $proposal_id; ?>);
+    // $('#wait').addClass("loader");
+
+    setTimeout(function(){
+
+      $.ajax({
         method: "POST",
         url: "ajax/save_delivery",
         data: form_data,
         async: false,cache: false,contentType: false,processData: false
-     }).done(function(data){
+      }).done(function(data){
+        data = $.parseJSON(data);
+
+        if(file_input.length != 0){
+          swal.close();
+          $("#delivery-form input[type='file']").val('');
+        }
+
          $('#wait').removeClass("loader");
-         if(data == "error_file"){
+         if(data.status == "error_file"){
             alert("<?= $lang['alert']['extension_not_supported']; ?>");
          }else{
+
+            // alert(data.file);
+
+            if(data.file){
+              $("#downloadFile").html("<a href='download?proposal_id=<?= $proposal_id; ?>' target='_blank'> <i class='fa fa-download'></i> "+data.file+" </a>");
+            }
 
             if($("input[name='enable']:checked").length > 0){
               enable_delivery = 1;
@@ -113,6 +149,8 @@ $(document).ready(function(){
               $('#pricing .float-right.switch-box').hide();
               $('.packages').hide();
               $('.add-attribute').hide();
+              $('.proposal-price').show();
+              $('.proposal-price input[name="proposal_price"]').attr('min',<?= $min_proposal_price; ?>);
             }else{
               $('#pricing .float-right.switch-box').show();
               $('#tabs a[href="#requirements"]').removeClass('d-none');
@@ -126,19 +164,22 @@ $(document).ready(function(){
                swal.showLoading();
              }
             }).then(function(){
-               <?php if($d_proposal_status == "draft"){ ?>
+                <?php if($d_proposal_status == "draft"){ ?>
                   $('#instant-delivery').removeClass('show active');
                   $('#pricing').addClass('show active');
                   $('#tabs a[href="#pricing"]').addClass('active');
-               <?php }else{ ?> 
+                <?php }else{ ?> 
                   $('.nav a[href="#pricing"]').tab('show'); 
-               <?php } ?>
+                <?php } ?>
                 $("input[type='hidden'][name='section']").val("pricing");
             });
 
-         }
+        }
 
-     });
+      });
+
+    },timeout);
+
    });
 
 });

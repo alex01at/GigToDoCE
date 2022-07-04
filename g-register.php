@@ -131,13 +131,9 @@ if(isset($_POST['continue'])){
 
 	$name = $input->post('name');
 	$u_name = $input->post('u_name');
-	
 	$email = $_SESSION['email'];
-	
 	$regsiter_date = date("F d, Y");
-	
 	$date = date("F d, Y");
-	
 	
 	$url_to_image = $_SESSION['picture'];
 
@@ -165,11 +161,9 @@ if(isset($_POST['continue'])){
 		
 	   <script>
       
-           swal({
-           
-          type: 'warning',
-          text: 'This username has already been used. Please try another one.',
-
+          swal({
+	          type: 'warning',
+	          text: 'This username has already been used. Please try another one.',
           })
 
         </script>
@@ -183,55 +177,51 @@ if(isset($_POST['continue'])){
 		echo "
 		<script>
       
-           swal({
-           
-          type: 'warning',
-          text: 'This email has already been used. Please try another one..',
-
-          })
+         swal({
+         	type: 'warning',
+         	text: 'This email has already been used. Please try another one..',
+         });
 
         </script>";	
 			
 		}else{
 				
 		$referral_code = mt_rand();
-		
 		$verification_code = "ok";
 
-		$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_image" => $filename,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 100,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_status" => 'online'));
+		$geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip));
+		$country = $geoplugin['geoplugin_countryName'];
+		if(empty($country)){ 
+			$country = ""; 
+		}
+
+		$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_image" => $filename,"seller_country"=>$country,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 0,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_status" => 'online'));
 
 		$regsiter_seller_id = $db->lastInsertId();
 		
 		if($insert_seller){
 		
 	      $_SESSION['seller_user_name'] = $u_name;
-
 			$insert_seller_account = $db->insert("seller_accounts",array("seller_id" => $regsiter_seller_id));
-					
 			if($insert_seller_account){
 				
 				unset($_SESSION['userData']);
 				unset($_SESSION['access_token']);
 				
 				echo "
-				
-	            <script>
-	      
-	                  swal({
-		                  type: 'success',
-		                  text: 'Hey $u_name, welcome. ',
-		                  timer: 2000,
-		                  onOpen: function(){
-		                  	swal.showLoading()
-		                  }
-	                  }).then(function(){
-	                  
-	                    // Read more about handling dismissals
-	                    window.open('$site_url','_self')
-
-	                  });
-
-	            </script>";
+            <script>
+               swal({
+                  type: 'success',
+                  text: 'Hey $u_name, welcome. ',
+                  timer: 2000,
+                  onOpen: function(){
+                  	swal.showLoading()
+                  }
+               }).then(function(){
+                 // Read more about handling dismissals
+                 window.open('$site_url','_self')
+               });
+            </script>";
 				
 			}
 			

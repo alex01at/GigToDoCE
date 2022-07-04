@@ -1,9 +1,9 @@
 <form action="" method="post"><!--- form Starts --->
    
-   <input type="hidden" name="file_name" value="order.php">
+   <input type="hidden" name="file_name" value="order_email.php">
 
    <div class="form-group">
-      <textarea name="content" class="form-control" rows="15"><?= get_file("order.php"); ?></textarea>
+      <textarea name="content" class="form-control" rows="15"><?= get_file("order_email.php"); ?></textarea>
    </div>
 
    <div class="form-group mb-0">

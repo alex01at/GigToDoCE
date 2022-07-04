@@ -27,6 +27,9 @@ if(isset($_SESSION['proposal_id'])){
 	$f_createProposal = $_SESSION['f_createProposal'];
 	$update_proposal = $db->update("proposals",array("proposal_featured"=>'yes'),array("proposal_id"=>$proposal_id));
 	if($update_proposal){
+
+		$p_date = date("F d, Y");
+
 		unset($_SESSION['f_proposal_id'],$_SESSION['f_createProposal'],$_SESSION['proposal_id'],$_SESSION['featured_listing'],$_SESSION['method']);
 
 		if(($approve_proposals == "no" and $f_createProposal == 1) or $f_createProposal == 0 ){
@@ -41,6 +44,8 @@ if(isset($_SESSION['proposal_id'])){
 			$processing_fee = processing_fee($featured_fee);
 			$adminProfit = $featured_fee+$processing_fee;
 		}
+
+		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$proposal_id,"reason"=>"featured_listing","amount"=>$adminProfit,"date"=>$p_date,"method"=>$payment_method));
 
 		// Insert Sale Here
 		$sale = array("buyer_id" => $login_seller_id,"work_id" => $proposal_id,"payment_method" => $payment_method,"amount" => $featured_fee,"profit"=> $adminProfit,"processing_fee"=>$processing_fee,"action"=>"featured_fee","date"=>date("F d, Y h:i A"));

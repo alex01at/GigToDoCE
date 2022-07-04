@@ -19,33 +19,33 @@ require_once("stripe_config.php");
 $stripe_total_amount = $total * 100;
 ?>
 <form action="checkout_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
-<input
-type="submit"
-class="btn btn-lg btn-success btn-block stripe-submit"
-value="<?= $lang['button']['pay_with_stripe']; ?>"
-data-key="<?= $stripe['publishable_key']; ?>"
-data-amount="<?= $stripe_total_amount; ?>"
-data-currency="<?= $stripe['currency_code']; ?>"
-data-email="<?= $login_seller_email; ?>"
-data-name="<?= $site_name; ?>"
-data-image="<?= $site_logo_image; ?>"
-data-description="<?= $proposal_title; ?>"
-data-allow-remember-me="false">
-<script>
-$(document).ready(function() {
-	$('.stripe-submit').on('click', function(event) {
-		event.preventDefault();
-		var $button = $(this),
-		$form = $button.parents('form');
-		var opts = $.extend({},$button.data(),{
-			token: function(result) {
-				$form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-			}
+	<input
+	type="submit"
+	class="btn btn-lg btn-success btn-block stripe-submit"
+	value="<?= $lang['button']['pay_with_stripe']; ?>"
+	data-key="<?= $stripe['publishable_key']; ?>"
+	data-amount="<?= $stripe_total_amount; ?>"
+	data-currency="<?= $stripe['currency_code']; ?>"
+	data-email="<?= $login_seller_email; ?>"
+	data-name="<?= $site_name; ?>"
+	data-image="<?= $site_logo_image; ?>"
+	data-description="<?= $proposal_title; ?>"
+	data-allow-remember-me="false">
+	<script>
+	$(document).ready(function() {
+		$('.stripe-submit').on('click', function(event) {
+			event.preventDefault();
+			var $button = $(this),
+			$form = $button.parents('form');
+			var opts = $.extend({},$button.data(),{
+				token: function(result) {
+					$form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
+				}
+			});
+			StripeCheckout.open(opts);
 		});
-		StripeCheckout.open(opts);
 	});
-});
-</script>
+	</script>
 </form>
 <?php } ?>
 
@@ -64,31 +64,24 @@ $(document).ready(function() {
 <?php } ?>
 
 <?php if($enable_coinpayments == "yes"){ ?>
-<form action="https://www.coinpayments.net/index.php" method="post" id="coinpayments-form">
-<input type="hidden" name="cmd" value="_pay_simple">
-<input type="hidden" name="reset" value="1">
-<input type="hidden" name="merchant" value="<?= $coinpayments_merchant_id; ?>">
-<input type="hidden" name="item_name" value="<?= $proposal_title; ?>">
-<input type="hidden" name="item_desc" value="Proposal Payment">
-<input type="hidden" name="item_number" value="1">
-<input type="hidden" name="currency" value="<?= $coinpayments_currency_code; ?>">
-<input type="hidden" name="amountf" value="<?= $sub_total; ?>">
-<input type="hidden" name="want_shipping" value="0">
-<input type="hidden" name="taxf" value="<?= $processing_fee; ?>">
-<input type="hidden" name="success_url" value="<?= $site_url; ?>/crypto_order?checkout_seller_id=<?= $login_seller_id; ?>&proposal_id=<?= $proposal_id; ?>&proposal_qty=<?= $proposal_qty; ?>&proposal_price=<?= $sub_total; ?>&proposal_delivery=<?= $delivery_id; ?>&proposal_revisions=<?= $revisions; ?><?= (isset($_SESSION['c_proposal_extras']))?'&proposal_extras='.base64_encode(serialize(@$proposal_extras)):''; ?><?= (isset($_SESSION['c_proposal_minutes']))?'&proposal_minutes='.$proposal_minutes:''; ?>">
-<input type="hidden" name="cancel_url" value="<?= $site_url; ?>/proposals/<?= $proposal_seller_user_name; ?>/<?= $proposal_url; ?>">
-<input type="submit" class="btn btn-lg btn-success btn-block" value="<?= $lang['button']['pay_with_coinpayments']; ?>">
+
+<form action="crypto_charge" method="post" id="coinpayments-form">
+	<button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
 </form>
+
 <?php } ?>
 
 <?php if($enable_paystack == "yes"){ ?>
 <form action="paystack_charge" method="post" id="paystack-form"><!--- paypal-form Starts --->
- <button type="submit" name="paystack" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
+	<button type="submit" name="paystack" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
 </form>
 <?php } ?>
 
-<?php if($enable_dusupay == "yes"){ ?>
-<form method="post" action="dusupay_charge" id="mobile-money-form">
-<input type="submit" name="dusupay" value="<?= $lang['button']['pay_with_dusupay']; ?>" class="btn btn-lg btn-success btn-block">
-</form>
-<?php } ?>
+<?php 
+
+	if($enable_dusupay == "yes"){
+		$form_action = "dusupay_charge";
+		include("includes/comp/dusupay_method.php");
+	} 
+
+?>

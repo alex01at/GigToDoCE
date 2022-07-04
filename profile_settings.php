@@ -73,7 +73,9 @@
     <div class="col-md-8">
         <select name="seller_timezone" class="form-control site_logo_type" required="">
           <?php foreach ($timezones as $key => $zone) { ?>
-            <option <?=($login_seller_timzeone == $zone)?"selected=''":""; ?> value="<?= $zone; ?>"><?= $zone; ?></option>
+            <option <?=($login_seller_timzeone == $zone)?"selected=''":""; ?> value="<?= $zone; ?>">
+              <?= $zone; ?>
+            </option>
           <?php } ?>
         </select>
     </div>
@@ -82,9 +84,9 @@
   <div class="form-group row">
     <label class="col-md-3 col-form-label"> <?= $lang['label']['main_language']; ?> </label>
     <div class="col-md-8">
-      <select name="seller_language" class="form-control" >
+      <select name="seller_language" class="form-control" required="">
         <?php if($login_seller_language == 0){ ?>
-        <option class="hidden"> Select Language </option>
+        <option class="hidden" value=""> Select Language </option>
         <?php 
           $get_languages = $db->select("seller_languages");
           while($row_languages = $get_languages->fetch()){
@@ -257,60 +259,74 @@
         echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
       }else{
 
-        if(empty($profile_photo)){
-          $profile_photo = $login_seller_image;
-          $seller_image_s3 = $login_seller_image_s3;
+        $count_seller_email = $db->query("select * from sellers where seller_email=:seller_email AND NOT seller_id='$login_seller_id'",['seller_email'=>$seller_email])->rowCount();
+
+        if($count_seller_email > 0){
+
+          echo "
+          <script>
+            swal('','This Email Has Been Already Chosen, Please Try Another One.','warning');
+          </script>"; 
+
         }else{
-          $seller_image_s3 = $enable_s3;
-        }
 
-        if(empty($cover_photo)){
-          $cover_photo = $login_seller_cover_image;
-          $seller_cover_image_s3 = $login_seller_cover_image_s3;
-        }else{
-          $cover_photo = pathinfo($cover_photo, PATHINFO_FILENAME);
-          $cover_photo = $cover_photo."_".time().".$cover_file_extension";
-          uploadToS3("cover_images/$cover_photo",$cover_photo_tmp);
-          $seller_cover_image_s3 = $enable_s3;
-        }
-
-        $update_proposals = $db->update("proposals",array("language_id" => $seller_language),array("proposal_seller_id" => $login_seller_id));
-
-        $sel_languages_relation = $db->query("select * from languages_relation where seller_id='$login_seller_id' and language_id='$seller_language'");
-        $count_languages_relation = $sel_languages_relation->rowCount();
-
-        if($count_languages_relation == 0){
-          $insert_language = $db->insert("languages_relation",array("seller_id"=>$login_seller_id,"language_id"=>$seller_language,"language_level"=>'conversational'));
-        }
-
-        // if email changed
-        if($seller_email != $login_seller_email){
-          $verification_code = mt_rand();
-        }elseif($seller_email == $login_seller_email){
-          $verification_code = $login_seller_verification;
-        }
-
-        $update_seller = $db->update("sellers",array("seller_name"=>$seller_name,"seller_email"=>$seller_email,"seller_image"=>$profile_photo,"seller_cover_image"=>$cover_photo,"seller_image_s3"=>$seller_image_s3,"seller_cover_image_s3"=>$seller_cover_image_s3,"seller_country"=>$seller_country,"seller_city"=>$seller_city,"seller_timezone"=>$seller_timezone,"seller_headline"=>$seller_headline,"seller_about"=>$seller_about,"seller_language"=>$seller_language,"seller_verification"=>$verification_code),array("seller_id"=>$login_seller_id));
-        
-        if($update_seller){
-          if (($seller_email == $login_seller_email) or ($seller_email != $login_seller_email and userConfirmEmail($seller_email))){
-            echo "<script>
-            swal({
-              type: 'success',
-              text: 'Profile settings updated successfully!',
-              timer: 3000,
-              onOpen: function(){
-                swal.showLoading()
-              }
-            }).then(function(){
-              // Read more about handling dismissals
-              window.open('settings?profile_settings','_self');
-            });
-            </script>";
+          if(empty($profile_photo)){
+            $profile_photo = $login_seller_image;
+            $seller_image_s3 = $login_seller_image_s3;
+          }else{
+            $seller_image_s3 = $enable_s3;
           }
+
+          if(empty($cover_photo)){
+            $cover_photo = $login_seller_cover_image;
+            $seller_cover_image_s3 = $login_seller_cover_image_s3;
+          }else{
+            $cover_photo = pathinfo($cover_photo, PATHINFO_FILENAME);
+            $cover_photo = $cover_photo."_".time().".$cover_file_extension";
+            uploadToS3("cover_images/$cover_photo",$cover_photo_tmp);
+            $seller_cover_image_s3 = $enable_s3;
+          }
+
+          $update_proposals = $db->update("proposals",array("language_id" => $seller_language),array("proposal_seller_id" => $login_seller_id));
+
+          $sel_languages_relation = $db->query("select * from languages_relation where seller_id='$login_seller_id' and language_id='$seller_language'");
+          $count_languages_relation = $sel_languages_relation->rowCount();
+
+          if($count_languages_relation == 0){
+            $insert_language = $db->insert("languages_relation",array("seller_id"=>$login_seller_id,"language_id"=>$seller_language,"language_level"=>'conversational'));
+          }
+
+          // if email changed
+          if($seller_email != $login_seller_email){
+            $verification_code = mt_rand();
+          }elseif($seller_email == $login_seller_email){
+            $verification_code = $login_seller_verification;
+          }
+
+          $update_seller = $db->update("sellers",array("seller_name"=>$seller_name,"seller_email"=>$seller_email,"seller_image"=>$profile_photo,"seller_cover_image"=>$cover_photo,"seller_image_s3"=>$seller_image_s3,"seller_cover_image_s3"=>$seller_cover_image_s3,"seller_country"=>$seller_country,"seller_city"=>$seller_city,"seller_timezone"=>$seller_timezone,"seller_headline"=>$seller_headline,"seller_about"=>$seller_about,"seller_language"=>$seller_language,"seller_verification"=>$verification_code),array("seller_id"=>$login_seller_id));
+          
+          if($update_seller){
+            if (($seller_email == $login_seller_email) or ($seller_email != $login_seller_email and userConfirmEmail($seller_email))){
+              echo "<script>
+              swal({
+                type: 'success',
+                text: 'Profile settings updated successfully!',
+                timer: 3000,
+                onOpen: function(){
+                  swal.showLoading()
+                }
+              }).then(function(){
+                // Read more about handling dismissals
+                window.open('settings?profile_settings','_self');
+              });
+              </script>";
+            }
+          }
+
         }
 
       }
+
     }
   }
 ?>

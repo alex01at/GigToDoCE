@@ -160,17 +160,11 @@ if(isset($_GET['single_order'])){
 
                         <tr>
 
-                            <td width="600">
-                                <?= $proposal_title; ?>
-                            </td>
+                            <td width="600"><?= $proposal_title; ?></td>
 
-                            <td>
-                                <?= $order_qty; ?>
-                            </td>
+                            <td><?= $order_qty; ?></td>
 
-                            <td>
-                                <?= $order_duration; ?>
-                            </td>
+                            <td><?= $order_duration; ?></td>
 
                             <td><?= showPrice($order_price); ?></td>
 
@@ -196,7 +190,7 @@ if(isset($_GET['single_order'])){
 
                             <td colspan="4">
 
-                                <span class="float-right mr-5"> <b>Total : </b> <?= showPrice($total); ?> </span>
+                                <span class="float-right mr-5"><b>Total : </b><?= showPrice($total); ?></span>
 
                             </td>
 
@@ -259,17 +253,13 @@ if(isset($_GET['single_order'])){
 
 
 
-<div class="row mt-4">
-    <!--- 3 row Starts --->
+<div class="row mt-4"><!--- 3 row Starts --->
 
-    <div class="col-lg-12">
-        <!--- col-lg-12 Starts --->
+    <div class="col-lg-12"><!--- col-lg-12 Starts --->
 
-        <div class="card">
-            <!--- card Starts --->
+        <div class="card"><!--- card Starts --->
 
-            <div class="card-header">
-                <!--- card-header Starts --->
+            <div class="card-header"><!--- card-header Starts --->
 
                 <h4 class="h4">
 
@@ -277,62 +267,39 @@ if(isset($_GET['single_order'])){
 
                 </h4>
 
-            </div>
-            <!--- card-header Ends --->
+            </div><!--- card-header Ends --->
 
-            <div class="card-body">
-                <!--- card-body Starts --->
+            <div class="card-body"><!--- card-body Starts --->
 
                 <?php
 
                     $get_order_conversations = $db->select("order_conversations",array("order_id" => $order_id));
-
                     $count_order_conversations = $get_order_conversations->rowCount();
-
                     if($count_order_conversations == 0){
-
-                    echo "
-
-                    <h3 class='text-center'>This Order Has No Conversations.</h3>
-
-                    ";
-
+                        echo "<h3 class='text-center'>This Order Has No Conversations.</h3>";
                     }
 
                     while($row_order_conversations = $get_order_conversations->fetch()){
 
+                    $c_id = $row_order_conversations->c_id;
                     $sender_id = $row_order_conversations->sender_id;
-
                     $message = $row_order_conversations->message;
-
                     $status = $row_order_conversations->status;
-
                     $file = $row_order_conversations->file;
-
                     $date = $row_order_conversations->date;
 
-
                     $select_sender = $db->select("sellers",array("seller_id" => $sender_id));
-
                     $row_sender  = $select_sender->fetch();
-
                     $sender_image = getImageUrl2("sellers","seller_image",$row_sender->seller_image);
-
                     $sender_user_name = $row_sender->seller_user_name;
 
-
                     if($seller_id == $sender_id){
-
-                    $receiver_name = "Buyer";
-
+                        $receiver_name = "Buyer";
                     }else{
-
-                    $receiver_name = "Seller";
-
+                        $receiver_name = "Seller";
                     }
 
-
-                ?>
+                    ?>
 
                     <?php if($status == "message"){ ?>
 
@@ -353,7 +320,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                           <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1">
+                           <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1">
                               <i class="fa fa-download"></i> <?= $file; ?>
                            </a>
 
@@ -394,7 +361,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                            <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1">
+                            <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1">
                             <i class="fa fa-download"></i> <?= $file; ?>
                             </a>
 
@@ -441,7 +408,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                            <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1 text-primary">
+                            <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1 text-primary">
 
 <i class="fa fa-download"></i> <?= $file; ?>
 
@@ -492,7 +459,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                           <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1">
+                           <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1">
                               <i class="fa fa-download"></i> <?= $file; ?>
                            </a>
 
@@ -553,7 +520,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                           <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1">
+                           <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1">
 
                               <i class="fa fa-download"></i> <?= $file; ?>
 
@@ -618,7 +585,7 @@ if(isset($_GET['single_order'])){
 
                             <?php if(!empty($file)){ ?>
 
-                            <a href="<?= getImageUrl("order_conversations",$file); ?>" download class="d-block mt-2 ml-1">
+                            <a href="<?= "includes/download?order_id=$order_id&c_id=$c_id"; ?>" download class="d-block mt-2 ml-1">
 
 <i class="fa fa-download"></i> <?= $file; ?>
 

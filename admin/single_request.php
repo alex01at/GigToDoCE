@@ -196,9 +196,19 @@ $enquiry_title = $get_enquiry_types->fetch()->enquiry_title;
 
                         $update_support_ticket = $db->update("support_tickets",["status" => $status],["ticket_id"=>$single_request]);
                         if($update_support_ticket){
-                           $insert_log = $db->insert_log($admin_id,"support_request",$ticket_id,$status);
-                           echo "<script>alert('Ticket has been changed successfully.');</script>";
-                           echo "<script>window.open('index?view_support_requests','_self');</script>"; 
+                            
+                            $insert_log = $db->insert_log($admin_id,"support_request",$ticket_id,$status);
+                            if($status == "close"){
+                                $data = [];
+                                $data['template'] = "ticket_closed";
+                                $data['to'] = $sender_email;
+                                $data['subject'] = "$site_name: your ticket has been closed.";
+                                $data['user_name'] = $sender_user_name;
+                                send_mail($data);
+                            }
+                            echo "<script>alert('Ticket has been changed successfully.');</script>";
+                            echo "<script>window.open('index?view_support_requests','_self');</script>"; 
+                        
                         }
 
                      }

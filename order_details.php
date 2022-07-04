@@ -151,12 +151,7 @@ function watermarkImage($image,$data){
 <body class="is-responsive">
 <?php require_once("includes/user_header.php"); ?>
 <?php require_once("orderIncludes/orderDetails.php"); ?>
-<?php 
-
-require_once("orderIncludes/orderStatusBar.php"); 
-
-
-?>
+<?php require_once("orderIncludes/orderStatusBar.php"); ?>
 
 <div class="container order-page mt-2">
   <div class="row">
@@ -187,6 +182,7 @@ require_once("orderIncludes/orderStatusBar.php");
               if($videoPlugin == 1){
                 require_once("plugins/videoPlugin/videoCall/setVideoSessionTime.php");
               }
+
             ?>
             <div id="order-conversations" class="mt-3">
               <?php require_once("orderIncludes/order_conversations.php"); ?>
@@ -195,7 +191,8 @@ require_once("orderIncludes/orderStatusBar.php");
             <?php require_once("orderIncludes/orderDeliverButton.php"); ?>
             
             <div class="proposal_reviews mt-5">
-              <?php 
+              <?php
+
                 if($order_status == "completed"){ 
                  include("orderIncludes/orderReviews.php");
                  if($count_buyer_reviews == 1 AND $login_seller_id == $buyer_id){
@@ -226,7 +223,7 @@ require_once("orderIncludes/orderStatusBar.php");
 <?php require_once("orderIncludes/modals/deliverOrderRevisionRequestModal.php"); ?>
 <?php require_once("orderIncludes/javascript/orderjs.php"); ?>
 
-<?php if($videoPlugin == 1 AND $enableVideo == 1 AND $count_schedule == 1){ ?>
+<?php if($videoPlugin == 1){ ?>
 
 <script type="text/javascript" src="plugins/videoPlugin/js/browser.js"></script>
 <script 

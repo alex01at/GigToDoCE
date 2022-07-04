@@ -36,7 +36,7 @@ while($row_cart = $select_cart->fetch()){
   $proposal_id = $row_cart->proposal_id;
   $proposal_price = $row_cart->proposal_price;
   $proposal_qty = $row_cart->proposal_qty;
-  $video = $row_cart->video;
+  @$video = $row_cart->video;
   
   $select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
   $row_proposals = $select_proposals->fetch();
@@ -109,47 +109,6 @@ while($row_cart = $select_cart->fetch()){
       </form>
       <?php
       $coupon_usage = "no";
-      if(isset($_POST['coupon_submit'])){
-        $coupon_code = $input->post('code');
-        $select_coupon = $db->select("coupons",array("coupon_code"=>$coupon_code));
-        $count_coupon = $select_coupon->rowCount();
-        if($count_coupon == 1){
-          $row_coupon = $select_coupon->fetch();
-          $coupon_proposal = $row_coupon->proposal_id;
-          $coupon_limit = $row_coupon->coupon_limit;
-          $coupon_used = $row_coupon->coupon_used;
-          $coupon_price = $row_coupon->coupon_price;
-          $coupon_type = $row_coupon->coupon_type;
-          if($coupon_limit <= $coupon_used){
-            $coupon_usage = "expired";
-            echo "
-            <script>
-            $('.coupon-response').html('Your coupon code expired.').attr('class','coupon-response p-2 mt-3 bg-danger text-white');
-            </script>";
-          }else{
-            $select_cart = $db->select("cart",array("proposal_id" => $coupon_proposal,"seller_id" => $login_seller_id,"coupon_used" => 0));
-            $count_cart = $select_cart->rowCount();
-            if($count_cart == 1){
-              if($coupon_type == "fixed_price"){
-                $coupon_price = $coupon_price;
-              }else{
-                $row_cart = $select_cart->fetch();
-                $proposal_price = $row_cart->proposal_price;
-                $numberToAdd = ($proposal_price / 100) * $coupon_price;
-                $coupon_price = $proposal_price - $numberToAdd;
-              }
-              $update_coupon = $db->query("update coupons set coupon_used=coupon_used+1 where coupon_code=:c_code",array("c_code"=>$coupon_code));
-              $update_cart = $db->update("cart",array("proposal_price" => $coupon_price,"coupon_used" => 1),array("proposal_id" => $proposal_id,"seller_id" => $login_seller_id));
-              $coupon_usage = "used";
-              echo "<script>window.open('cart?coupon_applied','_self')</script>";
-            }else{
-              $coupon_usage = "not_apply";
-            }
-          }
-        }else{
-          $coupon_usage = "not_valid"; 
-        }
-      }
       ?>
       <hr>
       <?php if($coupon_usage == "not_valid"){ ?>

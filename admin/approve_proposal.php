@@ -55,8 +55,8 @@ if(!isset($_SESSION['admin_email'])){
         swal.showLoading()
         }
         }).then(function(){
-        // Read more about handling dismissals
-        window.open('index?view_proposals_active','_self')
+          // Read more about handling dismissals
+          window.open('index?view_proposals_active','_self')
         })
         </script>";
       }

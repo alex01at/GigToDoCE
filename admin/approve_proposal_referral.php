@@ -14,38 +14,34 @@ echo "<script>window.open('login','_self');</script>";
 
 if(isset($_GET['approve_proposal_referral'])){
 	
-$referral_id = $input->get('approve_proposal_referral');
+   $referral_id = $input->get('approve_proposal_referral');
 
 
-$get_referrals = $db->select("proposal_referrals",array("referral_id" => $referral_id));
-
-$row_referrals = $get_referrals->fetch();
-
-$seller_id = $row_referrals->seller_id;
-
-$referrer_id = $row_referrals->referrer_id;
-
-$comission = $row_referrals->comission;
+   $get_referrals = $db->select("proposal_referrals",array("referral_id" => $referral_id));
+   $row_referrals = $get_referrals->fetch();
+   $seller_id = $row_referrals->seller_id;
+   $referrer_id = $row_referrals->referrer_id;
+   $comission = $row_referrals->comission;
 
 
-$sel_referrer = $db->select("sellers",array("seller_id" => $referrer_id));
+   $sel_referrer = $db->select("sellers",array("seller_id" => $referrer_id));
+   $referrer_user_name = $sel_referrer->fetch()->seller_user_name;
 
-$referrer_user_name = $sel_referrer->fetch()->seller_user_name;
 
+   $update_seller_balance = $db->query("update seller_accounts set current_balance=current_balance-:minus where seller_id='$seller_id'",array("minus"=>$comission));
 
-$update_current_balance = $db->query("update seller_accounts set current_balance=current_balance+:plus where seller_id='$referrer_id'",array("plus"=>$comission));
+   $update_referrer_balance = $db->query("update seller_accounts set current_balance=current_balance+:plus where seller_id='$referrer_id'",array("plus"=>$comission));
 
-$update_referral = $db->update("proposal_referrals",array("status"=>'approved'),array("referral_id"=>$referral_id));
+   $update_referral = $db->update("proposal_referrals",array("status"=>'approved'),array("referral_id"=>$referral_id));
 
-if($update_referral){
+   if($update_referral){
 
-$insert_log = $db->insert_log($admin_id,"proposal_referral",$referral_id,"approved");
+      $insert_log = $db->insert_log($admin_id,"proposal_referral",$referral_id,"approved");
 
-echo "<script>alert('Referral approved successfully. Commission has be added to $referrer_user_name shopping balance.');</script>";
-	
-echo "<script>window.open('index?view_proposal_referrals','_self');</script>";
-	
-}
+      echo "<script>alert('Referral approved successfully. Commission has be added to $referrer_user_name shopping balance.');</script>";
+      echo "<script>window.open('index?view_proposal_referrals','_self');</script>";
+
+   }
 
 	
 }

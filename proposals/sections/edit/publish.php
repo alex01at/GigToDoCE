@@ -40,7 +40,7 @@ if($approve_proposals == "yes"){
     WIth <?= $site_name; ?> feature, your proposal already has a 50% chance of getting ordered by potential buyers
     <p class="ml-4 mt-3">
       <label for="checkid" style="word-wrap:break-word">
-        <input type="checkbox" name="proposal_featured" value="1" style="vertical-align:middle;margin-left: -1.25rem;"> Make Proposal Featured
+        <input type="checkbox" id="checkid" name="proposal_featured" value="1" style="vertical-align:middle;margin-left: -1.25rem;"> Make Proposal Featured
       </label>
     </p>
   </h6>

@@ -112,7 +112,7 @@
       <?php require_once("../includes/category_sidebar.php"); ?>
     </div>
     <div class="col-lg-9 col-md-8 col-sm-12 <?=($lang_dir == "right" ? 'order-1 order-sm-2':'')?>">
-      <div class="row flex-wrap <?=($lang_dir == "right" ? 'justify-content':'')?>" id="category_proposals">
+      <div class="row flex-wrap proposals <?=($lang_dir == "right" ? 'justify-content':'')?>" id="category_proposals">
         <?php get_category_proposals(); ?>
       </div>
       <div id="wait"></div>

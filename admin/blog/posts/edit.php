@@ -62,10 +62,10 @@ if(isset($_GET['edit_post'])){
 					<?php
 						$get_cats = $db->select("post_categories");
 						while($cat = $get_cats->fetch()){
-							if($cat->cat_name == $post->cat_id) {
-								echo "<option selected>$cat->cat_name</option>";
+							if($cat->id == $post->cat_id) {
+								echo "<option value='$cat->id' selected>$cat->cat_name</option>";
 							}else{
-								echo "<option>$cat->cat_name</option>";
+								echo "<option value='$cat->id'>$cat->cat_name</option>";
 							}
 						}
 					?>

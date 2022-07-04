@@ -49,10 +49,13 @@ $update_seller_account = $db->query("update seller_accounts set pending_clearanc
 
 // insert seller revenue
 $revenue_date = date("F d, Y", strtotime(" + $days_before_withdraw days"));
-$end_date = date("F d, Y h:i:s", strtotime(" + $days_before_withdraw days"));
+$end_date = date("F d, Y H:i:s", strtotime(" + $days_before_withdraw days"));
 $insert_revenue = $db->insert("revenues",array("seller_id" => $seller_id,"order_id" => $order_id,"reason" => "order","amount" => $seller_price,"date" => $revenue_date,"end_date" => $end_date,"status" => "pending"));
 
 // select payment method using order_id from purchases table
+$select = $db->select("purchases",array("order_id" => $order_id));
+$row = $select->fetch();
+$payment_method = $row->method;
 $processing_fee = 0;
 
 // get admin profit - Insert sale

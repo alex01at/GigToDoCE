@@ -285,15 +285,17 @@
       <?php
       $tags = explode(",", $proposal_tags);
       foreach($tags as $tag){
+        // $tag = str_replace(" ","-",$tag);
+        // $tag = strtolower($tag);
       ?>
-      <div class="proposal-tag mb-3" style="<?=($lang_dir == "right" ? 'float: right;':'')?>"><a href="../../tags/<?= $tag; ?>"><span><?= $tag; ?></span></a></div>
+      <div class="proposal-tag mb-3" style="<?=($lang_dir == "right" ? 'float: right;':'')?>"><a href="../../tags/<?= str_replace(" ","-",$tag); ?>"><span><?= $tag; ?></span></a></div>
       <?php } ?>
     </div><!--- proposal-tags-container Ends --->
 
   </div><!--- col-lg-8 col-md-7 mb-3 Ends --->
 
   <div class="col-lg-4 col-md-5 proposal-sidebar"> <!-- Col starts -->
-  <?php include("includes/proposal_sidebar.php"); ?>
+    <?php include("includes/proposal_sidebar.php"); ?>
   </div> <!-- Col ends -->
 
   </div>

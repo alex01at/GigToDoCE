@@ -4,6 +4,8 @@ include("../includes/db.php");
 include("../functions/functions.php");
 if(isset($_GET['tag'])){
 	$tag = $input->get('tag');
+	$tag = str_replace("-"," ",$tag);
+	// $tag = filter_var($tag,FILTER_SANITIZE_STRING);
 	$_SESSION['tag'] = $tag;
 }
 ?>

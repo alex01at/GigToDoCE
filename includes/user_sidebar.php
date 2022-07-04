@@ -1,317 +1,344 @@
-
 <div class="card user-sidebar rounded-0 mb-4"><!--- card user-sidebar rounded-0 Starts -->
 
-<div class="card-body"><!-- card-body Starts -->
+	<div class="card-body"><!-- card-body Starts -->
 
-<h3><?= $lang['user_profile']['description']; ?></h3>
+		<h3><?= $lang['user_profile']['description']; ?></h3>
+		<p><?= $seller_about; ?></p>
 
-<p><?= $seller_about; ?></p>
+		<hr class="card-hr">
+		<h3 class="float-left"><?= $lang['user_profile']['languages']; ?></h3>
 
-<hr class="card-hr">
+		<?php if(isset($_SESSION['seller_user_name'])){ ?>
 
-<h3 class="float-left"><?= $lang['user_profile']['languages']; ?></h3>
+			<?php if($login_seller_user_name == $seller_user_name){ ?>
 
-<?php if(isset($_SESSION['seller_user_name'])){ ?>
+			<ul class="list-unstyled"><!-- list-unstyled Starts -->
 
-<?php if($login_seller_user_name == $seller_user_name){ ?>
+			<li class="mb-4 clearfix">
 
-<ul class="list-unstyled"><!-- list-unstyled Starts -->
+			<button data-toggle="collapse" data-target="#language" class="btn btn-success float-right">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
+			</button>
 
-<li class="mb-4 clearfix">
+			</li>
 
-<button data-toggle="collapse" data-target="#language" class="btn btn-success float-right">
-	<i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
-</button>
+			<div id="language" class="collapse form-style mb-2"><!-- language collapse form-style mb-2 Starts -->
 
-</li>
+			<form method="post"><!-- form Starts -->
 
-<div id="language" class="collapse form-style mb-2"><!-- language collapse form-style mb-2 Starts -->
+			<div class="form-group"><!-- form-group Starts -->
 
-<form method="post"><!-- form Starts -->
+			<select class="form-control" name="language_id" required="">
 
-<div class="form-group"><!-- form-group Starts -->
+			<option value=""><?= $lang['label']['select_language']; ?></option>
 
-<select class="form-control" name="language_id" required="">
+			<?php 
 
-<option value=""><?= $lang['label']['select_language']; ?></option>
+			$s_langs = array();
 
-<?php 
+			$get = $db->select("languages_relation",array("seller_id"=>$login_seller_id));
 
-$s_langs = array();
+			while($row = $get->fetch()){
 
-$get = $db->select("languages_relation",array("seller_id"=>$login_seller_id));
+			array_push($s_langs,$row->language_id);
 
-while($row = $get->fetch()){
+			}
 
-array_push($s_langs,$row->language_id);
+			$s_langs = implode(",", $s_langs);
 
-}
+			if(!empty($s_langs)){ $query_where  = "where not language_id IN ($s_langs)"; }else{ $query_where = ""; }
 
-$s_langs = implode(",", $s_langs);
+			$get_languages = $db->query("select * from seller_languages $query_where");
 
-if(!empty($s_langs)){ $query_where  = "where not language_id IN ($s_langs)"; }else{ $query_where = ""; }
+			while($row_languages = $get_languages->fetch()){
 
-$get_languages = $db->query("select * from seller_languages $query_where");
+			$language_id = $row_languages->language_id;
+			$language_title = $row_languages->language_title;
 
-while($row_languages = $get_languages->fetch()){
+			?>
+			<option value="<?= $language_id; ?>"> <?= $language_title; ?> </option>
+			<?php } ?>
 
-$language_id = $row_languages->language_id;
-$language_title = $row_languages->language_title;
+			<option value="custom">Custom Language</option>
 
-?>
-<option value="<?= $language_id; ?>"> <?= $language_title; ?> </option>
-<?php } ?>
+			</select>
 
-</select>
+			</div><!-- form-group Ends -->
 
-</div><!-- form-group Ends -->
+			<div class="form-group language-title d-none"><!-- form-group Starts -->
 
-<div class="form-group"><!-- form-group Starts -->
+			<input type="text" placeholder="Language Name" class="form-control" name="language_title">
 
-<select class="form-control" name="language_level" required="">
+			</div><!-- form-group Ends -->
 
-	<option class="hidden"><?= $lang['label']['select_level']; ?></option>
-	<option value="basic"> Basic </option>
-	<option value="Fluent"> Fluent </option>
-	<option value="Conversational"> Conversational </option>
-	<option value="Native or Bilingual"> Native or Bilingual </option>
+			<div class="form-group"><!-- form-group Starts -->
 
-</select>
+			<select class="form-control" name="language_level" required="">
 
-</div><!-- form-group Ends -->
+				<option class="hidden"><?= $lang['label']['select_level']; ?></option>
+				<option value="basic"> Basic </option>
+				<option value="Fluent"> Fluent </option>
+				<option value="Conversational"> Conversational </option>
+				<option value="Native or Bilingual"> Native or Bilingual </option>
 
-<div class="text-center"><!-- text-center Starts -->
+			</select>
 
-<button type="button" data-toggle="collapse" data-target="#language" class="btn btn-secondary">
-<?= $lang['button']['cancel']; ?>
-</button>
+			</div><!-- form-group Ends -->
 
-<button type="submit" name="insert_language" class="btn btn-success">
-<?= $lang['button']['add']; ?>
-</button>
+			<div class="text-center"><!-- text-center Starts -->
 
-</div><!-- text-center Ends -->
+			<button type="button" data-toggle="collapse" data-target="#language" class="btn btn-secondary">
+			<?= $lang['button']['cancel']; ?>
+			</button>
 
-</form><!-- form Ends -->
+			<button type="submit" name="insert_language" class="btn btn-success">
+			<?= $lang['button']['add']; ?>
+			</button>
 
-<?php 
+			</div><!-- text-center Ends -->
 
-if(isset($_POST['insert_language'])){
-	
-	$language_id = $input->post('language_id');
-	$language_level = $input->post('language_level');
+			</form><!-- form Ends -->
 
-	$insert_language = $db->insert("languages_relation",array("seller_id" => $seller_id,"language_id" => $language_id,"language_level" => $language_level));
-	echo "<script>window.open('$seller_user_name','_self');</script>";
-	
-}
+			<?php 
 
-?>
+			if(isset($_POST['insert_language'])){
+				
+				$language_id = $input->post('language_id');
+				$language_level = $input->post('language_level');
 
-</div><!-- language collapse form-style mb-2 Ends -->
+				if($language_id == "custom"){
 
-</ul><!-- list-unstyled Ends -->
+					$language_title = $input->post('language_title');
+					$insert_language = $db->insert("seller_languages",array("language_title"=>$language_title));
+					$language_id = $db->lastInsertId();
 
-<?php } ?>
+				}
 
-<?php } ?>
-    
-<div class="clearfix"></div>
+				$insert_language = $db->insert("languages_relation",array("seller_id" => $seller_id,"language_id" => $language_id,"language_level" => $language_level));
+				echo "<script>window.open('$seller_user_name','_self');</script>";
+				
+			}
 
-<ul class="list-unstyled mt-3"><!-- list-unstyled mt-3 Starts -->
+			?>
 
-<?php
+			</div><!-- language collapse form-style mb-2 Ends -->
 
-$select_languages_relation = $db->select("languages_relation",array("seller_id" => $seller_id));
+			</ul><!-- list-unstyled Ends -->
 
-while($row_languages_relation = $select_languages_relation->fetch()){
-	
-	$relation_id = $row_languages_relation->relation_id;
-	$language_id = $row_languages_relation->language_id;
-	$language_level = $row_languages_relation->language_level;
+			<?php } ?>
 
+		<?php } ?>
+		    
+		<div class="clearfix"></div>
 
-	$get_language = $db->select("seller_languages",array("language_id" => $language_id));
-	$row_language = $get_language->fetch();
-	$language_title = $row_language->language_title;
+		<ul class="list-unstyled mt-3"><!-- list-unstyled mt-3 Starts -->
 
-?>
+		<?php
 
-<li class="card-li mb-1"><!--- card-li mb-1 Starts -->
+		$select_languages_relation = $db->select("languages_relation",array("seller_id" => $seller_id));
 
-<?= $language_title; ?> - <span class="text-muted"> <?= $language_level; ?> </span>
+		while($row_languages_relation = $select_languages_relation->fetch()){
+			
+			$relation_id = $row_languages_relation->relation_id;
+			$language_id = $row_languages_relation->language_id;
+			$language_level = $row_languages_relation->language_level;
 
-<?php if(isset($_SESSION['seller_user_name'])){ ?>
 
-<?php if($login_seller_user_name == $seller_user_name){ ?>
+			$get_language = $db->select("seller_languages",array("language_id" => $language_id));
+			$row_language = $get_language->fetch();
+			$language_title = $row_language->language_title;
 
-<a href="user.php?delete_language=<?= $relation_id; ?>">
- <i class="fa fa-trash-o"></i>
-</a>
+		?>
 
-<?php } ?>
+		<li class="card-li mb-1"><!--- card-li mb-1 Starts -->
 
-<?php } ?>
+		<?= $language_title; ?> - <span class="text-muted"> <?= $language_level; ?> </span>
 
-</li><!--- card-li mb-1 Ends -->
+		<?php if(isset($_SESSION['seller_user_name'])){ ?>
 
-<?php } ?>
+		<?php if($login_seller_user_name == $seller_user_name){ ?>
 
-</ul><!-- list-unstyled mt-3 Ends -->
+		<a href="user.php?delete_language=<?= $relation_id; ?>">
+		 <i class="fa fa-trash-o"></i>
+		</a>
 
-<hr class="card-hr">
+		<?php } ?>
 
-<h3 class="float-left"><?= $lang['user_profile']['skills']; ?></h3>
+		<?php } ?>
 
-<?php if(isset($_SESSION['seller_user_name'])){ ?>
+		</li><!--- card-li mb-1 Ends -->
 
-<?php if($login_seller_user_name == $seller_user_name){ ?>
+		<?php } ?>
 
-<ul class="list-unstyled"><!-- list-unstyled Starts -->
+		</ul><!-- list-unstyled mt-3 Ends -->
 
-<li class="mb-4 clearfix">
+		<hr class="card-hr">
 
-<button data-toggle="collapse" data-target="#add_skill" class="btn btn-success float-right">
-	<i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
-</button>
+		<h3 class="float-left"><?= $lang['user_profile']['skills']; ?></h3>
 
-</li>
+		<?php if(isset($_SESSION['seller_user_name'])){ ?>
 
-<div id="add_skill" class="collapse form-style mb-2"><!-- add_skill collapse form-style mb-2 Starts -->
+		<?php if($login_seller_user_name == $seller_user_name){ ?>
 
-<form method="post"><!-- form Starts -->
+		<ul class="list-unstyled"><!-- list-unstyled Starts -->
 
-<div class="form-group"><!-- form-group Starts -->
+		<li class="mb-4 clearfix">
 
-<select class="form-control" name="skill_id" required="">
+		<button data-toggle="collapse" data-target="#add_skill" class="btn btn-success float-right">
+			<i class="fa fa-plus-circle" aria-hidden="true"></i> <?= $lang['button']['add_new']; ?>
+		</button>
 
-<option value=""><?= $lang['label']['select_skill']; ?></option>
+		</li>
 
-<?php 
+		<div id="add_skill" class="collapse form-style mb-2"><!-- add_skill collapse form-style mb-2 Starts -->
 
-$s_skills = array();
+		<form method="post"><!-- form Starts -->
 
-$get = $db->select("skills_relation",array("seller_id"=>$login_seller_id));
+		<div class="form-group"><!-- form-group Starts -->
 
-while($row = $get->fetch()){
+		<select class="form-control" name="skill_id" required="">
 
-array_push($s_skills,$row->skill_id);
+		<option value=""><?= $lang['label']['select_skill']; ?></option>
 
-}
+		<?php 
 
-$s_skills = implode(",", $s_skills);
+		$s_skills = array();
 
-if(!empty($s_skills)){ $query_where  = "where not skill_id IN ($s_skills)"; }else{ $query_where = ""; }
+		$get = $db->select("skills_relation",array("seller_id"=>$login_seller_id));
 
-$get_seller_skills = $db->query("select * from seller_skills $query_where");
-while($row_seller_skills = $get_seller_skills->fetch()){
+		while($row = $get->fetch()){
 
-$skill_id = $row_seller_skills->skill_id;
-$skill_title = $row_seller_skills->skill_title;
+		array_push($s_skills,$row->skill_id);
 
-?>
+		}
 
-<option value="<?= $skill_id; ?>"> <?= $skill_title; ?> </option>
+		$s_skills = implode(",", $s_skills);
 
-<?php } ?>
+		if(!empty($s_skills)){ $query_where  = "where not skill_id IN ($s_skills)"; }else{ $query_where = ""; }
 
-</select>
+		$get_seller_skills = $db->query("select * from seller_skills $query_where");
+		while($row_seller_skills = $get_seller_skills->fetch()){
 
-</div><!-- form-group Ends -->
+		$skill_id = $row_seller_skills->skill_id;
+		$skill_title = $row_seller_skills->skill_title;
 
-<div class="form-group"><!-- form-group Starts -->
+		?>
 
-<select class="form-control" name="skill_level" required="">
+		<option value="<?= $skill_id; ?>"> <?= $skill_title; ?> </option>
 
-<option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
-<option> Beginner </option>
-<option> Intermediate </option>
-<option> Expert </option>
+		<?php } ?>
 
-</select>
+		<option value="custom">Custom Skill</option>
 
-</div><!-- form-group Ends -->
+		</select>
 
-<div class="text-center"><!-- text-center Starts -->
+		</div><!-- form-group Ends -->
 
-<button type="button" data-toggle="collapse" data-target="#add_skill" class="btn btn-secondary">
-<?= $lang['button']['cancel']; ?>
-</button>
+		<div class="form-group skill-name d-none"><!-- form-group Starts -->
 
-<button type="submit" name="insert_skill" class="btn btn-success">
-<?= $lang['button']['add']; ?>
-</button>
+		<input type="text" placeholder="Skill Name" class="form-control" name="skill_name">
 
-</div><!-- text-center Ends -->
+		</div><!-- form-group Ends -->
 
-</form><!-- form Ends -->
+		<div class="form-group"><!-- form-group Starts -->
 
-<?php
+		<select class="form-control" name="skill_level" required="">
 
-if(isset($_POST['insert_skill'])){
-	
-$skill_id = $input->post('skill_id');
+		<option value="" class="hidden"><?= $lang['label']['select_level']; ?></option>
+		<option> Beginner </option>
+		<option> Intermediate </option>
+		<option> Expert </option>
 
-$skill_level = $input->post('skill_level');
-	
-$insert_skill = $db->insert("skills_relation",array("seller_id" => $seller_id,"skill_id" => $skill_id,"skill_level" => $skill_level));
-	
-echo "<script>window.open('$seller_user_name','_self');</script>";
-	
-}
+		</select>
 
-?>
+		</div><!-- form-group Ends -->
 
-</div><!-- language collapse form-style mb-2 Ends -->
+		<div class="text-center"><!-- text-center Starts -->
 
+		<button type="button" data-toggle="collapse" data-target="#add_skill" class="btn btn-secondary">
+		<?= $lang['button']['cancel']; ?>
+		</button>
 
-</ul><!-- list-unstyled Ends -->
+		<button type="submit" name="insert_skill" class="btn btn-success">
+		<?= $lang['button']['add']; ?>
+		</button>
 
-<?php } ?>
+		</div><!-- text-center Ends -->
 
-<?php } ?>
-    
-<div class="clearfix"></div>
+		</form><!-- form Ends -->
 
-<ul class="list-unstyled mt-3"><!-- list-unstyled mt-3 Starts -->
+		<?php
 
-<?php
+		if(isset($_POST['insert_skill'])){
+			
+		$skill_id = $input->post('skill_id');
+		$skill_level = $input->post('skill_level');
 
-$select_skills_relation = $db->select("skills_relation",array("seller_id" => $seller_id));
-while($row_skills_relation = $select_skills_relation->fetch()){
-	
-	$relation_id = $row_skills_relation->relation_id;
-	$skill_id = $row_skills_relation->skill_id;
-	$skill_level = $row_skills_relation->skill_level;
-	
-	$get_skill = $db->select("seller_skills",array("skill_id" => $skill_id));
-	$row_skill = $get_skill->fetch();
-	$skill_title = $row_skill->skill_title;
+		if($skill_id == "custom"){
 
-?>
+			$skill_name = $input->post('skill_name');
+			$insert_skill = $db->insert("seller_skills",array("skill_title"=>$skill_name));
+			$skill_id = $db->lastInsertId();
 
-<li class="card-li mb-1"><!--- card-li mb-1 Starts -->
+		}
+			
+		$insert_skill = $db->insert("skills_relation",array("seller_id" => $seller_id,"skill_id" => $skill_id,"skill_level" => $skill_level));
+			
+		echo "<script>window.open('$seller_user_name','_self');</script>";
+			
+		}
 
-<?= $skill_title; ?> - <span class="text-muted"> <?= $skill_level; ?> </span>
+		?>
 
-<?php if(isset($_SESSION['seller_user_name'])){ ?>
+		</div><!-- language collapse form-style mb-2 Ends -->
 
-<?php if($login_seller_user_name == $seller_user_name){ ?>
+		</ul><!-- list-unstyled Ends -->
 
-<a href="user.php?delete_skill=<?= $relation_id; ?>">
- <i class="fa fa-trash-o"></i>
-</a>
+		<?php } ?>
 
-<?php } ?>
+		<?php } ?>
+		    
+		<div class="clearfix"></div>
 
-<?php } ?>
+		<ul class="list-unstyled mt-3"><!-- list-unstyled mt-3 Starts -->
 
-</li><!--- card-li mb-1 Ends -->
+		<?php
 
-<?php } ?>
+		$select_skills_relation = $db->select("skills_relation",array("seller_id" => $seller_id));
+		while($row_skills_relation = $select_skills_relation->fetch()){
+			
+			$relation_id = $row_skills_relation->relation_id;
+			$skill_id = $row_skills_relation->skill_id;
+			$skill_level = $row_skills_relation->skill_level;
+			
+			$get_skill = $db->select("seller_skills",array("skill_id" => $skill_id));
+			$row_skill = $get_skill->fetch();
+			$skill_title = $row_skill->skill_title;
 
-</ul><!-- list-unstyled mt-3 Ends -->
+		?>
 
-</div><!-- card-body Ends -->
+		<li class="card-li mb-1"><!--- card-li mb-1 Starts -->
+
+		<?= $skill_title; ?> - <span class="text-muted"> <?= $skill_level; ?> </span>
+
+		<?php if(isset($_SESSION['seller_user_name'])){ ?>
+
+		<?php if($login_seller_user_name == $seller_user_name){ ?>
+
+		<a href="user.php?delete_skill=<?= $relation_id; ?>">
+		 <i class="fa fa-trash-o"></i>
+		</a>
+
+		<?php } ?>
+
+		<?php } ?>
+
+		</li><!--- card-li mb-1 Ends -->
+
+		<?php } ?>
+
+		</ul><!-- list-unstyled mt-3 Ends -->
+
+	</div><!-- card-body Ends -->
 
 </div><!--- card user-sidebar rounded-0 Ends -->

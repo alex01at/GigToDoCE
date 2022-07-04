@@ -28,26 +28,29 @@ if(isset($_POST['paypal'])){
 	$row_proposal_seller = $select_proposal_seller->fetch();
 	$proposal_seller_user_name = $row_proposal_seller->seller_user_name;
 
+	$reference_no = mt_rand();
+
+	$data['reference_no'] = $reference_no;
+	$data['content_id'] = $_SESSION['c_proposal_id'];
 	$data['name'] = $row_proposals->proposal_title;
 	$data['qty'] = $_SESSION['c_proposal_qty'];
 	$data['price'] = $_SESSION['c_proposal_price'];
-	$data['proposal_revisions'] = $_SESSION['c_proposal_revisions'];
+	$data['delivery_id'] = $_SESSION['c_proposal_delivery'];
+	$data['revisions'] = $_SESSION['c_proposal_revisions'];
 	$data['sub_total'] = $_SESSION['c_sub_total'];
 	$data['total'] = $_SESSION['c_sub_total'] + $processing_fee;
+
 	if(isset($_SESSION['c_proposal_extras'])){
-		$extras = "&proposal_extras=" . base64_encode(serialize($_SESSION['c_proposal_extras']));
-	}else{
-		$extras = "";
-	}
-	
-	if(isset($_SESSION['c_proposal_minutes'])){
-		$minutes = "proposal_minutes={$_SESSION['c_proposal_minutes']}";
-	}else{
-		$minutes = "";
+		$data['extras'] = base64_encode(serialize($_SESSION['c_proposal_extras']));
 	}
 
-	$data['cancel_url'] = "$site_url/proposals/$proposal_seller_user_name/$proposal_url";
-	$data['redirect_url'] = "$site_url/paypal_order?checkout_seller_id=$login_seller_id&proposal_id={$_SESSION['c_proposal_id']}&proposal_qty={$_SESSION['c_proposal_qty']}&proposal_price={$_SESSION['c_sub_total']}&proposal_delivery={$_SESSION['c_proposal_delivery']}&proposal_revisions={$_SESSION['c_proposal_revisions']}&$extras&$minutes";
+	if(isset($_SESSION['c_proposal_minutes'])){
+		$data['minutes'] = $_SESSION['c_proposal_minutes'];
+	}
+
+	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
+	$data['redirect_url'] = "$site_url/paypal_order?reference_no=$reference_no";
+
 	$payment->paypal($data,$processing_fee);
 
 }else{

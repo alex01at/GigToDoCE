@@ -40,6 +40,10 @@ echo "<script>window.open('login','_self');</script>";
    <div class="row"><!--- 2 row Starts --->
 
       <div class="col-lg-12"><!--- col-lg-12 Starts --->
+        
+        <div class="alert alert-info mt-3">
+          <i class="fa fa-info-circle"></i> Make sure to configure the currency converter in <a href="index?api_settings" class="text-success">Settings/Api Settings page.</a>
+        </div>
 
          <div class="card"><!--- card Starts --->
 

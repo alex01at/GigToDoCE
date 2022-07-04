@@ -1,16 +1,20 @@
 <?php
 
-include("../includes/config.php");
+$dir = __DIR__;
+$dir = str_replace("admin/includes", '',$dir);
+$dir = str_replace("admin\includes", '',$dir);
+
+include("$dir/includes/config.php");
 
 if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	echo "<script>window.open('../install.php','_self'); </script>";
 	exit();
 }else{
 
-   include '../libs/database.php';
-   include '../libs/input.php';
-   include '../libs/validator.php';
-   include '../libs/flash.php';
+   include $dir.'libs/database.php';
+   include $dir.'libs/input.php';
+   include $dir.'libs/validator.php';
+   include $dir.'libs/flash.php';
 
    $db->query("SET SESSION sql_mode = 'NO_ENGINE_SUBSTITUTION'");
 
@@ -47,15 +51,12 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
    $row_api_settings = $get_api_settings->fetch();
    $enable_s3 = $row_api_settings->enable_s3;
 
-   $dir = __DIR__;
-   $dir = str_replace("admin/includes", '',$dir);
-   $dir = str_replace("admin\includes", '',$dir);
+   include("$dir/includes/s3-config.php");
 
-   include("../includes/s3-config.php");
    $site_favicon = getImageUrl2("general_settings","site_favicon",$row_general_settings->site_favicon);
    $site_logo_image = getImageUrl2("general_settings","site_logo_image",$row_general_settings->site_logo_image);
    $site_logo = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
 
 }
 
-   require_once("../includes/commonFunctions.php");
+require_once("$dir/includes/commonFunctions.php");

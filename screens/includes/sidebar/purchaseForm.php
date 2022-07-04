@@ -7,7 +7,7 @@
       <a href="#" class="secure ml-2"><?php include("$dir/images/svg/secure.svg"); ?></a>
       <?php if(!isset($_SESSION['seller_user_name'])){ ?>
       <a href="#" data-toggle="modal" data-target="#login-modal" class="favorite ml-2"> 
-      <i class="fa fa-heart" data-toggle="tooltip" data-placement="top" title="Favorites"></i> 
+      <i class="fa fa-heart dil1" data-toggle="tooltip" data-placement="top" title="Favorites"></i> 
       </a>
       <?php }else{ ?>
       <a href="#" id="<?= $show_favorite_id; ?>" class="favorite ml-2"> 

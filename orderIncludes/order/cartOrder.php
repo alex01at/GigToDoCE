@@ -2,29 +2,27 @@
 
 /// Cart Proposals Order Code Starts ///
 if(isset($_SESSION['cart_seller_id'])){
+
 	$buyer_id = $_SESSION['cart_seller_id'];
+	$reference_no = $_SESSION['reference_no'];
 	$payment_method = $_SESSION['method'];
+
 	require 'vendor/autoload.php';
 	
-	$sel_cart = $db->select("cart",array("seller_id" => $buyer_id));
+	$sel_cart = $db->select("temp_orders",array("buyer_id"=>$buyer_id,"reference_no"=>$reference_no,"type"=>"cart_item"));
 	while($row_cart = $sel_cart->fetch()){
 	
-		$proposal_id = $row_cart->proposal_id;
-		$proposal_price = $row_cart->proposal_price;
-		$proposal_qty = $row_cart->proposal_qty;
+		$item_id = $row_cart->id;
+		$proposal_id = $row_cart->content_id;
+		$proposal_price = $row_cart->price;
+		$proposal_qty = $row_cart->qty;
 		$delivery_id = $row_cart->delivery_id;
 		$revisions = $row_cart->revisions;
 		if($videoPlugin == 1){
 			$video = $row_cart->video;
 		}
 
-		$cart_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
-		while($extra = $cart_extras->fetch()){
-	    $price = $extra->price;
-	    $proposal_price += $price;
-		}
-
-		$sub_total = $proposal_price*$proposal_qty;
+		$sub_total = $row_cart->total;
 		$order_price = $sub_total;
 		$processing_fee = processing_fee($order_price);
 
@@ -36,7 +34,6 @@ if(isset($_SESSION['cart_seller_id'])){
 		$proposal_referral_code = $row_proposal->proposal_referral_code;
 		$buyer_instruction = $row_proposal->buyer_instruction;
 		$proposal_seller_id = $row_proposal->proposal_seller_id;
-
 
 		$select_delivery_time = $db->select("delivery_times",array('delivery_id'=>$delivery_id));
 		$row_delivery_time = $select_delivery_time->fetch();
@@ -75,7 +72,7 @@ if(isset($_SESSION['cart_seller_id'])){
 
 		if($videoPlugin == 1){
 			if($video == 1){
-				$order_values['order_minutes'] = $row_cart->proposal_qty.":00";
+				$order_values['order_minutes'] = $row_cart->qty.":00";
 				$order_values['order_qty'] = 1;
 			}
 		}
@@ -89,10 +86,10 @@ if(isset($_SESSION['cart_seller_id'])){
 				$insert_delivered_message = $db->insert("order_conversations",array("order_id" => $insert_order_id,"sender_id" => $proposal_seller_id,"message" => $delivery_message,"file" => $delivery_file,"isS3"=>$isS3,"date" => $last_update_date,"status" => "delivered"));
 			}
 
-			$cart_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
+			$cart_extras = $db->select("temp_extras",array("reference_no"=>$reference_no,"buyer_id"=>$login_seller_id,"item_id"=>$item_id,"proposal_id"=>$proposal_id));
 			while($extra = $cart_extras->fetch()){
-		    $name = $extra->name;
-		    $price = $extra->price;
+		   	$name = $extra->name;
+		   	$price = $extra->price;
 				$insert_extra = $db->insert("order_extras",array("order_id"=>$insert_order_id,"name"=>$name,"price"=>$price));
 			}
 
@@ -138,7 +135,7 @@ if(isset($_SESSION['cart_seller_id'])){
 				$insert_my_seller = $db->insert("my_sellers",array("buyer_id"=>$login_seller_id,"seller_id"=>$proposal_seller_id,"completed_orders"=>1,"amount_spent"=>$order_price,"last_order_date"=>$order_date));
 			}
 
-			$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
+			$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
 			
 			$insert_notification = $db->insert("notifications",array("receiver_id"=>$proposal_seller_id,"sender_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","date"=>$order_date,"status"=>"unread"));
 
@@ -147,20 +144,14 @@ if(isset($_SESSION['cart_seller_id'])){
 	} // cart while loo { bracket
 
 	$sub_total = 0;
-	$select_cart = $db->select("cart",array("seller_id" => $login_seller_id));
+	$select_cart = $db->select("temp_orders",["buyer_id"=>$buyer_id,"reference_no"=>$reference_no,"type"=>"cart_item"]);
 	$count_cart = $select_cart->rowCount();
 	while($row_cart = $select_cart->fetch()){
-		$proposal_id = $row_cart->proposal_id;
-		$proposal_price = $row_cart->proposal_price;
-		$proposal_qty = $row_cart->proposal_qty;
+		$proposal_id = $row_cart->content_id;
+		$proposal_price = $row_cart->price;
+		$proposal_qty = $row_cart->qty;
 
-		$cart_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
-		while($extra = $cart_extras->fetch()){
-	    $price = $extra->price;
-	    $proposal_price += $price;
-		}
-
-		$cart_total = $proposal_price * $proposal_qty;
+		$cart_total = $proposal_price*$proposal_qty;
 		$sub_total += $cart_total;
 	}
 
@@ -174,11 +165,18 @@ if(isset($_SESSION['cart_seller_id'])){
 	$sale = array("buyer_id" => $buyer_id,"work_id" => 0,"payment_method" => $payment_method,"amount" => $sub_total,"profit"=> $adminProfit,"processing_fee"=>$adminProfit,"action"=>"cart","date"=>date("Y-m-d"));
 	insertSale($sale);
 
+	$delete_cart = $db->delete("temp_orders",array("reference_no" => $reference_no, "type"=>"cart_item"));
+	$delete_cart_extras = $db->delete("temp_extras",array("reference_no" => $reference_no));
+
 	$delete_cart = $db->delete("cart",array("seller_id" => $buyer_id));
 	$delete_cart_extras = $db->delete("cart_extras",array("seller_id" => $buyer_id));
+
 	unset($_SESSION['cart_seller_id']);
+	unset($_SESSION['reference_no']);
 	unset($_SESSION['method']);
+	
 	echo "<script>alert('Your order has been placed, Thank you.');</script>";
 	echo "<script>window.open('buying_orders','_self')</script>";
+
 }
 /// Cart Proposals Order Code Ends ///

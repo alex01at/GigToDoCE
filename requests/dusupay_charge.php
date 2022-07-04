@@ -14,11 +14,26 @@ if(isset($_POST['dusupay'])){
 	$processing_fee = processing_fee($amount);
 
 	$data = [];
+	$data['type'] = "request_offer";
+
+	if(isset($_POST['account_number'])){
+		$account_number = $input->post('account_number');
+		$data['account_number'] = $account_number;
+	}
+	
+	if(isset($_POST['voucher'])){
+		$voucher = $input->post('voucher');
+		$data['voucher'] = $voucher;
+	}
+
 	$data['name'] = "Request Offer Payment";
+	$data['content_id'] = $_SESSION['c_offer_id'];
+	$data['price'] = $amount;
 	$data['amount'] = $amount + $processing_fee;
 	$data['redirect_url'] = "$site_url/dusupay_order?view_offers=1&offer_id={$_SESSION['c_offer_id']}&";
 	$payment = new Payment();
 	$payment->dusupay($data);
+
 }else{
 	echo "<script>window.open('../index','_self');</script>";
 }

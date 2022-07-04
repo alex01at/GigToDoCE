@@ -237,6 +237,9 @@ $videoPlugin = $core->checkPlugin("videoPlugin");
 		if(isset($_GET['payment_settings'])){
 		include("payment_settings.php");
 		}
+		if(isset($_GET['get_provider_id'])){
+		include("get_provider_id.php");
+		}
 		if(isset($_GET['insert_home_slide'])){
 		include("insert_home_slide.php");
 		}

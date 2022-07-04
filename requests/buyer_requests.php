@@ -208,9 +208,9 @@
                       <?php }else{ ?> ----- <?php } ?>
                       <br>
                       <?php if($login_seller_offers == "0"){ ?>
-                      <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>" data-toggle="modal" data-target="#quota-finish">Send Offer</button>
+                      <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>" data-toggle="modal" data-target="#quota-finish"><?= $lang['button']['send_offer']; ?></button>
                       <?php }else{ ?>
-                      <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>">Send Offer</button>
+                      <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>"><?= $lang['button']['send_offer']; ?></button>
                       <?php } ?>
                     </td>
                     <script>

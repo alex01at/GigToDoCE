@@ -49,7 +49,7 @@ if($enable_unlimited_revisions == 1){
 <script type="text/javascript" src="../js/croppie.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <?php if(!empty($site_favicon)){ ?>
-<link rel="shortcut icon" href="../images/<?= $site_favicon; ?>" type="image/x-icon">
+<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 <?php } ?>
 </head>
 <body class="is-responsive">
@@ -69,7 +69,7 @@ if($seller_verification != "ok"){
 
 <div class="container mt-5 mb-5"><!--- container Starts --->
   <div class="row"><!--- row Starts --->
-    <div class="col-xl-8 col-lg-10 col-md-12"><!--- col-xl-8 Starts --->
+    <div class="col-xl-8 col-lg-11 col-md-12"><!--- col-xl-8 Starts --->
       <div class="tab-content card card-body"><!--- tab-content Starts --->
         <div class="tab-pane fade show active" id="overview">
           <?php include("sections/create/overview.php"); ?>

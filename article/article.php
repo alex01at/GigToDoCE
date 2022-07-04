@@ -3,9 +3,16 @@
   session_start();
   require_once("../includes/db.php");
   
-  $article_url = $input->get('article_url');
-
+  $article_url = urlencode($input->get('article_url'));
   $get_articles = $db->select("knowledge_bank",array("article_url"=>$article_url));
+
+  $count_article = $get_articles->rowCount();
+
+  // if($count_article == 0){
+  //   echo "<script>window.open('../knowledge_bank','_self');</script>";
+  //   exit();
+  // }
+
   $row_articles = $get_articles->fetch();
   $article_id = $row_articles->article_id;
   $article_heading = $row_articles->article_heading;

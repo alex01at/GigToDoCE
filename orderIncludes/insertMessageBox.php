@@ -8,7 +8,7 @@
 
   <?php if($seller_id == $login_seller_id AND $order_status == "pending" ){ ?>
   <div class="float-left pt-2">
-    <span class="font-weight-bold text-danger"> Buyer Hasn't Started The Order Yet. Buyer Will Have To Reply To This Order Before It Get Started. </span>
+    <span class="font-weight-bold text-danger"> <?= $lang['order_details']['order_not_started']; ?> </span>
   </div>
   <?php } ?>
   <div class="float-right">

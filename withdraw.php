@@ -95,11 +95,11 @@ if(isset($_POST['withdraw'])){
 		
 		}else{
 
-			    $data = json_decode($response, TRUE);
+			   $data = json_decode($response, TRUE);
 
-			    if($data['code'] == "202" AND $data['status'] == "accepted"){
+			   if($data['code'] == "202" AND $data['status'] == "accepted"){
 
-			    $update_seller_account = $db->query("update seller_accounts set current_balance=current_balance-:minus,withdrawn=withdrawn+:plus where seller_id='$login_seller_id'",array("minus"=>$amount,"plus"=>$amount));
+			   $update_seller_account = $db->query("update seller_accounts set current_balance=current_balance-:minus,withdrawn=withdrawn+:plus where seller_id='$login_seller_id'",array("minus"=>$amount,"plus"=>$amount));
 				
 				if($update_seller_account){
 

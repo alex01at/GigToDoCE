@@ -388,11 +388,11 @@
                     <br>
                     <?php if($login_seller_offers == "0"){ ?>
                     <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>" data-toggle="modal" data-target="#quota-finish">
-                    Send An Offer
+                      <?= $lang['button']['send_an_offer']; ?>
                     </button>
                     <?php }else{ ?>
                     <button class="btn btn-success btn-sm mt-4 send_button_<?= $request_id; ?>">
-                    Send Offer
+                      <?= $lang['button']['send_offer']; ?>
                     </button>
                     <?php } ?>
                   </td>
@@ -405,10 +405,9 @@
                        method: "POST",
                          url: "requests/send_offer_modal",
                            data: {request_id: request_id }
-                        })
-                           .done(function(data){
+                        }).done(function(data){
                            $(".append-modal").html(data);
-                            });
+                        });
                       });
                      <?php } ?>
                   </script>
@@ -423,7 +422,7 @@
             ?>
             <center>
               <a href="requests/buyer_requests" class="btn btn-success btn-lg mb-3">
-                <i class="fa fa-spinner"></i> Load More
+                <i class="fa fa-spinner"></i> <?= $lang['button']['load_more']; ?>
               </a>
             </center>
             <?php } ?>

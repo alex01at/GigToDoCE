@@ -3,45 +3,32 @@
 $seller_user_name = $_SESSION['seller_user_name'];
 
 $get_seller = $db->select("sellers",array("seller_user_name" => $seller_user_name));
-
 $row_seller = $get_seller->fetch();
-
 $seller_id = $row_seller->seller_id;
-
 $seller_level = $row_seller->seller_level;
-
 $seller_rating = $row_seller->seller_rating;
 
 
 $count_orders = $db->count("orders",array("seller_id" => $seller_id, "order_status" => 'completed'));
 
 $get_general_settings = $db->select("general_settings");   
-
 $row_general_settings = $get_general_settings->fetch();
-
 $level_one_rating = $row_general_settings->level_one_rating;
-
 $level_one_orders = $row_general_settings->level_one_orders;
-
 $level_two_rating = $row_general_settings->level_two_rating;
-
 $level_two_orders = $row_general_settings->level_two_orders;
-
 $level_top_rating = $row_general_settings->level_top_rating;
-
 $level_top_orders = $row_general_settings->level_top_orders;
 
 
-if($seller_level == 1 ){
+if($seller_level == 1){
 	
-if($seller_rating >= $level_one_rating AND $count_orders >= $level_one_orders){	
-    
+	if($seller_rating >= $level_one_rating AND $count_orders >= $level_one_orders){	
+	    
+		$update_seller_level = $db->update("sellers",array("seller_level" => 2),array("seller_id" => $seller_id));
+		$update_seller_proposals = $db->update("proposals",array("level_id" => 2),array("proposal_seller_id" => $seller_id));
 
-$update_seller_level = $db->update("sellers",array("seller_level" => 2),array("seller_id" => $seller_id));
-
-$update_seller_proposals = $db->update("proposals",array("level_id" => 2),array("proposal_seller_id" => $seller_id));
-
-if($update_seller_proposals){
+		if($update_seller_proposals){
 
 ?>
 
@@ -87,14 +74,9 @@ if($update_seller_proposals){
 </div><!-- level-one-modal modal fade Ends -->
 
 <script>
-
-$(document).ready(function(){
-	
-	
-	$("#level-one-modal").modal('show');
-	
-});
-
+	$(document).ready(function(){
+		$("#level-one-modal").modal('show');
+	});
 </script>
 
 <?php

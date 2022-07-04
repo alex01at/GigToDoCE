@@ -153,33 +153,14 @@ if($enable_unlimited_revisions == 1){
 		<tr>
 			<td>Price</td>
 			<td class="p-0">
-			<!-- <select name="" class="form-control">
-			<?php 
-			foreach ($prices as $price) {
-				echo "<option value='$price'".($price == $row_1->price ? "selected" : "").">$s_currency$price</option>";
-			}
-			?>
-			</select> -->
+
 			<input type="number" min='<?= $min_proposal_price; ?>' required name="proposal_packages[1][price]" form="pricing-form" value="<?= $row_1->price; ?>" class="form-control">
 			</td>
 			<td class="p-0">
-			<!-- <select name="proposal_packages[2][price]" class="form-control">
-				<?php 
-				foreach ($prices as $price) {
-					echo "<option value='$price'".($price == $row_2->price ? "selected" : "").">$s_currency$price</option>";
-				}
-				?>
-			</select> -->
 			<input type="number" min='<?= $min_proposal_price; ?>' required name="proposal_packages[2][price]" form="pricing-form" value="<?= $row_2->price; ?>" class="form-control">
 			</td>
 			<td class="p-0">
-			<!-- <select name="proposal_packages[3][price]" class="form-control">
-			<?php 
-			foreach ($prices as $price) {
-				echo "<option value='$price'".($price == $row_3->price ? "selected" : "").">$s_currency$price</option>";
-			}
-			?>  
-			</select> -->
+
 			<input type="number" min='5' required name="proposal_packages[3][price]" form="pricing-form" value="<?= $row_3->price; ?>" class="form-control">
 			</td>
 		</tr>

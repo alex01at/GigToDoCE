@@ -192,7 +192,6 @@ if(isset($_POST['continue'])){
 	
 
 	$check_seller_username = $db->count("sellers",array("seller_user_name" => $u_name));
-	
 	$check_seller_email = $db->count("sellers",array("seller_email" => $email));
 	
 	if($check_seller_username > 0 ){
@@ -201,12 +200,10 @@ if(isset($_POST['continue'])){
 		
 	   <script>
       
-           swal({
-           
-          type: 'warning',
-          text: 'This username has already been used. Please try another one.',
-
-          });
+         swal({
+            type: 'warning',
+            text: 'This username has already been used. Please try another one.',
+         });
 
         </script>
 		
@@ -220,30 +217,31 @@ if(isset($_POST['continue'])){
 		
 		<script>
       
-           swal({
-           
-          type: 'warning',
-          text: 'This email has already been used. Please try another one.',
-
-          });
+         swal({
+            type: 'warning',
+            text: 'This email has already been used. Please try another one.',
+         });
 
         </script>";	
 			
 		}else{
 				
 		$referral_code = mt_rand();
-		
 		$verification_code = "ok";
-						
+		
+      $geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip));
+      $country = $geoplugin['geoplugin_countryName'];
+      if(empty($country)){ 
+         $country = ""; 
+      }		
 
-		$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_image" => $image,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 100,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_status" => 'online'));
+		$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_image" => $image,"seller_country"=>$country,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 100,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_status" => 'online'));
 		
 		$regsiter_seller_id = $db->lastInsertId();
 		
 		if($insert_seller){
 		
-        $_SESSION['seller_user_name'] = $u_name;
-				
+      $_SESSION['seller_user_name'] = $u_name;		
 		$insert_seller_account = $db->insert("seller_accounts",array("seller_id" => $regsiter_seller_id));
 
 		if($insert_seller_account){

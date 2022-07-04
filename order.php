@@ -28,6 +28,22 @@ if(!isset($_SESSION['checkout_seller_id']) and !isset($_SESSION['cart_seller_id'
    <script src="js/ie.js"></script>
 	<script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<style>
+		body *, 
+		body *:before, 
+		body *:after {
+			-webkit-box-sizing: border-box !important;
+			-ms-box-sizing: border-box !important;
+			-moz-box-sizing: border-box !important;
+			-o-box-sizing: border-box !important;
+			box-sizing: border-box !important;
+		}
+		.swal2-icon.swal2-success .swal2-success-ring {
+			position: absolute;
+			top: 0.1em;
+			left: 0em;
+		}
+	</style>
 </head>
 <body class="is-responsive">
 	<img src="images/bg4.jpeg" alt="logout-pic">

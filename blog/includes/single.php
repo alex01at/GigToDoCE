@@ -4,6 +4,11 @@
 	$post = $db->select("posts",['id'=>$id])->fetch();
 	$url = preg_replace('#[ -]+#','-', $post->title);
 
+	/// Get Category Details
+	$get_cat = $db->select("post_categories",['id'=>$post->cat_id]);
+	$row_cat = $get_cat->fetch();
+	$cat_name = $row_cat->cat_name;
+
 	$comments = $db->select("post_comments",array("post_id"=>$id));
 	$count_comments = $comments->rowCount();
 
@@ -15,7 +20,7 @@
 		<hr>
 	   <p>
 	   	Published on: <span class="text-muted"><?= $post->date_time; ?></span> | 
-	   	Category: <a href="index?cat_id=<?= $post->cat_id; ?>" class="text-muted"><?= $post->cat_id; ?></a> |
+	   	Category: <a href="index?cat_id=<?= $post->cat_id; ?>" class="text-muted"><?= $cat_name; ?></a> |
 	   	Author: <a href="index?author=<?= $post->author; ?>" class="text-muted"><?= $post->author; ?></a> 
 	   </p>
 

@@ -33,6 +33,8 @@ $d_proposal_img1_s3 = $row_proposal->proposal_img1_s3;
 $d_proposal_img2_s3 = $row_proposal->proposal_img2_s3;
 $d_proposal_img3_s3 = $row_proposal->proposal_img3_s3;
 $d_proposal_img4_s3 = $row_proposal->proposal_img4_s3;
+$d_proposal_video_s3 = $row_proposal->proposal_video_s3;
+
 
 $d_delivery_id = $row_proposal->delivery_id;
 $d_proposal_enable_referrals = $row_proposal->proposal_enable_referrals;
@@ -231,6 +233,8 @@ $(document).ready(function(){
       $('#wait').removeClass("loader");
       if(data == "error"){
         swal({type: 'warning',text: 'You Must Need To Fill Out All Fields Before Updating The Details.'});
+      }else if(data == "error_title"){
+        swal({type: 'warning',text: 'Opps! Your Already Made A Proposal With Same Title Try Another.'});
       }else if(data == "error_img"){
         swal({type: 'warning',text: 'You Must Need To Add At Least 1 Image In Proposal To Continue.'});
       }else if(data != "error" || data != "error_img"){
@@ -347,10 +351,22 @@ $(document).ready(function(){
       $('.packages').hide();
       $('.add-attribute').hide();
       $('.proposal-price').show();
+      $('.proposal-price input[name="proposal_price"]').attr('min',<?= $min_proposal_price; ?>);
+
+      $('.packages input[name="proposal_packages[1][price]"]').attr('min',0);
+      $('.packages input[name="proposal_packages[2][price]"]').attr('min',0);
+      $('.packages input[name="proposal_packages[3][price]"]').attr('min',0);
+
     }else{
       $('.packages').show();
       $('.add-attribute').show();
       $('.proposal-price').hide();
+      $('.proposal-price input[name="proposal_price"]').attr('min',0);
+      
+      $('.packages input[name="proposal_packages[1][price]"]').attr('min',<?= $min_proposal_price; ?>);
+      $('.packages input[name="proposal_packages[2][price]"]').attr('min',<?= $min_proposal_price; ?>);
+      $('.packages input[name="proposal_packages[3][price]"]').attr('min',<?= $min_proposal_price; ?>);
+
     }
   });
 

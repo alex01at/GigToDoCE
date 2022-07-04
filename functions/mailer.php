@@ -63,7 +63,7 @@ function send_mail($data,$temp_name=''){
 
    }else{
 
-      $mail = new PHPMailer(true);
+      $mail = new PHPMailer();
       // $mail->SMTPDebug = 2;
       try {
          if($enable_smtp == "yes"){
@@ -87,13 +87,12 @@ function send_mail($data,$temp_name=''){
          if($mail->send()){ 
             return true;
          }else{
-            return false; 
+            return true;
          }
 
       }catch(Exception $e){
          print_r($e->getMessage());
       }
-
 
    }
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="format-detection" content="telephone=no">
@@ -132,6 +133,9 @@
 
   .box p.text-muted{
     color:#82899a;
+  }
+  .box p.text-left{
+    text-align: left;
   }
 
   .box .btn{
@@ -273,13 +277,17 @@
       <tr>
         <td class="o_re o_bg-white o_px o_pb-md o_br-t" align="center" style="font-size: 0;vertical-align: top;background-color: #ffffff;border-radius: 4px 4px 0px 0px;padding-left: 16px;padding-right: 16px;padding-bottom: 24px;">
           <div class="o_col o_col-2" style="display: inline-block;vertical-align: top;width: 100%;max-width: 200px;">
-            <div style="font-size: 24px; line-height: 24px; height: 24px;">&nbsp; </div>
+            <div style="font-size: 24px; line-height: 24px; height: 24px;">  </div>
             <div class="o_px-xs o_sans o_text o_left o_xs-center" style="font-family: Helvetica, Arial, sans-serif;margin-top: 0px;margin-bottom: 0px;font-size: 16px;line-height: 24px;text-align: left;padding-left: 8px;padding-right: 8px;">
-              <p style="margin-top: 0px;margin-bottom: 0px;"><a class="o_text-primary" href="<?= $site_url; ?>" style="text-decoration: none;outline: none;color: #126de5;"><img src='<?= $site_logo; ?>' width="136" height="36" alt="SimpleApp" style="max-width: 136px;-ms-interpolation-mode: bicubic;vertical-align: middle;border: 0;line-height: 100%;height: auto;outline: none;text-decoration: none;"></a></p>
+              <p style="margin-top: 0px;margin-bottom: 0px;">
+                <a class="o_text-primary" href="<?= $site_url; ?>" style="text-decoration: none;outline: none;color: #126de5;">
+                  <img src="<?= $site_logo; ?>" width="136" height="36" alt="<?= $site_name; ?>" style="max-width: 136px;-ms-interpolation-mode: bicubic;vertical-align: middle;border: 0;line-height: 100%;height: auto;outline: none;text-decoration: none;">
+                </a>
+              </p>
             </div>
           </div>
           <div class="o_col o_col-4" style="display: inline-block;vertical-align: top;width: 100%;max-width: 400px;">
-            <div style="font-size: 22px; line-height: 22px; height: 22px;">&nbsp; </div>
+            <div style="font-size: 22px; line-height: 22px; height: 22px;">  </div>
             <div class="o_px-xs" style="padding-left: 8px;padding-right: 8px;">
               <table class="o_right o_xs-center" cellspacing="0" cellpadding="0" border="0" role="presentation" style="text-align: right;margin-left: auto;margin-right: 0;">
                 <tbody>

@@ -17,21 +17,37 @@ if(isset($_POST['dusupay'])){
 
 	$payment = new Payment();
 	$data = [];
-	$data['name'] = "Proposal Payment";
-	$data['amount'] = $_SESSION['c_sub_total'] + $processing_fee;
-	$data['proposal_revisions'] = $_SESSION['c_proposal_revisions'];
-	if(isset($_SESSION['c_proposal_extras'])){
-	$extras = "&proposal_extras=" . base64_encode(serialize($_SESSION['c_proposal_extras']));
-	}else{
-	$extras = "";
+
+	$data['type'] = "proposal";
+	
+	if(isset($_POST['account_number'])){
+		$account_number = $input->post('account_number');
+		$data['account_number'] = $account_number;
 	}
-	if(isset($_SESSION['c_proposal_minutes'])){
-		$minutes = "proposal_minutes={$_SESSION['c_proposal_minutes']}";
-	}else{
-		$minutes = "";
+	
+	if(isset($_POST['voucher'])){
+		$voucher = $input->post('voucher');
+		$data['voucher'] = $voucher;
 	}
 
-	$data['redirect_url'] = "$site_url/dusupay_order?checkout_seller_id=$login_seller_id&proposal_id={$_SESSION['c_proposal_id']}&proposal_qty={$_SESSION['c_proposal_qty']}&proposal_price={$_SESSION['c_sub_total']}&proposal_delivery={$_SESSION['c_proposal_delivery']}&proposal_revisions={$_SESSION['c_proposal_revisions']}&$extras&$minutes&";
+	$data['name'] = "Proposal Payment";
+	$data['content_id'] = $_SESSION['c_proposal_id'];
+	$data['qty'] = $_SESSION['c_proposal_qty'];
+	$data['price'] = $_SESSION['c_sub_total'];
+	$data['amount'] = $_SESSION['c_sub_total']+$processing_fee;
+	$data['delivery_id'] = $_SESSION['c_proposal_delivery'];
+	$data['revisions'] = $_SESSION['c_proposal_revisions'];
+	
+	if(isset($_SESSION['c_proposal_extras'])){
+		$data['extras'] = base64_encode(serialize($_SESSION['c_proposal_extras']));
+	}
+
+	if(isset($_SESSION['c_proposal_minutes'])){
+		$data['minutes'] = $_SESSION['c_proposal_minutes'];
+	}
+
+	// $data['redirect_url'] = "$site_url/dusupay_order?checkout_seller_id=$login_seller_id&proposal_id={$_SESSION['c_proposal_id']}&proposal_qty={$_SESSION['c_proposal_qty']}&proposal_price={$_SESSION['c_sub_total']}&proposal_delivery={$_SESSION['c_proposal_delivery']}&proposal_revisions={$_SESSION['c_proposal_revisions']}&$extras&$minutes&";
+
 	$payment->dusupay($data);
 
 }else{

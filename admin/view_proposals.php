@@ -13,7 +13,7 @@ $count_all_proposals = $db->query("select * from proposals where proposal_status
 $count_active_proposals = $db->count("proposals",array("proposal_status" => "active"));
 $count_featured_proposals = $db->count("proposals",array("proposal_status"=>"active","proposal_featured"=>"yes"));
 $count_pending_proposals = $db->count("proposals",array("proposal_status" => "pending"));
-$count_pause_proposals = $db->count("proposals",array("proposal_status" => "pause"));
+$count_pause_proposals = $db->query("select * from proposals where proposal_status='pause' or proposal_status='admin_pause'")->rowCount();
 $count_trash_proposals = $db->count("proposals",array("proposal_status" => "trash"));
 
 ?>

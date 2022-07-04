@@ -319,12 +319,12 @@ $(document).ready(function(){
 
 <?php
 
+$count_seller_buyer_reviews = $db->select("buyer_reviews",array("review_seller_id"=>$seller_id))->rowCount();
+
 if(isset($_POST['buyer_review_submit'])){
 
 $rating = $input->post('rating');
-
 $review = $input->post('review');
-
 $date = date("M d Y");
 
 $insert_review = $db->insert("buyer_reviews",array("proposal_id"=>$proposal_id,"order_id"=>$order_id,"review_buyer_id"=>$buyer_id,"buyer_rating"=>$rating,"buyer_review"=>$review,"review_seller_id"=>$seller_id,"review_date"=>$date));
@@ -335,63 +335,65 @@ $insert_notification = $db->insert("notifications",array("receiver_id" => $selle
 
 $ratings = array();
 
-
 $sel_proposal_reviews = $db->select("buyer_reviews",array("proposal_id"=>$proposal_id));
-    
 while($row_proposals_reviews = $sel_proposal_reviews->fetch()){
   
   $proposal_buyer_rating = $row_proposals_reviews->buyer_rating;
-  
   array_push($ratings,$proposal_buyer_rating);
   
 }
   
 array_push($ratings,$rating);
-  
 $total = array_sum($ratings);
-  
 $avg = $total/count($ratings);
-  
 $updated_propoasl_rating = substr($avg,0,1);
-
 
 if($rating == "5"){
 
-if($order_seller_rating == "100"){
+  if($order_seller_rating == "100"){
 
-}else{
+  }else{
 
-$review_rating = $order_seller_rating+7; if($review_rating > 100){ $review_rating = 100; }
-$update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+    if($count_seller_buyer_reviews == 0){
+      $update_seller_rating = $db->query("update sellers set seller_rating=100 where seller_id='$seller_id'");
+    }else{
 
-}
+      $review_rating = $order_seller_rating+7; if($review_rating > 100){ $review_rating = 100; }
+      $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+
+    }
+
+  }
 
 
 }elseif($rating == "4"){
 
-if($order_seller_rating == "100"){
+  if($order_seller_rating == "100"){
 
-}else{
+  }else{
 
-$review_rating = $order_seller_rating+2; if($review_rating > 100){ $review_rating = 100; }
-$update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+  $review_rating = $order_seller_rating+2; if($review_rating > 100){ $review_rating = 100; }
+  $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
 
-}
+  }
 
 }elseif($rating == "3"){
 
-$review_rating = $order_seller_rating-3; if($review_rating < 0){ $review_rating = 0; }
-$update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+  $review_rating = $order_seller_rating-3; 
+  if($review_rating < 0){ $review_rating = 0; }
+  $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
 
 }elseif($rating == "2"){
 
-$review_rating = $order_seller_rating-5; if($review_rating < 0){ $review_rating = 0; }
-$update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+  $review_rating = $order_seller_rating-5; 
+  if($review_rating < 0){ $review_rating = 0; }
+  $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
 
 }elseif($rating == "1"){
 
-$review_rating = $order_seller_rating-7; if($review_rating < 0){ $review_rating = 0; }
-$update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
+  $review_rating = $order_seller_rating-7; 
+  if($review_rating < 0){ $review_rating = 0; }
+  $update_seller_rating = $db->query("update sellers set seller_rating=$review_rating where seller_id='$seller_id'");  
 
 }
 
@@ -401,18 +403,18 @@ if($update_proposal_rating){
 
 echo "<script>
 
-          swal({
-            type: 'success',
-            text: 'Review submitted successfully!',
-            timer: 3000,
-            onOpen: function(){
-            swal.showLoading()
-            }
-            }).then(function(){
-             window.open('order_details?order_id=$order_id','_self')
-          });
+    swal({
+      type: 'success',
+      text: 'Review submitted successfully!',
+      timer: 3000,
+      onOpen: function(){
+      swal.showLoading()
+      }
+      }).then(function(){
+       window.open('order_details?order_id=$order_id','_self')
+    });
 
-        </script>";
+  </script>";
 
 }
 

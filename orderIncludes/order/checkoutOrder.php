@@ -100,7 +100,7 @@ if(isset($_SESSION['checkout_seller_id'])){
 		if($proposal_enable_referrals == "yes"){
 			if(isset($_SESSION['r_proposal_id'])){
 				if($_SESSION['r_referrer_id'] == $login_seller_id){
-					// 
+					///// empty
 				}else{
 					if($proposal_id == $_SESSION['r_proposal_id'] & $proposal_referral_code == $_SESSION['r_referral_code']){
 						$ip = $_SERVER['REMOTE_ADDR'];
@@ -142,9 +142,9 @@ if(isset($_SESSION['checkout_seller_id'])){
 		$total_amount = $order_price + $processing_fee;
 		
 		if($payment_method == "shopping_balance"){
-		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
+			$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","amount"=>$order_price,"date"=>$order_date,"method"=>$payment_method));
 		}else{
-		$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"amount"=>$total_amount,"date"=>$order_date,"method"=>$payment_method));
+			$insert_purchase = $db->insert("purchases",array("seller_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","amount"=>$total_amount,"date"=>$order_date,"method"=>$payment_method));
 		}
 
 		$insert_notification = $db->insert("notifications",array("receiver_id"=>$proposal_seller_id,"sender_id"=>$login_seller_id,"order_id"=>$insert_order_id,"reason"=>"order","date"=>$order_date,"status"=>"unread"));

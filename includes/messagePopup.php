@@ -39,10 +39,11 @@ while($row_inbox_sellers = $select_inbox_sellers->fetch()){
 	
 	$select_inbox_message = $db->select("inbox_messages",array("message_id" => $message_id));
 	$row_inbox_message = $select_inbox_message->fetch();
-	$data[$i]['desc'] = strip_tags($row_inbox_message->message_desc);
+	$data[$i]['desc'] = substr(strip_tags($row_inbox_message->message_desc),0,250);
 	$data[$i]['date'] = $row_inbox_message->message_date;
 	$data[$i]['offer_id'] = $row_inbox_message->message_offer_id;
 	$data[$i]['message_status'] = $row_inbox_message->message_status;
+	
 	if(empty($data[$i]['desc']) and !empty($data[$i]['offer_id'])){
 		$data[$i]['sender_user_name'] = "Offer waiting!";
 		$data[$i]['desc'] = "You have a new offer in your inbox.";

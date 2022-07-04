@@ -28,7 +28,8 @@ src="<?= $site_url; ?>/js/customjs.js"
 data-logged-id="<?= (isset($_SESSION['seller_user_name']))?$login_seller_id:''; ?>" 
 data-base-url="<?= $site_url; ?>" 
 data-enable-sound="<?= (isset($_SESSION['seller_user_name']))?$login_seller_enable_sound:''; ?>"
-data-enable-notifications="<?= (isset($_SESSION['seller_user_name']))?$login_seller_enable_notifications:''; ?>"
+data-enable-notifications="<?= (isset($_SESSION['seller_user_name']))?$login_seller_enable_notifications:'0'; ?>"
+data-disable-messages="<?= (isset($disable_messages))?$disable_messages:'0'; ?>"
 >
 </script>
 

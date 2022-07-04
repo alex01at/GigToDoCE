@@ -2,7 +2,6 @@
 .proposal-slider .item img{opacity:0.3;height:68px;width: 100%; border-radius: 0px;}
 .proposal-slider .item.active img{opacity:1;border:0.5px solid #ccc;}
 
-
 .slide-left img,
 .slide-right img{
    margin-top: 19px;
@@ -58,6 +57,10 @@
 				<?php if(!empty($jwplayer_code)){ ?>
 				<script type="text/javascript" src="<?= $jwplayer_code; ?>"></script>
 				<div class="d-block w-100" id="player"></div>
+            <?php
+               $show_video = str_replace("\r", "", $show_video);
+               $show_video = str_replace("\n", "", $show_video);
+            ?>
 				<script type="text/javascript">
 					var player = jwplayer('player');
 					player.setup({
@@ -119,7 +122,7 @@
             <?php if(!empty($proposal_video)){ ?>
                 
                 <div class="item active" data-position="0">
-                <a>
+                <a href="#">
                 	<img src="../../images/youtube.jpg" alt="youtube.jpg">
                 </a>
                 </div>
@@ -193,11 +196,12 @@ $(document).ready(function(){
 	/// Proposal Slider Code Starts ///
 	$(".proposal-slider .item").click(function(){
 		var eq = $(this).data('position');
-		$(".proposal-slider .item").removeClass("active");
+      $(".proposal-slider .item").removeClass("active");
 		$(".carousel-item").removeClass("active");
 		$(".carousel-item:eq("+ eq +")").addClass("active");
 		$(".proposal-slider .item:eq("+ eq +")").addClass("active");
 	});
+
 	// Slide Track COde Starts
 
 	$("#myCarousel").on('slide.bs.carousel', function(event){

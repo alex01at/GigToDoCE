@@ -186,12 +186,15 @@
     if(!in_array($file_extension,$allowed) & !empty($file)){
     echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";
     }else{
+
     $file = pathinfo($file, PATHINFO_FILENAME);
     $file = $file."_".time().".$file_extension";
-    move_uploaded_file($file_tmp , "ticket_files/$file");
+
+    uploadToS3("ticket_files/$file",$file_tmp);
+    $isS3 = $enable_s3;
 
     $date = date("h:i M d, Y");
-    $insert_support_ticket = $db->insert("support_tickets",array("enquiry_id" => $enquiry_type,"sender_id" => $login_seller_id,"subject" => $subject,"message" => $message,"order_number" => $order_number,"order_rule" => $order_rule,"attachment" => $file,"date" => $date,"status" => 'open'));
+    $insert_support_ticket = $db->insert("support_tickets",array("enquiry_id" => $enquiry_type,"sender_id" => $login_seller_id,"subject" => $subject,"message" => $message,"order_number" => $order_number,"order_rule" => $order_rule,"attachment" => $file,"date" => $date,"isS3" => $isS3,"status" => 'open'));
     if($insert_support_ticket){
 
     $get_enquiry_types = $db->select("enquiry_types",array("enquiry_id" => $enquiry_id));

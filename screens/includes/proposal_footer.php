@@ -15,7 +15,7 @@
 	</h2>
 	<hr>
 	<?php } ?>
-	<div class="row flex-wrap mb-2">
+	<div class="row flex-wrap proposals mb-2">
 		<?php
 		$get_proposals = $db->query("select * from proposals where not proposal_id='$proposal_id' AND proposal_seller_id='$proposal_seller_id' AND proposal_status='active'");
 		while($row_proposals = $get_proposals->fetch()){
@@ -94,7 +94,7 @@ echo "<center><h5 class='pb-4 pt-4 text-muted $rtl'>{$lang['proposal']['no_other
 	<h2 class="mt-3 <?=($lang_dir == "right" ? 'text-right':'')?>"><?= $lang['proposal']['recently_viewed']; ?></h2>
 	<hr>
 	<?php } ?>
-	<div class="row flex-wrap mb-2">
+	<div class="row flex-wrap proposals mb-2">
 		<?php
 		$select_recent = $db->query("select * from recent_proposals where seller_id='$login_seller_id' order by 1 DESC LIMIT 0,4");
 		while($row_recent = $select_recent->fetch()){
@@ -179,9 +179,10 @@ echo "<center><h5 class='pb-4 pt-4 text-muted'><i class='fa fa-meh-o '></i> This
 		<?php
 		$tags = explode(",", $proposal_tags);
 		foreach($tags as $tag){
+			// $tag = strtolower($tag);
 		?>
 		<div class="proposal-tag" style="margin-bottom: 30px;<?=($lang_dir == "right" ? 'float: right;':'')?>">
-		<a class="<?=($lang_dir == "right" ? 'text-right':'')?>" href="../../tags/<?= $tag; ?>"><span><?= $tag; ?></span></a>
+		<a class="<?=($lang_dir == "right" ? 'text-right':'')?>" href="../../tags/<?= str_replace(" ","-",$tag); ?>"><span><?= $tag; ?></span></a>
 		</div>
 		<?php } ?>
 		</div><!--- proposal-tags-container Ends --->

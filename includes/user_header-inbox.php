@@ -50,14 +50,17 @@
     <div class="col-xs-12">
       <div id="gigtodo-logo" class="apply-nav-height gigtodo-logo-svg gigtodo-logo-svg-logged-in <?php if(isset($_SESSION["seller_user_name"])){echo"loggedInLogo";} ?>">
         <a href="<?= $site_url; ?>">
-        <?php if($site_logo_type == "image"){ ?>
-        <img class="desktop" src="<?= $site_logo_image; ?>" width="150">
-        <?php }else{ ?>
-        <?= $site_logo_text; ?>
-        <?php } ?>
+          <?php if($site_logo_type == "image"){ ?>
+            <img class="desktop" src="<?= $site_logo_image; ?>" width="150">
+          <?php }else{ ?>
+            <span class="desktop text-logo"><?= $site_logo_text; ?></span>
+          <?php } ?>
+          <?php if($enable_mobile_logo == 1){ ?>
+            <img class="mobile" src="<?= $site_mobile_logo; ?>" height="25">
+          <?php } ?>
         </a>
       </div>
-      <button id="mobilemenu" class="unstyled-button mobile-catnav-trigger apply-nav-height icon-b-1 tablet-catnav-enabled <?php if(!isset($_SESSION["seller_user_name"])){ echo "left"; } ?>">
+      <button id="mobilemenu" class="unstyled-button mobile-catnav-trigger apply-nav-height icon-b-1 tablet-catnav-enabled <?= ($enable_mobile_logo == 0)?"left":""; ?>">
         <span class="screen-reader-only"></span>
         <div class="text-gray-lighter text-body-larger">
           <span class="gigtodo-icon hamburger-icon nav-icon">
@@ -132,21 +135,23 @@ echo $message;
 </div>
 </div>
 <script>
-$(document).ready(function(){
-$("#send-email").click(function(){
-$.ajax({
-method: "POST",
-url: "<?= $site_url; ?>/includes/send_email",
-success:function(){
-$("#send-email").html("Resend Email");
-swal({
-  type: 'success',
-text: 'Confirmation email sent. Please check your email.',
-});
-}
-});
-});
-});
+  $(document).ready(function(){
+    $("#send-email").click(function(){
+      $("#wait").addClass('loader');
+      $.ajax({
+        method: "POST",
+        url: "<?= $site_url; ?>/includes/send_email",
+        success:function(){
+          $("#wait").removeClass('loader');
+          $("#send-email").html("Resend Email");
+          swal({
+            type: 'success',
+            text: '<?= $lang['alert']['confirmation_email']; ?>',
+          });
+        }
+      });
+    });
+  });
 </script>
 <?php  } } ?>
 <?php require_once("external_stylesheet.php"); ?>

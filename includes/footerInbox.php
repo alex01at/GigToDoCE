@@ -15,4 +15,4 @@
 <section class="messagePopup animated slideInRight"></section>
 
 <link rel="stylesheet" href="<?= $site_url; ?>/styles/msdropdown.css"/>
-<?php require("footerJs.php"); ?>
+<?php $disable_messages = 1; require("footerJs.php"); ?>

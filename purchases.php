@@ -59,52 +59,47 @@ $login_seller_id = $row_login_seller->seller_id;
         $count_purchases = $get_purchases->rowCount();
         while($row_purchases = $get_purchases->fetch()){
         $order_id = $row_purchases->order_id;
+        $reason = $row_purchases->reason;
         $amount = $row_purchases->amount;
         $date = $row_purchases->date;
         $method = $row_purchases->method;
-        if($method=="featured_proposal_declined") {
+        if($reason == "featured_listing" or $method == "featured_proposal_declined") {
           $select_proposals = $db->select("proposals",array("proposal_id"=>$order_id));
           $row_proposals = $select_proposals->fetch();
           $proposal_title = $row_proposals->proposal_title;
+          $proposal_url = $row_proposals->proposal_url;
         }
+
+        if($reason == "order"){
+          $text = "Proposal/Service purchased with <b>".ucwords(str_replace("_"," ",$method))."</b>";
+          $link = "(<a target='_blank' href='order_details?order_id=$order_id' class='text-success'>View Order</a>)";
+        }elseif($reason == "order_tip"){
+          $text = "Order Tip Payment with <b>".ucwords(str_replace("_"," ",$method))."</b>";
+          $link = "(<a target='_blank' href='order_details?order_id=$order_id' class='text-success'>View Order</a>)";
+        }elseif($reason == "featured_listing"){
+          $text = "Featured Listing Payment with <b>".ucwords(str_replace("_"," ",$method))."</b>";
+          $link = "(<a target='_blank' href='proposals/$login_seller_user_name/$proposal_url' class='text-success'>View Proposal</a>)";
+        }
+
         ?>
         <tr>
           <td> <?= $date; ?> </td>
           <td> 
-            <?php if($method == "shopping_balance"){ ?>
-            Proposal/Service purchased with Shopping Balance  
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
-            <?php }elseif($method == "paypal"){ ?>
-            Payment for purchase with paypal
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success">View Order</a>)
-            <?php }elseif($method == "stripe"){ ?>
-            Deposit from credit card / stripe
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
-            <?php }elseif($method == "2checkout"){ ?>
-            Payment for purchase with 2checkout
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success">View Order</a>)
-            <?php }elseif($method == "mercadopago"){ ?>
-            Payment for purchase with mercadopago
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success">View Order</a>)
-            <?php }elseif($method == "payza"){ ?>
-            Payment for purchase with payza
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success">View Order</a>)
-            <?php }elseif($method == "coinpayments"){ ?>
-            Payment for purchase with coinpayments
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
-            <?php }elseif($method == "mobile_money"){ ?>
-            Payment for purchase with mobile money
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
-            <?php }elseif($method == "paystack"){ ?>
-            Payment for purchase with paystack
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
-            <?php }elseif($method == "featured_proposal_declined"){ ?>
-            Your featured proposal is declined so it feature listing fee is refunded to your shopping balance.
-            (<a href="<?= $site_url; ?>/view_proposals.php" class="text-success"> View Proposals </a>)
+            <?php if($method == "featured_proposal_declined"){ ?>
+            
+              Your featured proposal is declined so its feature listing fee is refunded to your shopping balance.
+              (<a href="<?= $site_url; ?>/view_proposals.php" class="text-success"> View Proposals </a>)
+            
             <?php }elseif($method == "order_cancellation"){ ?>
-            Cancelled order payment refunded to your shopping  balance
-            (<a href="order_details?order_id=<?= $order_id; ?>" class="text-success"> View Order </a>)
+            
+              Cancelled order payment refunded to your shopping  balance
+            
+            <?php }else{ ?>
+              
+              <?= "$text $link"; ?>
+
             <?php } ?>
+
           </td>
           <td class="text-danger"> 
           <?php 

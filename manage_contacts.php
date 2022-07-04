@@ -180,7 +180,7 @@ $row_buyer = $select_buyer->fetch();
 
 $buyer_user_name = $row_buyer->seller_user_name;
 
-$buyer_image = $row_buyer->seller_image;
+$buyer_image = getImageUrl2("sellers","seller_image",$row_buyer->seller_image);
 
 
 ?>
@@ -191,7 +191,7 @@ $buyer_image = $row_buyer->seller_image;
 
 <?php if(!empty($buyer_image)){ ?>
 
-<img src="user_images/<?= $buyer_image; ?>" class="rounded-circle contact-image" >
+<img src="<?= $buyer_image; ?>" class="rounded-circle contact-image" >
 
 <?php }else{ ?>
 
@@ -311,7 +311,7 @@ $select_seller = $db->select("sellers",array("seller_id" => $seller_id));
 
 $row_seller = $select_seller->fetch();
 
-$seller_image = @$row_seller->seller_image;
+$seller_image = getImageUrl2("sellers","seller_image",@$row_seller->seller_image);
 
 $seller_user_name = @$row_seller->seller_user_name;
 
@@ -324,7 +324,7 @@ $seller_user_name = @$row_seller->seller_user_name;
 
 <?php if(!empty($seller_image)){ ?>
 
-<img src="user_images/<?= $seller_image; ?>" class="rounded-circle contact-image" >
+<img src="<?= $seller_image; ?>" class="rounded-circle contact-image" >
 
 <?php }else{ ?>
 
