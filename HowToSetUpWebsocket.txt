@@ -1,0 +1,23 @@
+There are two ways to configure the websockets. We can do this either through Heroku or PHP or Node.js 
+
+Why configure websockets?
+Without diving deep into the technical details, websockets help your GigToDo copy have a seemless messaging experience. With older versions 
+of the GigToDo script, we noticed that the messaging/chatting system was very slow. This had to do with so many ajax calls. This was not 
+a practical approach. Websockets solve this issue. Your copy will function without this item configured, however, you might expeirnce a poor 
+messaging system sometimes.
+
+These are the two different ways you can configure websockets. Choose any one of them:
+
+1) Through Horuku & Github (Eassier Method)
+https://drive.google.com/file/d/1lHHfVQkOM7nNMMwqE5EVNctJlzykk2nL/view
+
+ - Websocket Files For GitHub Repository:
+   https://drive.google.com/file/d/1PtzWWg_DMkVksFlzxx7Zps9nD2CS_MDl/view
+
+2) Through PHP or Node.js (Harder Method)
+  As this is a little more complex, we are working on a more comprehensive, step by step video tutorial to perfectly illustrate this step.
+
+
+
+Regards,
+Pixinal Studio

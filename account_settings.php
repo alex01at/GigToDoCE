@@ -13,7 +13,7 @@
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['paypal_email']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="seller_paypal_email" value="<?= $login_seller_paypal_email; ?>" placeholder="<?= $lang['placeholder']['paypal_email']; ?>" class="form-control" required/>
+      <input type="email" name="seller_paypal_email" value="<?= $login_seller_paypal_email; ?>" placeholder="<?= $lang['placeholder']['paypal_email']; ?>" class="form-control" required/>
     </div>
   </div>
   <button type="submit" name="submit_paypal_email" class="btn btn-success <?= $floatRight ?>">
@@ -61,7 +61,7 @@ if($paymentGateway == 1){
   <div class="form-group row">
     <label class="col-md-4 col-form-label"> <?= $lang['label']['payoneer_email']; ?> </label>
     <div class="col-md-8">
-      <input type="text" name="seller_payoneer_email" value="<?= $login_seller_payoneer_email; ?>" placeholder="Enter payoneer email" class="form-control" required >
+      <input type="email" name="seller_payoneer_email" value="<?= $login_seller_payoneer_email; ?>" placeholder="Enter payoneer email" class="form-control" required >
     </div>
   </div>
   <button type="submit" name="submit_payoneer_email"class="btn btn-success <?= $floatRight ?>">
@@ -91,7 +91,7 @@ if(isset($_POST['submit_payoneer_email'])){
 
 <?php } ?>
 
-<?php if($enable_dusupay == 1){ ?>
+<?php if($enable_dusupay == "yes"){ ?>
 
 <hr>
 <h5 class="mb-4"> <?= $lang['settings']['mobile_money_heading']; ?> </h5>

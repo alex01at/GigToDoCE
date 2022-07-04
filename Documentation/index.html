@@ -1,0 +1,452 @@
+<!doctype html>  
+<!--[if IE 6 ]><html lang="en-us" class="ie6"> <![endif]-->
+<!--[if IE 7 ]><html lang="en-us" class="ie7"> <![endif]-->
+<!--[if IE 8 ]><html lang="en-us" class="ie8"> <![endif]-->
+<!--[if (gt IE 7)|!(IE)]><!-->
+<html lang="en-us"><!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	
+	<title>GigToDoScript: Install Script Documentation</title>
+	
+	<meta name="description" content="Installation script for the GigToDoScript">
+	<meta name="author" content="Pixinal Studio">
+	<meta name="copyright" content="Pixinal Studio">
+	
+	<link rel="stylesheet" href="assets/css/styles.css" media="all">
+	<link rel="stylesheet" href="assets/fontello.css">
+	
+	
+	<script src="assets/js/jquery.js"></script>
+	
+	<script src="assets/js/jquery.scrollTo.js"></script>
+	<script src="assets/js/jquery.easing.js"></script>
+	
+	<script>document.createElement('section');var duration='500',easing='swing';</script>
+	<script src="assets/js/script.js"></script>
+	
+	<style>
+		html{background-color:#EEEEEE;color:#383838;}
+		::-moz-selection{background:#333636;color:#00DFFC;}
+		::selection{background:#333636;color:#00DFFC;}
+		#documenter_sidebar #documenter_logo{background-image:url();}
+		a{color:#29a649;}
+		.btn {
+			border-radius:3px;
+		}
+		.btn-primary {
+			  background-image: -moz-linear-gradient(top, #29a649, #29a649);
+			  background-image: -ms-linear-gradient(top, #29a649, #29a649);
+			  background-image: -webkit-gradient(linear, 0 0, 0 008C9E%, from(#29a649), to(#29a649));
+			  background-image: -webkit-linear-gradient(top, #29a649, #29a649);
+			  background-image: -o-linear-gradient(top, #29a649, #29a649);
+			  background-image: linear-gradient(top, #29a649, #29a649);
+			  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008C9E', endColorstr='#006673', GradientType=0);
+			  border-color: #29a649 #29a649 #29a649;
+			  color:#FFFFFF;
+		}
+		.btn-primary:hover,
+		.btn-primary:active,
+		.btn-primary.active,
+		.btn-primary.disabled,
+		.btn-primary[disabled] {
+		  border-color: #008C9E #008C9E #bfbfbf;
+		  background-color: #006673;
+		}
+		hr{border-top:1px solid #D4D4D4;border-bottom:1px solid #FFFFFF;}
+		#documenter_sidebar, #documenter_sidebar ul a{background-color:#343838;color:#FFFFFF;}
+		#documenter_sidebar ul a{-webkit-text-shadow:1px 1px 0px #494F4F;-moz-text-shadow:1px 1px 0px #494F4F;text-shadow:1px 1px 0px #494F4F;}
+		#documenter_sidebar ul{border-top:1px solid #212424;}
+		#documenter_sidebar ul a{border-top:1px solid #494F4F;border-bottom:1px solid #212424;color:#FFFFFF;}
+		#documenter_sidebar ul a:hover{background:#29a649;color:#fff;border-top:1px solid #333636;}
+		#documenter_sidebar ul a.current{background:#333636;color:#29a649;border-top:1px solid #333636;}
+		#documenter_copyright{display:block !important;visibility:visible !important;}
+
+	</style>
+	
+</head>
+<body class="documenter-project-digital-agency">
+	<div id="documenter_sidebar">
+		<a href="#documenter_cover" id="documenter_logo"><img src="assets/images/gtd.png" width="180px" style="position: relative; top:30px;left: 5px;"></a>
+		<ul id="documenter_nav">
+			<li><a class="current" href="#documenter_cover">Start</a></li>
+			<li><a href="#requirements" title="Requirement">Requirements</a></li> 
+			<li><a href="#install_script" title="Install Script">Install Script Guide (video)</a></li>
+			<li><a href="#install_script_text" title="Install Script Text">Install Script Guide (Text)</a></li>
+            <li><a href="#cron" title="Install Script Text">Setup Cronjob</a></li>
+			<li><a href="#JwPlayer" title="Install Script Text">How to get JwPlayer code</a></li>
+			<li><a href="#facebook" title="Install Script Text">How to get facebook login api</a></li>
+			<li><a href="#google" title="Install Script Text">How to get google login api</a></li>
+            <li><a href="#currency" title="Install Script Text">How to get Currency API</a></li>
+            <li><a href="#tour" title="Install Script Text">Video Tour v1.4.1</a></li>
+            <li><a href="#tour-v5" title="Install Script Text">Video Tour of v1.5</a></li>
+            <li><a href="#vmd" title="Install Script Text">VoiceMondo (Our Other Script)</a></li>
+			<li><a href="#end" title="END">END</a></li>
+
+		</ul>
+		<div id="documenter_copyright">Copyright &copy; GigToDoScript. 2020.<br /> Pixinal Studio<br>
+		made with the <a href="http://rxa.li/documenter">Documenter v2.0</a> 
+		</div>
+	</div>
+	<div id="documenter_content">
+	<section id="documenter_cover">
+	<h1 style="padding-bottom: 7px;">GigToDoScript</h1>
+	<h2>Freelance Marketplace For Entrprenuers</h2>
+	<div id="documenter_buttons">
+		<a href="https://www.pixinal.com" class="btn btn-primary btn-lg"><i class="fa fa-code" aria-hidden="true"></i>
+ Coded by Pixinal Studio</a> 
+	</div>
+	<hr>
+	<ul>
+	<li>Created: 05/14/2018</li>
+	<li>By: Pixinal Studio</li>
+	<li>Marketing Site: <a target="_blank" href="https://www.gigtodoscript.com">www.GigToDoScript.com</a></li>
+	<li>Demo Site: <a target="_blank" href="https://www.gigtodo.com">www.GigToDo.com</a></li>
+	<li>Help Site: <a target="_blank" href="https://help.gigtodoscript.com">help.gigtodoscript.com</a></li>
+    <li>Author Website: <a target="_blank" href="https://www.pixinal.com">www.pixinal.com</a></li>
+	</ul>
+	<p>Thank you very much for purchasing our script!</p>
+	<p>If you have any issue or question that this document does not cover, feel free to contact us <a target="_blank" href="help.gigtodoscript.com">here</a> to get help. Thank you.</p><br>
+	
+	<section>
+	<div class="page-header"><h3>About</h3><hr class="notop"></div>
+<p> GigToDoScript is a freelance service marketplace script. We put so much effort into making this script secured, clean and beautiful. There are tons of features in this script, and we will keep adding more. </p>
+</section>
+
+		
+	
+	<section id="requirements">
+		<div class="page-header"><h3>Requirements</h3><hr class="notop"></div>
+		<ul style="margin: 18px 0px; padding-right: 0px; padding-left: 0px; border: 0px; outline: 0px; font-family: Arial, verdana, arial, sans-serif; vertical-align: baseline; line-height: 1.5em; color: rgb(56, 56, 56); background-color: rgb(238, 238, 238);">
+			<li style="margin: 0px 0px 0px 36px; padding: 0px; border: 0px; outline: 0px; font-weight: inherit; font-style: inherit; font-family: inherit; vertical-align: baseline; list-style: square; box-sizing: border-box;">
+				PHP 5.5 and above
+				</li>
+			
+		</ul>
+	</section>
+
+
+
+
+
+<section id="install_script">
+	<div class="page-header"><h3>Install Script Guide (Video)</h3><hr class="notop"></div>
+
+<div style=" width:55%; margin-bottom:-40px;">
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vgDBCZjTVP8" frameborder="0" allowfullscreen></iframe>
+
+</div>
+
+</section>
+
+<section id="install_script_text">
+	<div class="page-header"><h3>Install Script Guide (text)</h3><hr class="notop"></div>
+	<ol>
+
+<h6 style="margin-bottom:-50px;">
+
+
+1. At this point, you must have extracted the contents of the folder downloaded.<br><br>
+ 
+2. Next to the documentation folder is a GigToDo.zip folder. That is the folder we will upload into our server.<br><br>
+
+3. Head over to your server and create a new MySQL database and a new MySQL user. Give all the newly created database priviledges to the newly created MySQL user.<br><br>
+
+4. Once step 3 is completed, head over to your file manager section.<br><br>
+
+5. Upload the GigToDo.zip into the root of your domain in the file manager section <br><br>
+
+6. Extract the files <br><br>
+
+7. Open a new tab on your browser and type in the domain name. <br><br>
+
+8. At this point, you should now see the installation script. <br><br>
+
+9. Fill in the fields with the info you created earlier. <br><br>
+
+10. Congrats! <br><br>
+
+</h6>
+		
+	</ol>
+	
+</section>
+
+<!--
+<section id="purchase_code">
+	<div class="page-header"><h3>How to retrieve envato purchase code</h3><hr class="notop"></div>
+	<ol>
+		<li>
+<h6 style="margin-bottom:-50px;">
+
+Here are instructions on how to obtain your purchase code : <br><br>
+
+1. Go to https://codecanyon.net <br><br>
+
+2. Sign In <br><br>
+
+3. Locate this script and click on the download button <br><br>
+
+4. There should be a dropdown menu. Select "Liscence certificat & purchase code (pdf)" or  "Liscence certificat & purchase code (text)"  <br><br>
+
+5. This file should contain your purchase code <br><br>
+
+Your purchase code is located in the PurchaseCode.txt file 
+
+
+		
+</h6>
+		</li>
+		
+	</ol>
+	
+</section>
+-->
+        
+<section id="cron">
+	<div class="page-header"><h3>How to setup cronjobs (Very Important)</h3><hr class="notop"></div>
+<ol>
+
+<h6 style="margin-bottom:-40px;">
+
+You need to set this up for revenue page to work perfectly. <br><br>
+
+Please watch this video for a step-by-step guide on how to set this up <br><br>
+
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/H0fFAf9IYp0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    <br><br>
+
+Cronjon: <br><br>
+
+// 1 Day Cron Job<br><br>
+payouts_and_offers_cron.php<br><br>
+/usr/bin/wget -q -O - https://www.{Your path}/payouts_and_offers_cron > /dev/null 2>&1 <br><br>
+
+// Month - 30 Day Cron Job<br><br>
+view_earnings_cron.php<br><br>
+/usr/bin/wget -q -O - https://www.{Your path}/view_earnings_cron > /dev/null 2>&1 <br><br>
+
+</h6>	
+
+</ol>
+	
+</section>
+
+
+<section id="JwPlayer">
+	<div class="page-header"><h3>How to get JwPlayer code (optional feature)</h3><hr class="notop"></div>
+<ol>
+
+<h6 style="margin-bottom:-40px;">
+
+1. You would have to register for an account on <a target="_blank" href="https://www.jwplayer.com">JwPlayer</a><br><br>
+
+2. You might have to obtain a subscription plan from them.<br><br>
+
+3. After you've completed step 2, head over to your dashboard. <br><br>
+
+4. Locate players (under publish) <br><br>
+
+5. Create a new player <br><br>
+
+6. Locate "Cloud-Hosted Player Library:" and copy the link on there. <br><br>
+
+</h6>	
+
+</ol>
+	
+</section>
+
+
+<section id="facebook">
+	<div class="page-header"><h3>How to get Facebook Login Api (optional feature)</h3><hr class="notop"></div>
+<ol>
+
+<h6 style="margin-bottom:-40px;">
+
+1. First Login To Facebook. <br><br>
+
+2. Go to 
+
+<a target='_blank' href="https://developers.facebook.com/apps/">https://developers.facebook.com/apps/</a>
+.
+<br><br>
+
+3. Add a new app.<br><br>
+
+4. Click setting dropwdown menu and open "basic".<br><br>
+
+5. Paste your website url in apps domains field<br><br>
+
+6. Must provide a valid privacy policy url in privacy policy url Feild<br><br>
+
+7. Click on "add platform" and select "website"<br><br>
+
+8. Give your website url in the given field and click on save changes<br><br>
+
+Note: Make sure your app is live <br><br>
+
+9. Copy the app id and app secret and paste in the admin panel general settings section, in their respective fields. <br><br>
+
+If after all this you still get an error, you will have to do the following additional steps: <br><br>
+
+10. Go back to <a target='_blank' href="https://developers.facebook.com/apps/">https://developers.facebook.com/apps/</a> and choose your app. <br><br>
+
+11. Click the dropdown on facebook login and choose settings. <br><br>
+
+12. Make sure "Embedded Browser OAuth Login" is set to yes <br><br>
+
+13. Add the following in the Valid OAuth Redirect URLs text box: https://yourWebsite.com/fb-callback.php. If that doesn't work, edit the URL to https://yourWebsite.com/fb-callback (without the ".php") and try again.  <br><br>
+
+Note: if your domain name includes "https or www" include that in number 13.
+
+
+
+
+</h6>	
+
+</ol>
+	
+</section>
+
+
+<section id="currency">
+	<div class="page-header"><h3>How to get currency API</h3><hr class="notop"></div>
+<ol>
+
+<h6 style="margin-bottom:-50px;">
+
+
+1. Go to 
+
+<a target="_blank" href="https://free.currencyconverterapi.com/">
+
+free.currencyconverterapi.com
+
+</a>
+<br><br>
+
+2. Click on "Get Your Free API Key" <br><br>
+
+3. Enter your email and authenticate with the google recaptcha on the next screen, then click on "Get Your Free API Key".<br><br>
+
+4. This will send you an email with your free Currency API Key. If you want better and faster results, you can of course purchase paid. However, free works fine most of the time.<br><br>
+    
+5. In your email, you will see text like this: "Before you can use the API key, you need to verify your email. Click here to verify" So please go ahead and verify your email. API won't work unless you do this step.
+
+
+
+6. Copy your API key in your email and head to Admin panel => Settings => Api Settings<br><br>
+
+7. In API settings screen, scroll down to Currency Settings Setting and do the following:<br><br>
+
+8. Set Enable Currency Converter to "Yes", Enter your API key in the next field and enter your prefered country currency code. You can get the code from <a target="_blank" href="https://www2.1010data.com/documentationcenter/prod/1010dataReferenceManual/DataTypesAndFormats/currencyUnitCodes.html">Here.</a> What your are copying is under the "Code" column.<br><br>
+    
+9. In there server URL section, add this URL if your get the free API https://free.currconv.com.<br><br>
+    
+NOTE: The free plan is for testing purposes and is subject to downtimes. For production and live software, please consider going for the paid plans.
+
+
+</h6>	
+
+</ol>
+	
+</section>
+        
+<section id="google">
+	<div class="page-header"><h3>How to get Google Login Api (optional feature)</h3><hr class="notop"></div>
+<ol>
+
+<h6 style="margin-bottom:-50px;">
+
+1. First login into Google. <br><br>
+
+2. Go to 
+
+<a target="_blank" href="https://console.developers.google.com/projectselector/apis/library">
+
+https://console.developers.google.com/projectselector/apis/library
+
+</a>
+.
+<br><br>
+
+3. Create Project.<br><br>
+
+4. Click on the menu icon on the top left corner and hover your mouse on APIs & Services.<br><br>
+
+5. Click on library<br><br>
+
+6. In the library screen, search for "google plus api" and choose the first option and enable it.<br><br>
+
+7. On the left section of your screen, click on credentials then click on OAuth consent screen tab. Fill in the info and hit save.<br><br>
+
+5. Click back on credentials and create credentials.<br><br>
+
+6. Choose OAuth Consent Screen and product name which is on the second field.<br><br>
+
+7. Go back to the credetials screen and click on create credentials and choose OAuth Client ID.<br><br>
+
+8. Select the web application option and give it a redirect url (at this momment, this is the second option) this way <a href="#">http://yourwebsite.com/g-callback.php</a> and click on create. If that doesn't work, try http://yourwebsite.com/g-callback (without the ".php") <br><br>
+
+9. Finally, you will receive the OAuth client ID and client secret. Paste these in the admin panel's genral settings section, in their respective fields. <br><br>
+
+
+</h6>	
+
+</ol>
+	
+</section>
+        
+
+<section id="tour">
+	<div class="page-header"><h3>Video Tour v1.4.1 - Complete tour</h3><hr class="notop"></div>
+
+<div style=" width:55%; margin-bottom:-40px;">
+
+    
+<iframe width="560" height="315" src="https://www.youtube.com/embed/2c8fcMbUZoA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</div>
+
+</section>
+
+<section id="tour-v5">
+	<div class="page-header"><h3>Video Tour of v1.5</h3><hr class="notop"></div>
+
+<div style=" width:55%; margin-bottom:-40px;">
+
+    
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KZvWLVlr7b0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+</div>
+
+</section>
+
+<section id="install_script">
+	<div class="page-header"><h3>VoiceMondo Script</h3><hr class="notop"></div>
+
+<div style=" width:55%; margin-bottom:-40px;">
+
+We are pleased to present to you another masterpeice - VoiceMondo. There is no other script out there like this one. It comes packed with a ton of features to help you start and run another very successful business. <br>
+    
+Demo: <a target="_blank" href="https://www.voicemondoscript.com">www.VoiceMondoScript.com</a> <br>
+Purchase link: <a href="https://www.pixinal.com/store/product/voicemondo-script/">Pixinal Store</a><br>
+More info about it: <a href="https://www.pixinal.com/case_study/voicemondo-script/">VoiceMondo Info</a>
+</div>
+
+</section>
+
+
+
+<section id="end">
+	<div class="page-header"><h3>END</h3><hr class="notop"></div>
+<p>
+    <span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; font-size: 13px; font-family: Arial, verdana, arial, sans-serif; vertical-align: baseline; color: rgb(56, 56, 56); line-height: 19.5px; background-color: rgb(238, 238, 238);">Again, thank you for purchasing our script. If you need help or face any issues, go to our <a target="_blank" href="http://help.gigtodoscript.com">Support Desk</a> for answers. Please also join our GigToDo Script <a target="_blank" href="https://www.facebook.com/groups/507827453287653/"> Facebook support group </a> and get help from users  If you require any customizations done or need our help on a project, email us at <a target="_blank" href="mailto:info@pixinal.com">info@pixinal.com</a> &nbsp;</span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; font-weight: 700; font-size: 13px; font-family: Arial, verdana, arial, sans-serif; vertical-align: baseline; color: rgb(56, 56, 56); line-height: 19.5px; background-color: rgb(238, 238, 238);"><br> Have a wonderful day</span><span style="margin: 0px; padding: 0px; border: 0px; outline: 0px; font-size: 13px; font-family: Arial, verdana, arial, sans-serif; vertical-align: baseline; color: rgb(56, 56, 56); line-height: 19.5px; background-color: rgb(238, 238, 238);">.</span></p>
+</section>
+
+	</div>
+</body>
+</html>

@@ -36,6 +36,21 @@ data-disable-messages="<?= (isset($disable_messages))?$disable_messages:'0'; ?>"
 >
 </script>
 
+<?php if($enable_google_translate == 1){ ?>
+
+  <script>
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    },'google_translate_element');
+  }
+  </script>
+
+  <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  
+<?php } ?>
+
 <script type="text/javascript" src="<?= $site_url; ?>/js/categoriesProposal.js"></script>
 <script type="text/javascript" src="<?= $site_url; ?>/js/popper.min.js"></script>
 <script type="text/javascript" src="<?= $site_url; ?>/js/owl.carousel.min.js"></script>

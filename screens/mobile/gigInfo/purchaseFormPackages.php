@@ -1,7 +1,7 @@
 <span class="<?= "$priceClass-num"; ?> d-none"><?= $price; ?></span>
 
 <h4 class="text-success mb-3">Order Details</h4>
-<h5><i class="fa fa-clock-o"></i> &nbsp; <?= $delivery_proposal_title; ?> Delivery Time </h5>
+<h5><i class="fa fa-clock-o"></i> &nbsp; <?= $delivery_time; ?> Delivery Time </h5>
 <h5 class="mt-2 mb-3"><i class="fa fa-refresh"></i> &nbsp; 
 
 <?php

@@ -26,7 +26,7 @@
   <script type="text/javascript" src="js/sweat_alert.js"></script>
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <?php if(!empty($site_favicon)){ ?>
-  <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
 </head>
 <body class="bg-white is-responsive">

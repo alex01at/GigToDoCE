@@ -20,7 +20,7 @@
                 <table align="center" cellspacing="0" cellpadding="0" border="0" role="presentation">
                   <tbody>
                     <tr>
-                      <td width="300" class="o_btn o_bg-primary o_br o_heading o_text" align="center" style="font-family: Helvetica, Arial, sans-serif;font-weight: bold;margin-top: 0px;margin-bottom: 0px;font-size: 16px;line-height: 24px;mso-padding-alt: 12px 24px;background-color: <?= $site_color;?>;border-radius: 4px;"><a class="o_text-white" href='<?= $site_url; ?>/proposals/view_proposals' style="text-decoration: none;outline: none;color: #ffffff;display: block;padding: 12px 24px;mso-text-raise: 3px;">See More Details</a></td>
+                      <td width="300" class="o_btn o_bg-primary o_br o_heading o_text" align="center" style="font-family: Helvetica, Arial, sans-serif;font-weight: bold;margin-top: 0px;margin-bottom: 0px;font-size: 16px;line-height: 24px;mso-padding-alt: 12px 24px;background-color: <?= $site_color;?>;border-radius: 4px;"><a class="o_text-white" href='<?= $site_url; ?>/proposals/view_proposals?declined' style="text-decoration: none;outline: none;color: #ffffff;display: block;padding: 12px 24px;mso-text-raise: 3px;">See More Details</a></td>
                     </tr>
                   </tbody>
                 </table>

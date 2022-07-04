@@ -43,6 +43,10 @@ $currency_position = $row_general_settings->currency_position;
 $currency_format = $row_general_settings->currency_format;
 $recaptcha_site_key = $row_general_settings->recaptcha_site_key;
 $recaptcha_secret_key = $row_general_settings->recaptcha_secret_key;
+
+$google_app_link = $row_general_settings->google_app_link;
+$apple_app_link = $row_general_settings->apple_app_link;
+
 $enable_social_login = $row_general_settings->enable_social_login;
 $fb_app_id = $row_general_settings->fb_app_id;
 $fb_app_secret = $row_general_settings->fb_app_secret;
@@ -66,10 +70,12 @@ $relevant_requests = $row_general_settings->relevant_requests;
 $enable_referrals = $row_general_settings->enable_referrals;
 $knowledge_bank = $row_general_settings->knowledge_bank;
 $referral_money = $row_general_settings->referral_money;
+
 $enable_maintenance_mode = $row_general_settings->enable_maintenance_mode;
 $order_auto_complete = $row_general_settings->order_auto_complete;
 $wish_do_manual_payouts = $row_general_settings->wish_do_manual_payouts;
 $language_switcher = $row_general_settings->language_switcher;
+$enable_google_translate = $row_general_settings->enable_google_translate;
 $site_color = $row_general_settings->site_color;
 $site_hover_color = $row_general_settings->site_hover_color;
 $site_border_color = $row_general_settings->site_border_color;
@@ -77,6 +83,7 @@ $google_analytics = $row_general_settings->google_analytics;
 $enable_websocket = $row_general_settings->enable_websocket;
 $websocket_address = $row_general_settings->websocket_address;
 $make_phone_number_required = $row_general_settings->make_phone_number_required;
+$mobileApp_apiKey = $row_general_settings->mobileApp_apiKey;
 
 require 'updateHtaccess.php';
 require 'timezones.php';
@@ -138,7 +145,7 @@ require 'timezones.php';
 <label class="col-md-3 control-label"> Enable Site (WWW) : </label>
 <div class="col-md-6">
 	<div class="input-group">
-	<span class="input-group-addon"><b><i class="fa fa-link" aria-hidden="true"></i></b></span>
+	<span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
 	<select name="site_www" class="form-control site_www" required="">
 		<option value="1" <?php if($site_www == 1){ echo "selected"; } ?>> Yes </option>
 		<option value="0" <?php if($site_www == 0){ echo "selected"; } ?>> No </option>
@@ -151,7 +158,7 @@ require 'timezones.php';
 <label class="col-md-3 control-label"> Do you wish to do All Manual Payouts : </label>
 <div class="col-md-6">
   <div class="input-group">
-  <span class="input-group-addon"><b><i class="fa fa-link" aria-hidden="true"></i></b></span>
+  <span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
   <select name="wish_do_manual_payouts" class="form-control" required="">
     <option value="1" <?php if($wish_do_manual_payouts == 1){ echo "selected"; } ?>> Yes </option>
     <option value="0" <?php if($wish_do_manual_payouts == 0){ echo "selected"; } ?>> No </option>
@@ -376,10 +383,23 @@ require 'timezones.php';
 <label class="col-md-3 control-label"> Show Language Switcher: </label>
 <div class="col-md-6">
   <div class="input-group">
-  <span class="input-group-addon"><b><i class="fa fa-link" aria-hidden="true"></i></b></span>
+  <span class="input-group-addon"><b><i class="fa fa-link"></i></b></span>
   <select name="language_switcher" class="form-control" required="">
     <option value="1" <?php if($language_switcher == 1){ echo "selected"; } ?>> Yes </option>
     <option value="0" <?php if($language_switcher == 0){ echo "selected"; } ?>> No </option>
+  </select>
+  </div>
+</div>
+</div><!--- form-group row Ends --->
+
+<div class="form-group row"><!--- form-group row Starts --->
+<label class="col-md-3 control-label"> Enable Google Translater: </label>
+<div class="col-md-6">
+  <div class="input-group">
+  <span class="input-group-addon"><b><i class="fa fa-google"></i></b></span>
+  <select name="enable_google_translate" class="form-control" required="">
+    <option value="1" <?php if($enable_google_translate == 1){ echo "selected"; } ?>> Yes </option>
+    <option value="0" <?php if($enable_google_translate == 0){ echo "selected"; } ?>> No </option>
   </select>
   </div>
 </div>
@@ -896,7 +916,7 @@ No. of orders required to be completed to become top rated seller.
 <!--- card mb-5 Starts --->
 <div class="card-header">
 <!--- card-header Starts --->
-<h4 class="h4"><i class="fa fa-facebook-square" style="color:blue" aria-hidden="true"></i> <i  style="color:red" class="fa fa-google-plus-square" aria-hidden="true"></i> Social Media Login Settings </h4>
+<h4 class="h4"><i class="fa fa-facebook-square" style="color:blue"></i> <i  style="color:red" class="fa fa-google-plus-square"></i> Social Media Login Settings </h4>
 </div>
 <!--- card-header Ends --->
 <div class="card-body">
@@ -993,6 +1013,97 @@ Enable or disable social media on the website.
 </div><!--- col-lg-12 Ends --->
 </div><!--- 2 row Ends --->
 
+
+<div class="row"><!--- 4 row Starts --->
+
+<div class="col-lg-12"><!--- col-lg-12 Starts --->
+
+<div class="card mb-5"><!--- card mb-5 Starts --->
+
+<div class="card-header"><!--- card-header Starts --->
+
+<h4 class="h4">
+
+  <i class="fa fa-google"></i> <i class="fa fa-apple"></i> Mobile Apps Settings
+
+</h4>
+
+</div><!--- card-header Ends --->
+
+<div class="card-body"><!--- card-body Starts --->
+
+<form method="post" enctype="multipart/form-data"><!--- form Starts --->
+
+
+<div class="form-group row"><!--- form-group row Starts --->
+
+  <label class="col-md-3 control-label"> Mobile Apps Api Key :</label>
+
+  <div class="col-md-6">
+
+    <div class="input-group">
+      <span class="input-group-addon">
+        <b><i class="fa fa-key"></i></b>
+      </span>
+      <input type="text" name="mobileApp_apiKey" class="form-control" value="<?= $mobileApp_apiKey; ?>" placeholder="Api Key">
+    </div>
+
+  </div>
+
+</div><!--- form-group row Ends --->
+
+
+<div class="form-group row"><!--- form-group row Starts --->
+
+  <label class="col-md-3 control-label"> Google Play Store App Link :</label>
+
+  <div class="col-md-6">
+
+    <div class="input-group">
+      <span class="input-group-addon">
+        <b><i class="fa fa-google"></i></b>
+      </span>
+      <input type="text" name="google_app_link" class="form-control" value="<?= $google_app_link; ?>" placeholder="App Link">
+    </div>
+
+  </div>
+
+</div><!--- form-group row Ends --->
+
+
+<div class="form-group row"><!--- form-group row Starts --->
+
+  <label class="col-md-3 control-label"> Apple App Store App Link :</label>
+
+  <div class="col-md-6">
+
+    <div class="input-group">
+      <span class="input-group-addon">
+        <b><i class="fa fa-apple"></i></b>
+      </span>
+      <input type="text" name="apple_app_link" class="form-control" value="<?= $apple_app_link; ?>" placeholder="App Link">
+    </div>
+
+  </div>
+
+</div><!--- form-group row Ends --->
+
+<div class="form-group row"><!--- form-group row Starts --->
+  <label class="col-md-3 control-label"></label>
+  <div class="col-md-6">
+    <input type="submit" name="update_app_settings" class="form-control btn btn-success" value="Update App Settings">
+  </div>
+</div><!--- form-group row Ends --->
+
+</form>
+<!--- form Ends --->
+</div>
+<!--- card-body Ends --->
+</div>
+<!--- card mb-5 Ends --->
+</div><!--- col-lg-12 Ends --->
+</div><!--- 4 row Ends --->
+
 <script>
 $(document).ready(function(){
 
@@ -1059,6 +1170,7 @@ if(isset($_POST['general_settings_update'])){
 	$site_url = $input->post('site_url');
 	$site_email_address = $input->post('site_email_address');
 	$language_switcher = $input->post('language_switcher');
+  $enable_google_translate = $input->post('enable_google_translate');
 	$site_copyright = $input->post('site_copyright');
   $site_timezone = $input->post('site_timezone');
 	$site_currency = $input->post('site_currency');
@@ -1166,6 +1278,7 @@ if(isset($_POST['general_settings_update'])){
       "site_url" => $site_url,
       "site_email_address" => $site_email_address,
       "language_switcher" => $language_switcher,
+      "enable_google_translate" => $enable_google_translate,
       "site_copyright" => $site_copyright,
       "site_timezone"=>$site_timezone,
       "site_currency" => $site_currency,
@@ -1208,6 +1321,17 @@ if(isset($_POST['seller_settings_update'])){
     $insert_log = $db->insert_log($admin_id,"seller_settings","","updated");
     echo "<script>alert_success('Seller Settings has been updated successfully.','index?general_settings');</script>";
 	}
+}
+
+
+if(isset($_POST['update_app_settings'])){
+  $data = $input->post();
+  unset($data['update_app_settings']);
+  $update_settings = $db->update("general_settings",$data);
+  if($update_settings){
+    $insert_log = $db->insert_log($admin_id,"seller_settings","","updated");
+    echo "<script>alert_success('App Settings has been updated successfully.','index?general_settings');</script>";
+  }
 }
 
 if(isset($_POST['social_settings_update'])){

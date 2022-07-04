@@ -130,7 +130,7 @@
             <!--- form-group row Ends --->
 
             <div class="form-group row"><!--- form-group row Starts --->
-              <label class="col-md-3 control-label"> Minimum Proposal Price : </label>
+              <label class="col-md-3 control-label"> Minimum Proposal & Request Price : </label>
               <div class="col-md-6">
                 <div class="input-group"><!--- input-group Starts --->
                   <span class="input-group-addon">
@@ -138,7 +138,7 @@
                   </span>
                   <input type="number" name="min_proposal_price" class="form-control" value="<?= $min_proposal_price; ?>" placeholder="" required="">
                 </div><!--- input-group Ends --->
-                <small class="form-text text-muted">&nbsp;</small>
+                <small class="form-text text-muted">Here you can set proposal and buyer request minimum price that user can set during proposal/buyer request creation.</small>
               </div>
             </div><!--- form-group row Ends --->
 

@@ -33,27 +33,27 @@ $(document).ready(function(){
 
 	$("#announcement_bar_margin").css({'margin-bottom': a_height+'px' });
 
-  // cookies alert
-  $(".cookies_footer .btn").click(function(){
-    $.ajax({
-    method: "POST",
-    url: base_url+"/includes/close_cookies_footer",
-    data: {close : 'close_cookies'}
-    }).done(function(data){
-      $(".cookies_footer").fadeOut();
-    });
-  });
+	// cookies alert
+	$(".cookies_footer .btn").click(function(){
+		$.ajax({
+		method: "POST",
+		url: base_url+"/includes/close_cookies_footer",
+		data: {close : 'close_cookies'}
+		}).done(function(data){
+		  $(".cookies_footer").fadeOut();
+		});
+	});
 
-  $("#announcement_bar .close-icon").click(function(){
-  	 time = $("#announcement_bar .time").text();
-    $.ajax({
-    method: "POST",
-    url: base_url+"/includes/close_cookies_footer",
-    data: {close: 'close_announcement',time:time}
-    }).done(function(data){
-      $("#announcement_bar").fadeOut();
-    });
-  });
+	$("#announcement_bar .close-icon").click(function(){
+		time = $("#announcement_bar .time").text();
+		$.ajax({
+		method: "POST",
+		url: base_url+"/includes/close_cookies_footer",
+		data: {close: 'close_announcement',time:time}
+		}).done(function(data){
+		  $("#announcement_bar").fadeOut();
+		});
+	});
 
 	// Timezone
 	var timezone_offset_minutes = new Date().getTimezoneOffset();

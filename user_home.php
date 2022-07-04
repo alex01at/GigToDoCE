@@ -361,13 +361,19 @@
                   ?>
                 <tr id="request_tr_<?= $request_id; ?>">
                   <td>
-                    <?php if(!empty($request_seller_image)){ ?>
-                    <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle">
-                    <?php }else{ ?>
-                    <img src="empty-image.png" class="request-img rounded-circle">
-                    <?php } ?>
+                    <a href="<?= $request_seller_user_name; ?>" target="_blank">
+                      <?php if(!empty($request_seller_image)){ ?>
+                        <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle">
+                      <?php }else{ ?>
+                        <img src="empty-image.png" class="request-img rounded-circle">
+                      <?php } ?>
+                    </a>
                     <div class="request-description">
-                      <h6><?= ucfirst($request_seller_user_name); ?></h6>
+                      <h6>
+                        <a href="<?= $request_seller_user_name; ?>" target="_blank">
+                          <?= ucfirst($request_seller_user_name); ?>
+                        </a>
+                      </h6>
                       <h6 class="text-success"><?= $request_title; ?></h6>
                       <p class="lead"><?= $request_description; ?> </p>
                       <?php if(!empty($request_file)){ ?>

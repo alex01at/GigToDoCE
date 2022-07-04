@@ -18,7 +18,7 @@ $paypal_sandbox = $row_payment_settings->paypal_sandbox;
 if($paypal_sandbox == "on"){
 	$paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
 }elseif($paypal_sandbox == "off"){
-	$paypal_url = "https://www.paypal.com/cgi-bin/webscr";	
+	$paypal_url = "https://www.paypal.com/cgi-bin/webscr";
 }
 $enable_stripe = $row_payment_settings->enable_stripe;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
@@ -93,6 +93,10 @@ $total = $sub_total + $processing_fee;
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="styles/owl.carousel.css" rel="stylesheet">
 	<link href="styles/owl.theme.default.css" rel="stylesheet">
+
+	<link href="styles/sweat_alert.css" rel="stylesheet">
+	<script type="text/javascript" src="js/sweat_alert.js"></script>
+	
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script src="https://checkout.stripe.com/checkout.js"></script>
   <?php if(!empty($site_favicon)){ ?>

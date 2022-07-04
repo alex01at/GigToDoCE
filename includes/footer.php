@@ -96,6 +96,10 @@
 
 					<?php } ?>
 
+					<?php if($enable_google_translate == 1){ ?>
+						<div id="google_translate_element" class="mt-2"></div>
+					<?php } ?>
+
 					<?php if($enable_converter == 1){ ?>
 
 						<div class="mt-2"></div>
@@ -128,9 +132,22 @@
 
 					</div>
 					
+					<?php if(!empty($google_app_link) or !empty($apple_app_link)){ ?>
 					<h5><?= $lang['mobile_apps']; ?></h5>
-					<img src="<?= $site_url; ?>/images/google.png" class="pic">
-					<img src="<?= $site_url; ?>/images/app.png" class="pic1">
+					<?php } ?>
+
+					<?php if(!empty($google_app_link)){ ?>
+					<a href="<?= $google_app_link; ?>" target="_blank">
+						<img src="<?= $site_url; ?>/images/google.png" class="pic">
+					</a>
+					<?php } ?>
+					
+					<?php if(!empty($apple_app_link)){ ?>
+					<a href="<?= $apple_app_link; ?>" target="_blank">
+						<img src="<?= $site_url; ?>/images/app.png" class="pic1">
+					</a>
+					<?php } ?>
+
 				</div>
 			</div><!--- col-md-4 Ends --->
 

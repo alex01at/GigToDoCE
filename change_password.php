@@ -43,16 +43,16 @@ $seller_user_name = $row_seller->seller_user_name;
 	<meta name="author" content="<?= $site_author; ?>">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+	<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/categories_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="styles/owl.carousel.css" rel="stylesheet">
 	<link href="styles/owl.theme.default.css" rel="stylesheet">
-   <link href="styles/sweat_alert.css" rel="stylesheet">
-   <link href="styles/animate.css" rel="stylesheet">
-   <script type="text/javascript" src="js/ie.js"></script>
-   <script type="text/javascript" src="js/sweat_alert.js"></script>
+	<link href="styles/sweat_alert.css" rel="stylesheet">
+	<link href="styles/animate.css" rel="stylesheet">
+	<script type="text/javascript" src="js/ie.js"></script>
+	<script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	
 	<?php if(!empty($site_favicon)){ ?>
@@ -113,7 +113,6 @@ $seller_user_name = $row_seller->seller_user_name;
 						</div>
 
 
-
 						<div class="form-group">
 
 							<label><?= $lang['label']['confirm_new_pass']; ?></label>
@@ -127,7 +126,7 @@ $seller_user_name = $row_seller->seller_user_name;
 
 								</span>
 
-								 <input type="password" name="new_pass_again" id="confirm_password" class="form-control" required>
+								<input type="password" name="new_pass_again" id="confirm_password" class="form-control" required>
 
 							</div>	
 
@@ -361,9 +360,6 @@ $('.cross2').show();
 });
 
 </script>
-
-
-
 
 </body>
 

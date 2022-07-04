@@ -18,7 +18,9 @@ $(document).on('click', '.message-recipients', function(e){
   var message_group_id = $(this).data("id");
   
   if($("#msgHeader").html() != ""){
-    websocket.close();
+    <?php if($enable_websocket == 1){ ?>
+      websocket.close();
+    <?php } ?>
     console.log("connected closed");
   }
 

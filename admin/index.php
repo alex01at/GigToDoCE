@@ -181,7 +181,11 @@ if($notifierPlugin == 1){
 	</script>
 </head>
 <body>
-  <script src="assets/js/minimal.js"></script>
+
+  <script id="minimal" src="assets/js/minimal.js"></script>
+
+  <!-- <script id="minimal" src="assets/js/minimal.js" data-purchase-code="<?= $purchase_code; ?>" data-license="<?= $license_type; ?>"data-website="<?= $website; ?>"></script> -->
+
   <!-- Left Panel -->
   <aside id="left-panel" class="d-none-on-backend-precessing left-panel">
 		<nav class="navbar navbar-expand-sm navbar-default">
@@ -215,60 +219,74 @@ if($notifierPlugin == 1){
 
 	<?php
 
-	if(empty($purchase_code) or empty($license_type) or empty($website)){
+	if((empty($purchase_code) or empty($license_type) or empty($website)) AND is_localhost() == false){
 		include("proceed.php");
 	}else{
-		include("includes/body.php");
+
+		$check_purchase = check_purchase();
+		
+		if($check_purchase == 0 AND is_localhost() == false){
+			include("proceed.php");
+		}else{
+			include("includes/body.php");
+		}
+
 	}
 
 	?>
-      <style>
-          .d-none-on-backend-precessing{
-              display: table-cell !important;
-          }
-      </style>
-<div class="container clearfix">
-<div class="row">
-<div id="languagePanel" class="bg-light col-md-12 p-2 pb-0 mb-0"><!--- languagePanel Starts --->
-	<div class="row">
-	<div class="col-md-6"><!--- col-md-6 Starts --->
-	<p class="col-form-label font-weight-normal mb-0 pb-0">Current Selected Language: <strong><?= $currentLanguage; ?></strong></p>
-	</div><!--- col-md-6 Ends --->
-	<div class="col-md-6 float-right"><!--- col-md-6 Starts --->
-	<div class="form-group row mb-0 pb-0"><!--- form-group row Starts --->
-		<label class="col-md-2"></label>
-		<label class="col-md-4 col-form-label"> Change Language: </label>
-		<div class="col-md-6">
-		<select id="languageSelect" class="form-control">
-			<?php
-			$get_languages = $db->select("languages");
-			while($row_languages = $get_languages->fetch()){
-			$id = $row_languages->id;
-			$title = $row_languages->title;
-			?>
-			<option data-url="<?= "$site_url/admin/index?change_language=$id"; ?>" <?php if($id == $_SESSION["adminLanguage"]){ echo "selected"; } ?>>
-			<?= $title; ?>
-			</option>
-	    	<?php } ?>
-		</select>
-		</div>
-	</div><!--- form-group row Ends --->
-	</div><!--- col-md-6 Ends -->
-	</div>
-</div><!--- languagePanel Ends --->
-</div>
-</div>
+    
+    <style>
+        .d-none-on-backend-precessing{
+        	display: table-cell !important;
+        }
+    </style>
 
-<br><br><br>
-<script>
-$(document).ready(function(){
-	$("#languageSelect").change(function(){
-		var url = $("#languageSelect option:selected").data("url");
-		window.location.href = url;
+	<div class="container clearfix"><!--- container clearfix Starts --->
+	<div class="row"><!--- row Starts --->
+	<div id="languagePanel" class="bg-light col-md-12 p-2 pb-0 mb-0"><!--- languagePanel Starts --->
+		<div class="row">
+		<div class="col-md-6"><!--- col-md-6 Starts --->
+		<p class="col-form-label font-weight-normal mb-0 pb-0">
+			Current Selected Language: <strong><?= $currentLanguage; ?></strong>
+		</p>
+		</div><!--- col-md-6 Ends --->
+		<div class="col-md-6 float-right"><!--- col-md-6 Starts --->
+		<div class="form-group row mb-0 pb-0"><!--- form-group row Starts --->
+			<label class="col-md-2"></label>
+			<label class="col-md-4 col-form-label"> Change Language: </label>
+			<div class="col-md-6">
+			<select id="languageSelect" class="form-control">
+				<?php
+				$get_languages = $db->select("languages");
+				while($row_languages = $get_languages->fetch()){
+				$id = $row_languages->id;
+				$title = $row_languages->title;
+				?>
+				<option data-url="<?= "$site_url/admin/index?change_language=$id"; ?>" <?= ($id == $_SESSION["adminLanguage"])?"selected":""; ?>>
+				<?= $title; ?>
+				</option>
+		    	<?php } ?>
+			</select>
+			</div>
+		</div><!--- form-group row Ends --->
+		</div><!--- col-md-6 Ends -->
+		</div>
+	</div><!--- languagePanel Ends --->
+	</div><!--- row Ends --->
+	</div><!--- container clearfix Ends --->
+
+	<br><br><br>
+	<script>
+	$(document).ready(function(){
+		$("#languageSelect").change(function(){
+			var url = $("#languageSelect option:selected").data("url");
+			window.location.href = url;
+		});
 	});
-});
-</script>
+	</script>
+
 </div><!-- Right Panel -->
+
 <script src="assets/js/popper.min.js"></script>
 <script src="assets/js/plugins.js"></script>
 </body>

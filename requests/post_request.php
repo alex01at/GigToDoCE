@@ -8,6 +8,11 @@ $login_seller_user_name = $_SESSION['seller_user_name'];
 $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
+
+$get_payment_settings = $db->select("payment_settings");
+$row_payment_settings = $get_payment_settings->fetch();
+$min_proposal_price = $row_payment_settings->min_proposal_price;
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -158,9 +163,7 @@ Please confirm your email to use this feature.
                     <input type="radio" value="<?= $delivery_proposal_title; ?>" 
                     <?php if(isset($form_data['delivery_time']) and$form_data['delivery_time'] == $delivery_proposal_title){ echo "checked"; } ?> name="delivery_time" class="custom-control-input" required="">
                     <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description"> 
-                      <?= $delivery_proposal_title; ?> 
-                    </span>
+                    <span class="custom-control-description"><?= $delivery_proposal_title; ?></span>
                   </label>
                   <?php } ?>
                 </div>
@@ -179,7 +182,7 @@ Please confirm your email to use this feature.
                     <span class="input-group-addon font-weight-bold" > 
                       <?= $s_currency; ?> 
                     </span>
-                    <input type="number" name="request_budget" min="5" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg" value="<?= $form_data['request_budget']; ?>" required>
+                    <input type="number" name="request_budget" min="<?= $min_proposal_price; ?>" placeholder="<?= $lang['placeholder']['5_minimum']; ?>" class="form-control input-lg" value="<?= $form_data['request_budget']; ?>" required>
                   </div>
                 </div>
               </div>

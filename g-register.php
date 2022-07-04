@@ -198,8 +198,13 @@ if(isset($_POST['continue'])){
 		
 		if($insert_seller){
 		
-	      $_SESSION['seller_user_name'] = $u_name;
+	      	$_SESSION['seller_user_name'] = $u_name;
 			$insert_seller_account = $db->insert("seller_accounts",array("seller_id" => $regsiter_seller_id));
+			
+			if($paymentGateway == 1){
+				$insert_seller_settings = $db->insert("seller_settings",array("seller_id" => $regsiter_seller_id));
+			}
+
 			if($insert_seller_account){
 				
 				unset($_SESSION['userData']);

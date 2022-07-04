@@ -52,7 +52,7 @@
       
       </div>
 
-      <small class="text-muted">Please Include Your Country Code Also Like This: <b>+12561040358</b> </small>
+      <small class="text-muted">Please enter 10 digit phone number only like this: <b>2561040358</b> </small>
     </div>
   </div>
 

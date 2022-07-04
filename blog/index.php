@@ -49,9 +49,9 @@
 <?php require_once("../includes/header.php"); ?>
 
 <header id="how_to"><!--- how_to Starts --->
-   <div class="cell">
-      <h2 class="text-center text-white"><?= $lang['blog']['title']; ?></h2>
-      <h3 class="text-center mb-0"><?= $lang['blog']['desc']; ?></h3>
+  <div class="cell">
+    <h2 class="text-center text-white"><?= $lang['blog']['title']; ?></h2>
+    <h3 class="text-center mb-0"><?= $lang['blog']['desc']; ?></h3>
   </div>
 </header><!--- how_to Ends --->
 

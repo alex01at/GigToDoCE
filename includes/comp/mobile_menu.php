@@ -335,6 +335,7 @@
                   </div>
                 </a>
               </li>
+
               <li class="p-xs-2 bb-xs-1 text-body-larger subnav-item" data-uid="settings" data-name="<?= $lang['menu']['settings']; ?>">
                 <a href="#">
                   <div class="flag">
@@ -343,22 +344,31 @@
                   </div>
                 </a>
               </li>
-              <li class="p-xs-2 bb-xs-1 text-body-larger subnav-item">
-                <a href="<?= $site_url; ?>/customer_support">
+
+              <li class="p-xs-2 bb-xs-1 text-body-larger subnav-item" data-uid="support" data-name="<?= $lang['menu']['customer_support']; ?>">
+                <a href="#">
                   <div class="flag">
-                    <div class="flag-body">Contact Support</div>
+                    <div class="flag-body"><?= $lang['menu']['customer_support']; ?></div>
+                    <?= $next_icon; ?>
                   </div>
                 </a>
               </li>
+
             </ul>
           </div>
           <!--- mobile-subnav bg-white animated Ends --->
+
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-s-1">
             <!--- mobile-tertiarynav Starts --->
             <ul class="list-unstyled mobile-catnav-margin">
               <li class="p-xs-1 bb-xs-1 text-body-larger">
                 <a class="p-xs-1 display-inline-block" href="<?= $site_url."/selling_orders"; ?>">
                 <?= $lang['menu']['orders']; ?>
+                </a>
+              </li>
+              <li class="p-xs-1 bb-xs-1 text-body-larger">
+                <a class="p-xs-1 display-inline-block" href="<?= $site_url."/proposals/create_coupon"; ?>">
+                <?= $lang['menu']['create_coupon']; ?>
                 </a>
               </li>
               <li class="p-xs-1 bb-xs-1 text-body-larger">
@@ -376,6 +386,11 @@
                 <?= $lang['menu']['revenues']; ?>
                 </a>
               </li>
+              <li class="p-xs-1 bb-xs-1 text-body-larger">
+                <a class="p-xs-1 display-inline-block" href="<?= $site_url."/withdrawal_requests"; ?>">
+                <?= $lang['menu']['withdrawal_requests']; ?>
+                </a>
+              </li>
               <li class="p-xs-1 bb-xs-1 text-body-larger strong">
                 <a class="p-xs-1 display-inline-block text-underline" href="<?= $site_url; ?>/proposals/create_proposal">
                 Create A New Proposal
@@ -384,6 +399,7 @@
             </ul>
           </div>
           <!--- mobile-tertiarynav Ends --->
+
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-b">
             <!--- mobile-tertiarynav Starts --->
             <ul class="list-unstyled mobile-catnav-margin">
@@ -404,6 +420,7 @@
               </li>
             </ul>
           </div>
+
           <!--- mobile-tertiarynav Ends --->
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-r">
             <!--- mobile-tertiarynav Starts --->
@@ -421,6 +438,7 @@
             </ul>
           </div>
           <!--- mobile-tertiarynav Ends --->
+
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-contacts">
             <!--- mobile-tertiarynav Starts --->
             <ul class="list-unstyled mobile-catnav-margin">
@@ -437,6 +455,7 @@
             </ul>
           </div>
           <!--- mobile-tertiarynav Ends --->
+
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-referrals">
             <!--- mobile-tertiarynav Starts --->
             <ul class="list-unstyled mobile-catnav-margin">
@@ -453,6 +472,7 @@
             </ul>
           </div>
           <!--- mobile-tertiarynav Ends --->
+
           <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-settings">
             <!--- mobile-tertiarynav Starts --->
             <ul class="list-unstyled mobile-catnav-margin">
@@ -469,6 +489,25 @@
             </ul>
           </div>
           <!--- mobile-tertiarynav Ends --->
+
+
+          <div class="mobile-tertiarynav bg-white animated display-none" id="mobile-tertiary-nav-support">
+            <!--- mobile-tertiarynav Starts --->
+            <ul class="list-unstyled mobile-catnav-margin">
+              <li class="p-xs-1 bb-xs-1 text-body-larger">
+                <a class="p-xs-1 display-inline-block" href="<?= $site_url; ?>/support?view_tickets">
+                <?= $lang['menu']['my_tickets']; ?>
+                </a>
+              </li>
+              <li class="p-xs-1 bb-xs-1 text-body-larger">
+                <a class="p-xs-1 display-inline-block" href="<?= $site_url; ?>/customer_support">
+                <?= $lang['menu']['support_new']; ?>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!--- mobile-tertiarynav Ends --->
+
         </div>
       </div>
     </div>

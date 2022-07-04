@@ -70,4 +70,4 @@ $sale = array("buyer_id" => $buyer_id,"work_id" => $order_id,"payment_method" =>
 insertSale($sale);
 
 // redirect the buyer to order_details
-echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";
+// echo "<script>window.open('order_details?order_id=$order_id','_self')</script>";

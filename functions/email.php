@@ -28,6 +28,24 @@ function userSignupEmail($email){
 
 	send_mail($data);
 
+	$get_admins = $db->select("admins");
+	while($row_admins = $get_admins->fetch()){
+	
+		$admin_id = $row_admins->admin_id;
+		$admin_name = $row_admins->admin_name;
+		$admin_email = $row_admins->admin_email;
+
+		$data = [];
+		$data['template'] = "new_user";
+		$data['to'] = $admin_email;
+		$data['subject'] = "$site_name : A New User Has Registered.";
+		$data['user_name'] = $admin_name;
+		$data['seller_user_name'] = $u_name;
+
+		send_mail($data);
+
+	}
+
 }
 
 function userConfirmEmail($email){

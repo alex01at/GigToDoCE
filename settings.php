@@ -99,7 +99,8 @@ if($lang_dir == "right"){
 						echo "active";
 						}
 						if(isset($_GET['profile_settings'])){ echo "active"; }
-						?>">
+						?>
+						">
 						<?= $lang["titles"]["settings"]["profile_settings"]; ?>
 						</a>
 						</li>

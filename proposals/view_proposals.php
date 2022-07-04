@@ -9,6 +9,19 @@ $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 $login_seller_vacation = $row_login_seller->seller_vacation;
+
+$count_active_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'active'));
+
+$count_pause_proposals = $db->query("select * from proposals where proposal_seller_id=$login_seller_id and (proposal_status='pause' or proposal_status='admin_pause')")->rowCount();
+
+$count_pending_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'pending'));
+
+$count_modification_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'modification'));
+
+$count_draft_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'draft'));
+
+$count_declined_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'declined'));
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="ui-toolkit">
@@ -19,30 +32,40 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 	<meta name="description" content="<?= $site_desc; ?>">
 	<meta name="keywords" content="<?= $site_keywords; ?>">
 	<meta name="author" content="<?= $site_author; ?>">
-   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="../styles/bootstrap.css" rel="stylesheet">
-   <link href="../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+	<link href="../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="../styles/styles.css" rel="stylesheet">
 	<link href="../styles/user_nav_styles.css" rel="stylesheet">
 	<link href="../font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="../styles/owl.carousel.css" rel="stylesheet">
 	<link href="../styles/owl.theme.default.css" rel="stylesheet">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
-   <link href="../styles/sweat_alert.css" rel="stylesheet">
-   <link href="../styles/animate.css" rel="stylesheet">
-   <script type="text/javascript" src="../js/ie.js"></script>
-   <script type="text/javascript" src="../js/sweat_alert.js"></script>
+	<link href="../styles/sweat_alert.css" rel="stylesheet">
+	<link href="../styles/animate.css" rel="stylesheet">
+	<script type="text/javascript" src="../js/ie.js"></script>
+	<script type="text/javascript" src="../js/sweat_alert.js"></script>
 	<script src="https://checkout.stripe.com/checkout.js"></script>
 	<?php if(!empty($site_favicon)){ ?>
-      <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-   <?php } ?>
+	<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+	<?php } ?>
 
-  <!-- Include the PayPal JavaScript SDK -->
-  <script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
+	<!-- Include the PayPal JavaScript SDK -->
+	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card&currency=<?= $paypal_currency_code; ?>"></script>
 
 </head>
 <body class="is-responsive">
-<?php require_once("../includes/user_header.php"); ?>
+<?php 
+
+require_once("../includes/user_header.php"); 
+
+if(!isset($_GET['paused']) and !isset($_GET['pending']) and !isset($_GET['modification']) and !isset($_GET['draft']) and !isset($_GET['declined'])){
+	$active =  "active";
+}else{
+	$active = "";
+}
+
+?>
 <div class="container-fluid view-proposals"><!-- container-fluid view-proposals Starts -->
 <div class="row"><!-- row Starts -->
 <div class="col-md-12 mt-5 mb-3"><!-- col-md-12 mt-5 mb-3 Starts -->
@@ -96,57 +119,45 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 			</a>
 			<div class="clearfix"></div>
 			<ul class="nav nav-tabs flex-column flex-sm-row mt-4">
-            <?php
-               $count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'active'));
-            ?>
+
 				<li class="nav-item">
-					<a href="#active-proposals" data-toggle="tab" class="nav-link active make-black">
-			         <?= $lang['tabs']['active_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#active-proposals" data-toggle="tab" class="nav-link make-black <?= $active; ?>">
+			         <?= $lang['tabs']['active_proposals']; ?> <span class="badge badge-success"><?= $count_active_proposals; ?></span>
 					</a>
 				</li>
-            <?php
-               $count_proposals = $db->query("select * from proposals where proposal_seller_id=$login_seller_id and (proposal_status='pause' or proposal_status='admin_pause')")->rowCount();
-            ?>
+
 				<li class="nav-item">
-					<a href="#pause-proposals" data-toggle="tab" class="nav-link make-black">
-						<?= $lang['tabs']['pause_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#pause-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['paused']))?"active":""; ?>">
+						<?= $lang['tabs']['pause_proposals']; ?> <span class="badge badge-success"><?= $count_pause_proposals; ?></span>
 					</a>
 				</li>
-            <?php
-				$count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'pending'));
-            ?>
+
 				<li class="nav-item">
-					<a href="#pending-proposals" data-toggle="tab" class="nav-link make-black">
-					<?= $lang['tabs']['pending_proposals']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#pending-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['pending']))?"active":""; ?>">
+					<?= $lang['tabs']['pending_proposals']; ?> <span class="badge badge-success"><?= $count_pending_proposals; ?></span>
 					</a>
 				</li>
-            <?php
-				$count_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'modification'));
-            ?>
+
 				<li class="nav-item">
-					<a href="#modification-proposals" data-toggle="tab" class="nav-link make-black">
-					<?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#modification-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['modification']))?"active":""; ?>">
+					<?= $lang['tabs']['requires_modification']; ?> <span class="badge badge-success"><?= $count_modification_proposals; ?></span>
 					</a>
 				</li>
-            <?php
-               $count_proposals = $db->count("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>'draft'));
-            ?>
+ 
 				<li class="nav-item">
-					<a href="#draft-proposals" data-toggle="tab" class="nav-link make-black">
-					<?= $lang['tabs']['draft']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#draft-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['draft']))?"active":""; ?>">
+					<?= $lang['tabs']['draft']; ?> <span class="badge badge-success"><?= $count_draft_proposals; ?></span>
 					</a>
 				</li>
-            <?php
-				  $count_proposals = $db->count("proposals",array("proposal_seller_id" => $login_seller_id, "proposal_status" => 'declined'));
-            ?>
+
 				<li class="nav-item">
-					<a href="#declined-proposals" data-toggle="tab" class="nav-link make-black">
-					<?= $lang['tabs']['declined']; ?> <span class="badge badge-success"><?= $count_proposals; ?></span>
+					<a href="#declined-proposals" data-toggle="tab" class="nav-link make-black <?= (isset($_GET['declined']))?"active":""; ?>">
+					<?= $lang['tabs']['declined']; ?> <span class="badge badge-success"><?= $count_declined_proposals; ?></span>
 					</a>
 				</li>
 			</ul>
 			<div class="tab-content">
-				<div id="active-proposals" class="tab-pane fade show active">
+				<div id="active-proposals" class="tab-pane fade show <?= $active; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>
@@ -167,14 +178,14 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
                         $proposal_title = $row_proposals->proposal_title;
                         $proposal_views = $row_proposals->proposal_views;
                         $proposal_price = $row_proposals->proposal_price;
-								if($proposal_price == 0){
-								$get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id,"package_name" => "Basic"));
-								$proposal_price = $get_p->fetch()->price;
-								}
+						if($proposal_price == 0){
+							$get_p = $db->select("proposal_packages",array("proposal_id" => $proposal_id,"package_name" => "Basic"));
+							$proposal_price = $get_p->fetch()->price;
+						}
                         $proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
                         $proposal_url = $row_proposals->proposal_url;
                         $proposal_featured = $row_proposals->proposal_featured;
-								$count_orders = $db->count("orders",array("proposal_id"=>$proposal_id));
+						$count_orders = $db->count("orders",array("proposal_id"=>$proposal_id));
                        ?>
 								<tr>
 									<td class="proposal-title"> <?= $proposal_title; ?> </td>
@@ -222,7 +233,7 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
                        ?>
 					</div>
 				</div>
-					<div id="pause-proposals" class="tab-pane fade show">
+					<div id="pause-proposals" class="tab-pane fade show <?= (isset($_GET['paused']))?"active":""; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>
@@ -297,7 +308,7 @@ EOT;
                        ?>
 					</div>
 				</div>
-				<div id="pending-proposals" class="tab-pane fade show">
+				<div id="pending-proposals" class="tab-pane fade show <?= (isset($_GET['pending']))?"active":""; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>
@@ -353,7 +364,7 @@ EOT;
                        ?>
 					</div>
 				</div>
-         	<div id="modification-proposals" class="tab-pane fade show">
+         	<div id="modification-proposals" class="tab-pane fade show <?= (isset($_GET['modification']))?"active":""; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>
@@ -400,7 +411,7 @@ EOT;
                        ?>
 					</div>
 				</div>
-				<div id="draft-proposals" class="tab-pane fade show">
+				<div id="draft-proposals" class="tab-pane fade show <?= (isset($_GET['draft']))?"active":""; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>
@@ -455,7 +466,7 @@ EOT;
                        ?>
 					</div>
 				</div>
-				<div id="declined-proposals" class="tab-pane fade show">
+				<div id="declined-proposals" class="tab-pane fade show <?= (isset($_GET['declined']))?"active":""; ?>">
                    <div class="table-responsive box-table mt-4">
 						<table class="table table-bordered">
 							<thead>

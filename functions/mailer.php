@@ -27,6 +27,9 @@ function send_mail($data,$temp_name=''){
 
    require "$dir/vendor/autoload.php";
 
+   // echo load_view($data['template'],$data);
+   // exit();
+   
    if($mail_library == "swift_mailer" AND $enable_smtp == "yes") {
 
       try{

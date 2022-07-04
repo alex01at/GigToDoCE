@@ -48,6 +48,8 @@ $count_offers = $get_offers->rowCount();
 	<link href="../styles/styles.css" rel="stylesheet">
 	<link href="../styles/user_nav_styles.css" rel="stylesheet">
 	<link href="../font_awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="../styles/sweat_alert.css" rel="stylesheet">
+	<script type="text/javascript" src="../js/sweat_alert.js"></script>
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
 	<script src="https://checkout.stripe.com/checkout.js"></script>
 	<?php if(!empty($site_favicon)){ ?>
@@ -79,12 +81,16 @@ $count_offers = $get_offers->rowCount();
       		<?php if($count_offers == "0"){ ?>
 			<div class="card rounded-0 mb-3">
 				<div class="card-body">
-					<h3 class="text-center"> <i class="fa fa-frown-o"></i> Unfortunately, no offers yet. Please wait a little longer.</h3>
+					<h3 class="text-center"> 
+						<i class="fa fa-frown-o"></i> Unfortunately, no offers yet. Please wait a little longer.
+					</h3>
 				</div>
 			</div>
 			<?php }else{ ?>
 			<?php 
+			
 			while($row_offers = $get_offers->fetch()){
+			
 			$offer_id = $row_offers->offer_id;
 			$proposal_id = $row_offers->proposal_id;
 			$description = $row_offers->description;
@@ -103,6 +109,7 @@ $count_offers = $get_offers->rowCount();
 			$proposal_title = $row_proposals->proposal_title;
 			$proposal_url = $row_proposals->proposal_url;
 			$proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
+
 			?>
 			<div class="card rounded-0 mb-3">
 				<div class="card-body">

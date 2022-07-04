@@ -13,7 +13,8 @@ $start_from = ($page-1) * $per_page;
 
 if(isset($_GET['search'])){
 	$search = $input->get('search');
-	$posts = $db->query("select * from posts where title like :title order by 1 DESC LIMIT :limit OFFSET :offset",["title"=>"%$search%"],array("limit"=>$per_page,"offset"=>$start_from));
+	// $posts = $db->query("select * from posts where title like :title order by 1 DESC LIMIT :limit OFFSET :offset",["title"=>"%$search%"],array("limit"=>$per_page,"offset"=>$start_from));
+	$posts = $db->query("select * from posts_meta LEFT JOIN posts ON posts_meta.post_id = posts.id where posts_meta.language_id=$siteLanguage AND posts_meta.title like :title order by 1 DESC LIMIT :limit OFFSET :offset",["title"=>"%$search%"],array("limit"=>$per_page,"offset"=>$start_from));
 }else if(isset($_GET['cat_id'])){
 	$cat_id = $input->get('cat_id');
 	$search = "";
@@ -82,7 +83,8 @@ $cat_name = !empty($row_cat->cat_name) ? $row_cat->cat_name:'' ;
       /// Now Select All From Order Table
 
 		if(isset($_GET['search'])){
-			$query = $db->query("select * from posts where title like :title",["title"=>"%$search%"]);
+			// $query = $db->query("select * from posts where title like :title",["title"=>"%$search%"]);
+			$query = $db->query("select * from posts_meta LEFT JOIN posts ON posts_meta.post_id = posts.id where posts_meta.language_id=$siteLanguage AND posts_meta.title like :title",["title"=>"%$search%"]);
 		}else if(isset($_GET['cat_id'])){
 			$query = $db->query("select * from posts where cat_id=:cat_id",["cat_id"=>$cat_id]);
 		}else if(isset($_GET['author'])){

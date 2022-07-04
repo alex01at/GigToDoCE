@@ -21,7 +21,7 @@ if(isset($_GET['proposal_id'])){
 
 	@$deleteTopRated = $db->delete("top_proposals",array("proposal_id"=>$delete_id));
 
-  if($update_proposal){
+  	if($update_proposal){
 		echo "<script>alert('One proposal has been deleted.');</script>";
 		echo "<script>window.open('view_proposals.php','_self');</script>";
 	}else{

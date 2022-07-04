@@ -358,8 +358,8 @@ $withdrawLimitText = "";
 		</div><!-- modal-header Ends -->
 		<div class="modal-body text-center"><!-- modal-body Starts -->
 		<?php if(empty($login_seller_account_number) or empty($login_seller_account_name)){ ?>
-		<p class="modal-lead">
-		For Withdraw Payments To Your Mobile Money Account Please Add Your Mobile Money Account Details In <a href="#" id="settings-link">Settings Tab</a>
+		<p class="lead">
+		For Withdraw Payments To Your Mobile Money Account Please Add Your Mobile Money Account Details In <a href="#" class="text-success" id="settings-link">Account Settings Tab</a>
 		</p>
 		<?php }else{ ?>
 		<p class="modal-lead">

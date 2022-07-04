@@ -101,22 +101,22 @@ if($update_inbox_sellers){
 	$seller_email = $row_seller->seller_email;
 	$seller_phone = $row_seller->seller_phone;
 
-	$data = [];
-	$data['template'] = "new_message";
-	$data['to'] = $seller_email;
-	$data['subject'] = "You've received a message from $login_seller_user_name";
-	$data['user_name'] = $seller_user_name;
-	$data['sender_user_name'] = $login_seller_user_name;
-	$data['message'] = $message;
-	$data['attachment'] = $file;
-	$data['message_date'] = $message_date;
-	$data['message_group_id'] = $message_group_id;
-	send_mail($data);
+	// $data = [];
+	// $data['template'] = "new_message";
+	// $data['to'] = $seller_email;
+	// $data['subject'] = "You've received a message from $login_seller_user_name";
+	// $data['user_name'] = $seller_user_name;
+	// $data['sender_user_name'] = $login_seller_user_name;
+	// $data['message'] = $message;
+	// $data['attachment'] = $file;
+	// $data['message_date'] = $message_date;
+	// $data['message_group_id'] = $message_group_id;
+	// send_mail($data);
 
 	if($notifierPlugin == 1){ 
 	
 		$smsText = str_replace('{seller_user_name}',$login_seller_user_name,$lang['notifier_plugin']['new_message']);
-		sendSmsTwilio("",$smsText,$seller_phone);
+		// sendSmsTwilio("",$smsText,$seller_phone);
 
 	}
 

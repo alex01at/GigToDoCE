@@ -107,3 +107,51 @@ function sendPushMessage($notification_id){
    /// End For Push Notification
 
 }
+
+// Check if we are in a local environment
+function is_localhost(){
+  
+   // set the array for testing the local environment
+   $whitelist = array('127.0.0.1','::1');
+
+   // check if the server is in the array
+   if (in_array( $_SERVER['REMOTE_ADDR'],$whitelist)){
+      // this is a local environment
+      return true;
+   }
+  
+}
+
+
+/// Check Purchase Code
+
+function check_purchase(){
+
+   global $db;
+
+   $get_app_license = $db->select("app_license");
+   $row_app_license = $get_app_license->fetch();
+   $purchase_code = $row_app_license->purchase_code;
+   $license_type = $row_app_license->license_type;
+   $website = $row_app_license->website;
+
+   $curl = curl_init();
+   curl_setopt_array($curl, array(
+      CURLOPT_URL => "https://www.gigtodo.com/purchase-code-management-system/admin/check_purchase/",
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_ENCODING => "",
+      CURLOPT_MAXREDIRS => 10,
+      CURLOPT_TIMEOUT => 0,
+      CURLOPT_FOLLOWLOCATION => true,
+      CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+      CURLOPT_CUSTOMREQUEST => "POST",
+      CURLOPT_POSTFIELDS => array('purchase_code' => $purchase_code,'license_type' => $license_type,'website' => $website),
+   ));
+
+   $response = curl_exec($curl);
+   curl_close($curl);
+   
+   return $response;
+
+}
+

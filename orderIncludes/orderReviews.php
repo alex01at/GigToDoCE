@@ -415,19 +415,18 @@ if ($count_all_reviews == "00") {
                         if ($update_proposal_rating) {
 
                             echo "<script>
+                                swal({
+                                  type: 'success',
+                                  text: 'Review submitted successfully!',
+                                  timer: 3000,
+                                  onOpen: function(){
+                                    swal.showLoading()
+                                  }
+                                }).then(function(){
+                                   window.open('order_details?order_id=$order_id','_self')
+                                });
 
-    swal({
-      type: 'success',
-      text: 'Review submitted successfully!',
-      timer: 3000,
-      onOpen: function(){
-        swal.showLoading()
-      }
-    }).then(function(){
-       window.open('order_details?order_id=$order_id','_self')
-    });
-
-  </script>";
+                              </script>";
 
                         }
 

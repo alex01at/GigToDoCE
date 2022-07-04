@@ -396,7 +396,7 @@ $lang["cookie_box"]['button'] = "Got It.";
 $lang["categories"] = "CATEGORIES";
 $lang["about"] = "ABOUT";
 $lang["find_us_on"] = "FIND US ON";
-$lang["mobile_apps"] = "Mobile Apps (Coming soon!)";
+$lang["mobile_apps"] = "Mobile Apps";
 
 // Revenue
 $lang["availRevenue"] = "You can get your available revenue (%s) by %s in your preferred payment method.";
@@ -953,9 +953,6 @@ $lang['single_ticket']['status'] = "Status:";
 $lang['single_ticket']['reply_to_admin'] = "Reply To Admin";
 
 $lang['single_ticket']["can't_send"] = "You Can't Send Message Now Because Ticket status is closed now.";
-
-// $lang['single_ticket']['all_conversation'] = "";
-// $lang['single_ticket']['all_conversation'] = "";
 
 
 /// Gigtodo Notifier Plugin 

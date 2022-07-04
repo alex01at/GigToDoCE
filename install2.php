@@ -117,7 +117,7 @@
                   <!-- form-group row Starts -->
                   <div class="col-md-3 control-label h5 mt-2"> Purchase Code <small class="text-danger">(Required)</small> </div>
                   <div class="col-md-8">
-                    <input type="text" name="purchase_code" class="form-control" placeholder="Purchase Code" value="<?= @$form_data['purchase_code']; ?>" required/>
+                    <input type="text" name="purchase_code" class="form-control" placeholder="Purchase Code" value="<?= @$form_data['purchase_code']; ?>"/>
                     <small>
                       If you purchased GigToDo from Codecanyon, please use your purchase code from codecanyon to proceed. However, if you purchased the script from Codester, Pixinal Store or Alkanyx, please <a href="https://tawk.to/chat/5eae3327203e206707f9075a/default" target="_blank" class="text-primary">click this link</a> to request a purchase code.
                     </small>
@@ -201,6 +201,21 @@
         
       }
 
+
+      // Check if we are in a local environment
+      function is_localhost(){
+        
+        // set the array for testing the local environment
+        $whitelist = array( '127.0.0.1', '::1' );
+        
+        // check if the server is in the array
+        if (in_array( $_SERVER['REMOTE_ADDR'],$whitelist)){
+          // this is a local environment
+          return true;
+        }
+        
+      }
+
       $host = $_SESSION["db_host"];
       $uname = $_SESSION["db_username"];
       $pass = $_SESSION["db_pass"];
@@ -217,6 +232,10 @@
         $purchase_code = $input->post('purchase_code');
 
         $verify_purchase = verify_purchase($purchase_code,$site_url);
+
+        if(is_localhost()){
+          $verify_purchase->status = "valid";
+        }
 
         if($verify_purchase->status == "already_used"){
 
@@ -253,11 +272,15 @@
           
           $update_admin = $db->update("admins",array("admin_name"=>$admin_name,"admin_email"=> $admin_email,"admin_pass"=> $encrypt_password));
 
-          $app_license = $db->update("app_license",[
-            "purchase_code" => $verify_purchase->purchase_code,
-            "license_type" => $verify_purchase->license_type,
-            "website" => $verify_purchase->website,
-          ]);
+          if(is_localhost()){
+          
+          }else{
+            $app_license = $db->update("app_license",[
+              "purchase_code" => $verify_purchase->purchase_code,
+              "license_type" => $verify_purchase->license_type,
+              "website" => $verify_purchase->website,
+            ]);
+          }
       
           $config_file = "includes/config.php";
           $newData = "<?php
@@ -271,6 +294,14 @@
           $handle = fopen($config_file, "w"); 
           fwrite($handle, $newData); 
           fclose($handle);
+
+          $apis_db = file_get_contents('apis/application/config/database.php');
+          $apis_db = str_replace('db_host', $host, $apis_db);
+          $apis_db = str_replace('db_user', $uname, $apis_db);
+          $apis_db = str_replace('db_pass', $pass, $apis_db);
+          $apis_db = str_replace('db_name', $database, $apis_db);
+          file_put_contents('apis/application/config/database.php', $apis_db);
+
           session_destroy();
 
           echo "<script>window.open('install3', '_self');</script>";

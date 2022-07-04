@@ -229,11 +229,11 @@ if(isset($_POST['continue'])){
 		$referral_code = mt_rand();
 		$verification_code = "ok";
 		
-      $geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip));
-      $country = $geoplugin['geoplugin_countryName'];
-      if(empty($country)){ 
-         $country = ""; 
-      }		
+		$geoplugin = unserialize(file_get_contents('http://www.geoplugin.net/php.gp?ip='.$ip));
+		$country = $geoplugin['geoplugin_countryName'];
+		if(empty($country)){ 
+			$country = ""; 
+		}		
 
 		$insert_seller = $db->insert("sellers",array("seller_name" => $name,"seller_user_name" => $u_name,"seller_email" => $email,"seller_image" => $image,"seller_country"=>$country,"seller_level" => 1,"seller_recent_delivery" => 'none',"seller_rating" => 100,"seller_offers" => 10,"seller_referral" => $referral_code,"seller_ip" => $ip,"seller_verification" => $verification_code,"seller_vacation" => 'off',"seller_register_date" => $regsiter_date,"seller_status" => 'online'));
 		
@@ -241,8 +241,12 @@ if(isset($_POST['continue'])){
 		
 		if($insert_seller){
 		
-      $_SESSION['seller_user_name'] = $u_name;		
+    	$_SESSION['seller_user_name'] = $u_name;		
 		$insert_seller_account = $db->insert("seller_accounts",array("seller_id" => $regsiter_seller_id));
+
+		if($paymentGateway == 1){
+			$insert_seller_settings = $db->insert("seller_settings",array("seller_id" => $regsiter_seller_id));
+		}
 
 		if($insert_seller_account){
 			

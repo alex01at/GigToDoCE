@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2020 at 12:04 PM
+-- Generation Time: Dec 30, 2020 at 11:39 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.2.34
 
@@ -192,7 +192,7 @@ CREATE TABLE `app_info` (
 --
 
 INSERT INTO `app_info` (`id`, `version`, `r_date`) VALUES
-(1, '1.5.3', '20 November 2020');
+(1, '1.5.4', '25 December 2020');
 
 -- --------------------------------------------------------
 
@@ -1315,6 +1315,8 @@ CREATE TABLE `general_settings` (
   `tinymce_api_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `recaptcha_site_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `recaptcha_secret_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `google_app_link` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apple_app_link` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `enable_social_login` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `fb_app_id` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `fb_app_secret` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1348,15 +1350,16 @@ CREATE TABLE `general_settings` (
   `payouts_date` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `payouts_anyday` int(10) NOT NULL,
   `enable_websocket` int(10) NOT NULL,
-  `websocket_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
+  `websocket_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `mobileApp_apiKey` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `general_settings`
 --
 
-INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `enable_mobile_logo`, `site_mobile_logo`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_mobile_logo_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `enable_google_translate`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `make_phone_number_required`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`, `enable_websocket`, `websocket_address`) VALUES
-(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 1, 'mobile-logo.png', 'logo1.png', 0, 0, 0, 0, 'watermark.png', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, 0, '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 0, 2, 1, '', 0, 0, '');
+INSERT INTO `general_settings` (`id`, `site_title`, `site_www`, `site_name`, `site_favicon`, `site_logo_type`, `site_logo_text`, `site_logo_image`, `enable_mobile_logo`, `site_mobile_logo`, `site_logo`, `site_favicon_s3`, `site_logo_image_s3`, `site_mobile_logo_s3`, `site_logo_s3`, `site_watermark`, `google_analytics`, `site_color`, `site_hover_color`, `site_border_color`, `site_desc`, `site_keywords`, `site_author`, `site_url`, `site_email_address`, `site_copyright`, `site_timezone`, `language_switcher`, `enable_google_translate`, `tinymce_api_key`, `recaptcha_site_key`, `recaptcha_secret_key`, `google_app_link`, `apple_app_link`, `enable_social_login`, `fb_app_id`, `fb_app_secret`, `g_client_id`, `g_client_secret`, `jwplayer_code`, `level_one_rating`, `level_one_orders`, `level_two_rating`, `level_two_orders`, `level_top_rating`, `level_top_orders`, `approve_proposals`, `edited_proposals`, `disable_local_video`, `proposal_email`, `revisions_list`, `enable_unlimited_revisions`, `signup_email`, `relevant_requests`, `enable_referrals`, `knowledge_bank`, `referral_money`, `site_currency`, `currency_position`, `currency_format`, `enable_maintenance_mode`, `make_phone_number_required`, `order_auto_complete`, `wish_do_manual_payouts`, `payouts_date`, `payouts_anyday`, `enable_websocket`, `websocket_address`, `mobileApp_apiKey`) VALUES
+(1, '', 1, '', 'gigtodoFav.ico', 'image', '', 'logo1.png', 1, 'mobile-logo.png', 'logo1.png', 0, 0, 0, 0, 'watermark.png', '', '#2ca35b', '#2ca35b', '#2ca35b', '', '', '', '', '', '', 'America/Chicago', 1, 0, '', '', '', '', '', 'no', '', '', '', '', '', 85, 10, 95, 25, 100, 50, 'yes', 0, 0, 'yes', '', 0, 'yes', 'yes', 'yes', 'yes', 1, '22', 'left', 'us', 'no', 0, 2, 1, '', 0, 0, '', '');
 
 -- --------------------------------------------------------
 

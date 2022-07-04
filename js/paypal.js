@@ -95,16 +95,26 @@ paypal.Buttons({
             }
 
             // Show a success message to the buyer
-
-            alert('Transaction Successfully Completed Now Redirecting.');
             
-            if(payment_type == 'orderTip'){
-                window.open(base_url+'/orderIncludes/charge/order/paypal?reference_no='+orderData.id+'&orderTip=1','_self');
-            }else if(payment_type == 'orderExtendTime'){
-                window.open(base_url+'/plugins/videoPlugin/extendTime/charge/order/paypal?reference_no='+orderData.id+'&extendTime=1','_blank');
-            }else{
-                window.open(base_url+'/paypal_order?reference_no='+orderData.id,'_self');
-            }
+            swal({
+                type: 'success',
+                timer : 4500,
+                text: 'Transaction Successfully Completed Now Redirecting.',
+                onOpen: function(){
+                    swal.showLoading()
+                }
+            }).then(function(){
+
+                if(payment_type == 'orderTip'){
+                    window.open(base_url+'/orderIncludes/charge/order/paypal?reference_no='+orderData.id+'&orderTip=1','_self');
+                }else if(payment_type == 'orderExtendTime'){
+                    window.open(base_url+'/plugins/videoPlugin/extendTime/charge/order/paypal?reference_no='+orderData.id+'&extendTime=1','_blank');
+                }else{
+                    window.open(base_url+'/paypal_order?reference_no='+orderData.id,'_self');
+                }
+
+            });
+
 
         });
     }

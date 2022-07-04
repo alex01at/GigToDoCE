@@ -1,3 +1,101 @@
+
+<?php if($proposal_price == 0){ ?>
+    <div class="card rounded-0 mb-0 border-0 <?=($lang_dir == "right" ? 'text-right':'')?>" id="compare">
+    <div class="card-header"><h5>Compare Packages</h5></div>
+    <div class="card-body p-0">
+    <div class="table-responsive">
+    <table class="table table-bordered mb-0" style="width: 100%;">
+    <tbody>
+    <?php
+    
+    $get_p_1 = $db->select("proposal_packages",array("proposal_id"=>$proposal_id,"package_name"=>'Basic'));
+    $row_1 = $get_p_1->fetch();
+    $p_id_1 = $row_1->package_id;
+    $p_name_1 = $row_1->package_name;
+    $p_description_1 = $row_1->description;
+    $p_revisions_1 = str_replace("_","",$row_1->revisions);
+    $p_delivery_time_1 = $row_1->delivery_time;
+    $p_price_1 = $row_1->price;
+    
+    $get_p_2 = $db->select("proposal_packages",array("proposal_id"=>$proposal_id,"package_name"=>'Standard'));
+    $row_2 = $get_p_2->fetch();
+    $p_id_2 = $row_2->package_id;
+    $p_name_2 = $row_2->package_name;
+    $p_description_2 = $row_2->description;
+    $p_revisions_2 = str_replace("_"," ",$row_2->revisions);
+    $p_delivery_time_2 = $row_2->delivery_time;
+    $p_price_2 = $row_2->price;
+
+    $get_p_3 = $db->select("proposal_packages",array("proposal_id"=>$proposal_id,"package_name"=>'Advance'));
+    $row_3 = $get_p_3->fetch();
+    $p_id_3 = $row_3->package_id;
+    $p_name_3 = $row_3->package_name;
+    $p_description_3 = $row_3->description;
+    $p_revisions_3 = str_replace("_","",$row_3->revisions);
+    $p_delivery_time_3 = $row_3->delivery_time;
+    $p_price_3 = $row_3->price;
+
+    if($proposal_seller_vacation == "on"){
+      $disabled = "disabled='disabled'";
+    }else{
+      $disabled = "";
+    }
+    
+    ?>
+    <tr class="<?=($lang_dir == "right" ? 'text-right':'')?>">
+	    <td class="b-ccc">  </td>
+	    <td><h5><?= $lang['packages']['basic']; ?></h5></td>
+	    <td><h5><?= $lang['packages']['standard']; ?></h5></td>
+	    <td><h5><?= $lang['packages']['advance']; ?></h5></td>
+    </tr>
+
+    <tr class="<?=($lang_dir == "right" ? 'text-right':'')?>" width="100%">
+      <td class="b-ccc">Description</td>
+      <td><?= $p_description_1; ?></td>
+      <td><?= $p_description_2; ?></td>
+      <td><?= $p_description_3; ?></td>
+    </tr>
+
+    <?php
+    $get_a = $db->select("package_attributes",array("package_id"=>$p_id_1));
+    while($row_a = $get_a->fetch()){
+    $a_id = $row_a->attribute_id;
+    $a_name = $row_a->attribute_name;
+    $a_value = $row_a->attribute_value;
+    ?>
+    <tr>
+      <td class="b-ccc" width="150"> <?= $a_name; ?> </td>
+      <td><?= $a_value; ?> </td>
+      <?php
+      $get_v = $db->query("select * from package_attributes where proposal_id='$proposal_id' and attribute_name='$a_name' and not attribute_id='$a_id'");
+      while($row_v = $get_v->fetch()){
+      $value = $row_v->attribute_value;
+      ?>
+      <td><?= ucfirst($value); ?> </td>
+    <?php } ?>
+    </tr>
+    <?php } ?>
+    
+    <tr>
+      <td class="b-ccc"> Revisions </td>
+      <td><?= ucwords($p_revisions_1); ?></td>
+      <td><?= ucwords($p_revisions_2); ?></td>
+      <td><?= ucwords($p_revisions_3); ?></td>
+    </tr>
+    <tr>
+      <td class="b-ccc"> Delivery Time </td>
+      <td><?= $p_delivery_time_1; ?> Days</td>
+      <td><?= $p_delivery_time_2; ?> Days</td>
+      <td><?= $p_delivery_time_3; ?> Days</td>
+    </tr>
+
+    </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+<?php } ?>
+
 <div class="reviews-package mb-3"><!--- reviews-package Starts --->
 <header><h2> Reviews<small>
 <span class="star-rating-s15">

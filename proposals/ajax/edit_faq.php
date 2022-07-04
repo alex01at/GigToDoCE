@@ -28,6 +28,8 @@
 
   $data = $input->post();
 
+  unset($data['change_status']);
+  
   unset($data['proposal_id']);
 
   unset($data['id']);

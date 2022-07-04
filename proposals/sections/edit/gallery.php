@@ -29,7 +29,7 @@
     <div class="col-md-3"><!--- col-md-3 Starts --->
 
     <?php if(empty($d_proposal_img2)){ ?>
-    <div class="pic">
+    <div class="pic <?= (empty($d_proposal_img1))?"disable":""; ?>">
       <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
       <input type="hidden" name="proposal_img2" value="">
       <input type="hidden" name="proposal_img2_s3" value="<?= $d_proposal_img2_s3; ?>">
@@ -53,7 +53,7 @@
     
     <div class="col-md-3"><!--- col-md-3 Starts --->
     <?php if(empty($d_proposal_img3)){ ?>
-    <div class="pic">
+    <div class="pic <?= (empty($d_proposal_img2))?"disable":""; ?>">
     <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
     <input type="hidden" name="proposal_img3" value="">
     <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
@@ -76,7 +76,7 @@
 
     <div class="col-md-3"><!--- col-md-3 Starts --->
     <?php if(empty($d_proposal_img4)){ ?>
-    <div class="pic">
+    <div class="pic <?= (empty($d_proposal_img3))?"disable":""; ?>">
       <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
       <input type="hidden" name="proposal_img4" value="">
       <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
@@ -328,6 +328,14 @@ $(document).ready(function(){
           main.addClass("img").removeClass("pic");
           main.prepend("<img src='"+data.url+"' class='img-fluid'> <span><?= $lang['proposals']['remove']; ?></span>");
 
+          if(name == "proposal_img1"){
+            $("input[type=hidden][name='proposal_img2']").parent().removeClass("disable");
+          }else if(name == "proposal_img2"){
+            $("input[type=hidden][name='proposal_img3']").parent().removeClass("disable");            
+          }else if(name == "proposal_img3"){
+            $("input[type=hidden][name='proposal_img4']").parent().removeClass("disable");            
+          }
+
           console.log(name);
           console.log(data.name);
 
@@ -350,6 +358,14 @@ $(document).ready(function(){
       $(this).prepend("<i class='fa fa-picture-o fa-2x mb-2'></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>");
     }else{
       $(this).prepend("<i class='fa fa-picture-o fa-2x mb-2'></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>");
+    }
+
+    if(attr == "proposal_img1"){
+      $("input[type=hidden][name='proposal_img2']").parent().addClass("disable");
+    }else if(attr == "proposal_img2"){
+      $("input[type=hidden][name='proposal_img3']").parent().addClass("disable");            
+    }else if(attr == "proposal_img3"){
+      $("input[type=hidden][name='proposal_img4']").parent().addClass("disable");            
     }
 
   });

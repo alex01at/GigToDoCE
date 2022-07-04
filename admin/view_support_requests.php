@@ -139,14 +139,6 @@ if(isset($_GET['enquiry_id'])){
 
         <?php } ?>
 
-        <span class="mr-2">|</span>
-        
-        <span class="mr-2">
-            <a href="#" class="text-black">
-                Tickets Closed (<?= $count_tickets_closed; ?>)
-            </a>
-        </span>
-
     </div>
 
     <div class="clearfix"></div>

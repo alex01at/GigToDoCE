@@ -214,6 +214,11 @@ display: none;
     cursor: pointer;
 }
 
+.gallery .pic.disable {
+    opacity: 0.3;
+    cursor: no-drop !important;
+}
+
 .gallery .img {
     margin-top: 11px;
     width: 100%;
