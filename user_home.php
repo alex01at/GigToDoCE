@@ -469,17 +469,14 @@ $(document).ready(function(){
 
   if(active_length == 1){
     slider.carousel('pause');
-    console.log('paused');
     $(".carousel-indicators").css({"bottom": "75px"});
   }
 
   $("#demo3").on('slide.bs.carousel', function(event){
     var eq = event.to;
-    console.log(event);
     var video = $(event.relatedTarget).find("video");
     if(video.length == 1){
       slider.carousel('pause');
-      console.log('paused');
       $(".carousel-indicators").css({"bottom": "75px"});
       video.trigger('play');
     }else{
@@ -489,7 +486,6 @@ $(document).ready(function(){
 
   $('video').on('ended',function(){
     slider.carousel({'pause': false});
-    console.log('started');
   });
 
 });

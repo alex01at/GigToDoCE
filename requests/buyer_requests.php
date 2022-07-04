@@ -142,6 +142,7 @@
                 </thead>
                 <tbody id="load-data">
                   <?php 
+
                     if(!empty($requests_query) or $relevant_requests == "no"){
                     $select_requests = $db->query("select * from buyer_requests where request_status='active'".$requests_query." AND NOT seller_id='$login_seller_id' order by 1 DESC");
                     $count_requests = $select_requests->rowCount();
@@ -176,13 +177,19 @@
                     ?>
                   <tr id="request_tr_<?= $request_id; ?>">
                     <td width="1000">
-                      <?php if(!empty($request_seller_image)){ ?>
-                      <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle" >
-                      <?php }else{ ?>
-                      <img src="../user_images/empty-image.png" class="request-img rounded-circle" >
-                      <?php } ?>
+                      <a href="../<?= $request_seller_user_name; ?>">
+                        <?php if(!empty($request_seller_image)){ ?>
+                          <img src="<?= $request_seller_image; ?>" class="request-img rounded-circle" >
+                        <?php }else{ ?>
+                          <img src="../user_images/empty-image.png" class="request-img rounded-circle" >
+                        <?php } ?>
+                      </a>
                       <div class="request-description">
-                        <h6> <?= $request_seller_user_name; ?> </h6>
+                        
+                        <h6> 
+                          <a href="../<?= $request_seller_user_name; ?>"><?= $request_seller_user_name; ?></a> 
+                        </h6>
+
                         <h5 class="text-success"> <?= $request_title; ?> </h5>
                         <p class="lead mb-2"> <?= $request_description; ?> </p>
                         <?php if(!empty($request_file)){ ?>

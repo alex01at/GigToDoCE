@@ -120,8 +120,8 @@ if(!isset($_SESSION['admin_email'])){
   <form action="" method="get">
   <input type="hidden" name="sales" value="">
   <div class="input-group mb-3 mt-3 mt-lg-0">
-    <input type="date" name="from" value="<?= (isset($_GET['from']))?$input->get('from'):''; ?>" max="<?= date("Y-m-d") ?>" class="form-control" placeholder="Search Sellers">
-    <input type="date" name="to" value="<?= (isset($_GET['to']))?$input->get('to'):''; ?>" max="<?= date("Y-m-d") ?>" class="form-control" placeholder="Search Sellers">
+    <input type="date" name="from" value="<?= (isset($_GET['from']))?$input->get('from'):''; ?>" max="<?= date("Y-m-d") ?>" class="form-control" placeholder="From">
+    <input type="date" name="to" value="<?= (isset($_GET['to']))?$input->get('to'):''; ?>" max="<?= date("Y-m-d") ?>" class="form-control" placeholder="To">
     <div class="input-group-append">
       <button class="btn btn-success" type="submit"><i class="fa fa-search"></i> Filter</button>
     </div>

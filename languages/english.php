@@ -10,6 +10,8 @@ $lang["join_now"] = "Join Now";
 $lang["mobile_join_now"] = "Join";
 $lang['no_results'] = "No Results Found.";
 
+$lang['more'] = "More";
+
 // User Logged In Menu Items
 $lang["menu"]["dashboard"] = "Dashboard";
 $lang["menu"]["notifications"] = "Notifications";
@@ -231,10 +233,10 @@ $lang["start_selling"]['column_4']['title'] = "Deliver Masterpieces";
 $lang["start_selling"]['column_4']['desc'] = "Once you've received orders, try your very best to satisfy your customers. This is very important for return customers and amazing reviews. Communication is key, make sure you are in touch with your customer.";
 
 $lang["start_selling"]['column_5']['title'] = "Rate Your Customers";
-$lang["start_selling"]['column_5']['desc'] = "A lot of customers do check their own ratings. It is important to rate customers based on their behaviour during the order process. This is important for other sellers, and for the admins. Most sellers give 5 stars.";
+$lang["start_selling"]['column_5']['desc'] = "A lot of customers do check their own ratings. It is important to rate customers based on their behavior during the order process. This is important for other sellers, and for the admins. Most sellers give 5 stars.";
 
 $lang["start_selling"]['column_6']['title'] = "Get Paid. On Time.";
-$lang["start_selling"]['column_6']['desc'] = "Get paid on time, every time. After the clearnace period, payment is transferred to you. Our system lets you transfer funds from our system to your PayPal, Mobile Money, Payoneer or Crypto account.";
+$lang["start_selling"]['column_6']['desc'] = "Get paid on time, every time. After the clearance period, payment is transferred to you. Our system lets you transfer funds from our system to your PayPal, Mobile Money, Payoneer or Crypto account.";
 
 /// Dashboard Page
 $lang["dashboard"]['my_contacts'] = "My Contacts";
@@ -250,10 +252,37 @@ $lang["dashboard"]['open_purchases'] = "Open Purchases";
 $lang["dashboard"]['balance'] = "Balance";
 $lang["dashboard"]['earnings'] = "Earnings(Month)";
 
+$lang["dashboard"]['payout_date'] = "Payout Date";
+
 $lang["dashboard"]['no_notifications'] = "No Notifications Are Available.";
 $lang["dashboard"]['no_messages'] = "No Messages.";
 
 /// Single Proposal Page
+
+$lang['proposal']['nav']['introduction'] = "Introduction";
+$lang['proposal']['nav']['details'] = "Proposal Details";
+$lang['proposal']['nav']['faq'] = "FAQ";
+$lang['proposal']['nav']['reviews'] = "Reviews";
+$lang['proposal']['nav']['related'] = "Related Proposals";
+$lang['proposal']['nav']['message_seller'] = "Message the Seller";
+$lang['proposal']['nav']['order_now'] = "Order Now";
+$lang['proposal']['nav']['already_in_cart'] = "Already Added";
+$lang['proposal']['nav']['add_to_cart'] = "Add To Cart";
+
+$lang['proposal']['about'] = "About This Proposal";
+$lang['proposal']['faq'] = "Frequently Asked Questions";
+$lang['proposal']['reviews'] = "Reviews";
+
+$lang['proposal']['most_recent'] = "Most Recent";
+$lang['proposal']['positive_reviews'] = "Positive Reviews";
+$lang['proposal']['negative_reviews'] = "Negative Reviews";
+
+
+$lang['proposal']['no_reviews'] = "This proposal/service has no reviews yet. Be the first to post in a review.";
+$lang['proposal']['no_positive_reviews'] = "This proposal/service has no reviews yet. Be the first to post in a review.";
+$lang['proposal']['no_negative_reviews'] = "This proposal/service has no reviews yet. Be the first to post in a review.";
+
+
 $lang['proposal']['how_it_works']['title'] = "100% Secured";
 $lang['proposal']['how_it_works']['desc'] = "The task will be completed, or money back guaranteed.";
 $lang['proposal']['how_it_works']['column_1'] = "You pay the proposal/service price listed above.";
@@ -263,6 +292,7 @@ $lang['proposal']['how_it_works']['button'] = "How It Works";
 $lang['proposal']['other_proposals'] = "Other Proposals/Services Offered By {seller_user_name}";
 $lang['proposal']['no_other_proposals'] = "<i class='fa fa-meh-o'></i> This seller has no other proposals/services.";
 $lang['proposal']['recently_viewed'] = "Recently Viewed Proposals/Services";
+
 ///Packages
 $lang['packages']['basic'] = "Basic";
 $lang['packages']['standard'] = "Standard";
@@ -282,6 +312,7 @@ $lang['tabs']['delivered'] = "DELIVERED";
 $lang['tabs']['completed'] = "COMPLETED";
 $lang['tabs']['cancelled'] = "CANCELLED";
 $lang['tabs']['all'] = "ALL";
+
 /// My Proposals Tabs
 $lang['tabs']['active_proposals'] = "Active Proposals";
 $lang['tabs']['pause_proposals'] = "Paused Proposals";
@@ -289,17 +320,21 @@ $lang['tabs']['pending_proposals'] = "Pending Proposals";
 $lang['tabs']['requires_modification'] = "Requires Modification";
 $lang['tabs']['draft'] = "Draft";
 $lang['tabs']['declined'] = "Declined";
+
 /// Requests Tabs
 $lang['tabs']['active_requests'] = "Active Requests";
 $lang['tabs']['pause_requests'] = "Paused Requests";
 $lang['tabs']['pending_approval'] = "Pending Approval";
 $lang['tabs']['unapproved'] = "Unapproved";
+
 /// Manage Contacts Tabs
 $lang['tabs']['my_buyers'] = "My Buyers";
 $lang['tabs']['my_sellers'] = "My Sellers";
+
 /// Buyer Requests Tabs
 $lang['tabs']['active2'] = "Active";
 $lang['tabs']['offers_sent'] = "Offers Sent";
+
 /// Website All Tabs Translation Ends ////
 
 /// My User/Proposals Referrals Page
@@ -364,9 +399,10 @@ $lang["availRevenue"] = "You can get your available revenue (%s) by %s in your p
 // Proposals Gallery
 $lang['proposals']['gallery_title'] = "Build Your Proposal Gallery";
 $lang['proposals']['gallery_descrption'] = "Add memorable content to your gallery to set yourself apart from competitors.";
-$lang['proposals']['proposals_photos'] = "Proposal Photos ";
+$lang['proposals']['proposals_photos'] = "Proposal Photos/Audio";
 $lang['proposals']['proposals_photos_description'] = "Upload Photos that describe or related to your proposal.your image size must be 700 x 390 pixels.";
-$lang['proposals']['browse_image'] = "Browse Image";
+$lang['proposals']['browse_image'] = "Browse Image/Audio";
+$lang['proposals']['browse_image/audio'] = "Browse Image/Audio";
 $lang['proposals']['remove'] = "Remove";
 $lang['proposals']['add_proposal_video'] = "Add Proposal Video";
 $lang['proposals']['add_video_description'] = "(Optional) Supported Video Extensions Include : 'mp4','mov','avi','flv','wmv'.";
@@ -377,7 +413,7 @@ $lang['proposals']['remove_video'] = "Remove Video";
 
 $lang["pages"] = "PAGES";
 
-// Blog
+// Blog 2.0
 $lang["blog"]['title'] = "Blog";
 $lang["blog"]['desc'] = "Secure, innovative and user friendly platform for buying and selling online services/proposals.";
 
@@ -470,7 +506,6 @@ $lang['placeholder']['account_number'] = "Enter Account Number";
 $lang['placeholder']['account_owner'] = "Enter Account/Owner Name";
 $lang['placeholder']['wallet_address'] = "Enter Wallet Address";
 
-
 $lang['placeholder']['search_questions'] = "Search Questions";
 $lang['placeholder']['type_message'] = "Type your Message Here";
 
@@ -536,7 +571,6 @@ $lang['button']['submit_request2'] = "Submit Request";
 $lang['button']['most_recent'] = "Most Recent";
 $lang['button']['positive_reviews'] = "Positive Reviews";
 $lang['button']['negative_reviews'] = "Negative Reviews";
-
 
 $lang['button']['accept_offer'] = "Accept Offer";
 $lang['button']['offer_accepted'] = "Offer Accepted";
@@ -753,7 +787,6 @@ $lang['tabs']['requirements'] = "Requirements";
 $lang['tabs']['gallery'] = "Gallery";
 $lang['tabs']['publish'] = "Publish";
 $lang['tabs']['submit_for_approval'] = "Submit For Approval";
-
 
 $lang['edit_proposal']['instant_delivery']['title'] = "Instant Delivery";
 $lang['edit_proposal']['instant_delivery']['enable'] = "Enable Instant Delivery:";

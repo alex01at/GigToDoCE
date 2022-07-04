@@ -15,7 +15,7 @@ require_once("functions/functions.php");
 	<meta name="author" content="<?= $site_author; ?>">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-  <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+  	<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/categories_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">

@@ -1,4 +1,12 @@
 <?php
+
+if($reason == "referral_approved"){
+	return "Has approved your user referral. you have got the commission.";
+}
+if($reason == "proposal_referral_approved"){
+	return "Has approved your proposal referral. you have got the commission.";
+}
+
 if($reason == "modification"){
 	return "Has sent modification to your proposal.";
 }

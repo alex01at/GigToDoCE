@@ -1,40 +1,56 @@
 <div class="mp-gig-top-nav">
   <nav>
     <ul class="container text-center" id="mainNav">
+
       <li class="selected">
-        <a href="#introduction" class="gig-page-nav-link">Introduction</a>
+        <a href="#introduction" class="gig-page-nav-link"><?= $lang['proposal']['nav']['introduction']; ?></a>
       </li>
+
       <li>
-        <a href="#details" class="gig-page-nav-link">Proposal Details</a>
+        <a href="#details" class="gig-page-nav-link"><?= $lang['proposal']['nav']['details']; ?></a>
       </li>
+
       <?php if($count_faq != 0){ ?>
       <li>
-        <a href="#faq" class="gig-page-nav-link">FAQ</a>
+        <a href="#faq" class="gig-page-nav-link"><?= $lang['proposal']['nav']['faq']; ?></a>
       </li>
       <?php } ?>
+
       <li>
-        <a href="#reviews" class="gig-page-nav-link">Reviews</a>
+        <a href="#reviews" class="gig-page-nav-link"><?= $lang['proposal']['nav']['reviews']; ?></a>
       </li>
+
       <li>
-        <a href="#related" class="gig-page-nav-link">Related Proposals</a>
+        <a href="#related" class="gig-page-nav-link"><?= $lang['proposal']['nav']['related']; ?></a>
       </li>
+
       <?php if($proposal_seller_vacation == "off"){ ?>
       <li>
-      <a href="#redirect" onclick="window.location.href='../../conversations/message.php?seller_id=<?= $proposal_seller_id; ?>'" class="gig-page-nav-link"> <i class="fa fa-comments-o fa-lg" aria-hidden="true"></i> Message the Seller</a>
+      <a href="#redirect" onclick="window.location.href='../../conversations/message.php?seller_id=<?= $proposal_seller_id; ?>'" class="gig-page-nav-link"> 
+        <i class="fa fa-comments-o fa-lg"></i> <?= $lang['proposal']['nav']['message_seller']; ?></a>
       </li>
       <?php } ?>
+  
       <?php if($proposal_price != 0){ ?>
       <li class="btns d-none float-right">
-        <button class="order-now btn btn-secondary">(<?= showPrice($proposal_price,"total-price") ?>)</button>
+        <button class="order-now btn btn-secondary">
+          <?= $lang['proposal']['nav']['order_now']; ?> (<?= showPrice($proposal_price,"total-price") ?>)
+        </button>
       </li>
       <?php } ?>
+  
       <li class="btns d-none float-right">
-      <?php if(@$count_p_cart == 1){ ?>
-      <button class="btn btn-secondary"><?php include("../images/svg/cart.svg"); ?> Already Added</button>
-      <?php }else{ ?>
-      <button class="add-to-cart btn btn-secondary"><?php include("../images/svg/cart.svg"); ?> Add To Cart</button>
-      <?php } ?>
+        <?php if(@$count_p_cart == 1){ ?>
+          <button class="btn btn-secondary">
+            <?php include("../images/svg/cart.svg"); ?> <?= $lang['proposal']['nav']['already_in_cart']; ?>
+          </button>
+        <?php }else{ ?>
+          <button class="add-to-cart btn btn-secondary">
+            <?php include("../images/svg/cart.svg"); ?> <?= $lang['proposal']['nav']['add_to_cart']; ?>
+          </button>
+        <?php } ?>
       </li>
+      
     </ul>
   </nav>
 </div>
@@ -268,11 +284,13 @@
         ?> </span>
         </div>
         <div class="float-right">
-        <button id="dropdown-button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"> Most Recent </button>
+        <button id="dropdown-button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+          <?= $lang['button']['most_recent']; ?>
+        </button>
         <ul class="dropdown-menu proposalDropdown" style="width: auto !important;">
-        <li class="dropdown-item active all">Most Recent</li>
-        <li class="dropdown-item  good">Positive Reviews</li>
-        <li class="dropdown-item  bad">Negative Reviews</li>
+          <li class="dropdown-item active all"><?= $lang['button']['most_recent']; ?></li>
+          <li class="dropdown-item good"><?= $lang['button']['positive_reviews']; ?></li>
+          <li class="dropdown-item bad"><?= $lang['button']['negative_reviews']; ?></li>
         </ul>
         </div>
         </h4>

@@ -55,9 +55,9 @@ $referral_money = $row_general_settings->referral_money;
 
 <div class="container-fluid">
 
-<div class="row">
+<div class="row justify-content-center">
 
-<div class="col-lg-10 col-md-10 mt-5 mb-5">
+<div class="col-lg-9 col-md-10 mt-5 mb-5">
 
 <div class="card rounded-0">
 

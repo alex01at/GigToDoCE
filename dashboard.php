@@ -28,35 +28,43 @@
 
   if(isset($_GET['n_id'])){
     $notification_id = $input->get('n_id');
-    $get_notification = $db->select("notifications",array("notification_id" => $notification_id,"receiver_id" => $login_seller_id));
-    if($get_notification->rowCount() == 0){echo "<script>window.open('dashboard','_self')</script>";}else{
-    $row_notification = $get_notification->fetch();
-    $order_id = $row_notification->order_id;
-    $reason = $row_notification->reason;
-    $update_notification = $db->update("notifications",array("status" => 'read'),array("notification_id" => $notification_id));
-    if($update_notification){
-      if($reason == "modification" or $reason == "approved" or $reason == "declined"){
-        echo "<script>window.open('proposals/view_proposals','_self');</script>";
-      }else if($reason == "offer"){
-      echo "<script>window.open('$site_url/requests/view_offers?request_id=$order_id','_self')</script>";
-      }elseif($reason == "approved_request" or $reason == "unapproved_request"){
-       echo "<script>window.open('requests/manage_requests','_self');</script>";
-      }elseif($reason == "withdrawal_approved" or $reason == "withdrawal_declined"){
-       echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
-      }else{
-        echo "<script>window.open('order_details?order_id=$order_id','_self');</script>";
+    $get_notification = $db->select("notifications",["notification_id" => $notification_id,"receiver_id" => $login_seller_id]);
+    if($get_notification->rowCount() == 0){
+      echo "<script>window.open('dashboard','_self')</script>";
+    }else{
+      $row_notification = $get_notification->fetch();
+      $order_id = $row_notification->order_id;
+      $reason = $row_notification->reason;
+      $update_notification = $db->update("notifications",["status" => 'read'],["notification_id" => $notification_id]);
+      if($update_notification){
+        if($reason == "modification" or $reason == "approved" or $reason == "declined"){
+          echo "<script>window.open('proposals/view_proposals','_self');</script>";
+        }else if($reason == "offer"){
+          echo "<script>window.open('$site_url/requests/view_offers?request_id=$order_id','_self')</script>";
+        }elseif($reason == "approved_request" or $reason == "unapproved_request"){
+          echo "<script>window.open('requests/manage_requests','_self');</script>";
+        }elseif($reason == "withdrawal_approved" or $reason == "withdrawal_declined"){
+          echo "<script>window.open('withdrawal_requests?id=$order_id','_self');</script>";
+        }elseif($reason == "referral_approved"){
+          echo "<script>window.open('my_referrals','_self');</script>";
+        }elseif($reason == "proposal_referral_approved"){
+          echo "<script>window.open('proposal_referrals','_self');</script>";
+        }else{
+          echo "<script>window.open('order_details?order_id=$order_id','_self');</script>";
+        }
       }
-    }
     }
   }
   
   if(isset($_GET['delete_notification'])){
-  $delete_id = $input->get('delete_notification');
-  $delete_notification = $db->delete("notifications",array('notification_id' => $delete_id,"receiver_id" => $login_seller_id)); 
-  if($delete_notification->rowCount() == 1){
-  echo "<script>alert('One notification has been deleted.')</script>";
-  echo "<script>window.open('dashboard','_self')</script>";
-  }else{ echo "<script>window.open('dashboard','_self')</script>"; }
+    $delete_id = $input->get('delete_notification');
+    $delete_notification = $db->delete("notifications",['notification_id' => $delete_id,"receiver_id" => $login_seller_id]); 
+    if($delete_notification->rowCount() == 1){
+      echo "<script>alert('One notification has been deleted.')</script>";
+      echo "<script>window.open('dashboard','_self')</script>";
+    }else{ 
+      echo "<script>window.open('dashboard','_self')</script>"; 
+    }
   }
 
   $select = $db->select("seller_payment_settings",["level_id"=>$login_seller_level]);
@@ -290,7 +298,7 @@
             <?php
             
             if($count_all_inbox_sellers == 0){
-            echo "<h5 class='text-center mb-3'> {$lang["dashboard"]['no_messages']} </h5>";
+              echo "<h5 class='text-center mb-3'> {$lang["dashboard"]['no_messages']} </h5>";
             }
 
             $select_inbox_sellers = $db->query("select * from inbox_sellers where (receiver_id='$login_seller_id' or sender_id='$login_seller_id') AND NOT message_status='empty' order by 1 DESC LIMIT 0,4");

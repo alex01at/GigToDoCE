@@ -25,6 +25,7 @@
   $enable_stripe = $row_payment_settings->enable_stripe;
   $stripe_secret_key = $row_payment_settings->stripe_secret_key;
   $stripe_publishable_key = $row_payment_settings->stripe_publishable_key;
+  $stripe_webhook_key = $row_payment_settings->stripe_webhook_key;
   $stripe_currency_code = $row_payment_settings->stripe_currency_code;
   
   $enable_coinpayments = $row_payment_settings->enable_coinpayments;
@@ -183,7 +184,7 @@
                   <!--- input-group Starts --->
                   <input type="number" name="featured_duration" class="form-control" value="<?= $featured_duration; ?>" min="1" placeholder="1 Minimum" required="">
                   <span class="input-group-addon">
-                  <b>Days</b>
+                    <b>Days</b>
                   </span>
                 </div>
                 <!--- input-group Ends --->
@@ -226,7 +227,7 @@
                   <?php }else{ ?> 
                   <span class="input-group-addon"><b>%</b></span>
                   <?php } ?>
-                  <input type="number" name="processing_fee" class="form-control" value="<?= $processing_fee; ?>" min="1" placeholder="1 Minimum" required="">
+                  <input type="number" name="processing_fee" class="form-control" value="<?= $processing_fee; ?>" min="0" placeholder="Enter Processing Fee" required="">
                 </div>
               </div>
             </div>
@@ -524,14 +525,33 @@
               </div>
             </div>
             <!--- form-group row Ends --->
-            <div class="form-group row">
-              <!--- form-group row Starts --->
+
+            <div class="form-group row"><!--- form-group row Starts --->
               <label class="col-md-3 control-label"> Stripe Publishable Key : </label>
               <div class="col-md-6">
                 <input type="text" name="stripe_publishable_key" class="form-control" value="<?= $stripe_publishable_key; ?>">
               </div>
             </div>
             <!--- form-group row Ends --->
+
+
+            <div class="form-group row"><!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Stripe Webhook Secret Key : </label>
+              <div class="col-md-6">
+                <input type="text" name="stripe_webhook_key" class="form-control" value="<?= $stripe_webhook_key; ?>">
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
+            <div class="form-group row"><!--- form-group row Starts --->
+              <label class="col-md-3 control-label"> Stripe Webhook Url : </label>
+              <div class="col-md-6">
+                <input type="text" disabled=""  class="form-control" value="<?= $site_url."/stripe_webhook"; ?>">
+                <small class="text-muted">Paste This Url In Stripe In When You Creating Webhook</small>
+              </div>
+            </div>
+            <!--- form-group row Ends --->
+
             <div class="form-group row">
               <!--- form-group row Starts --->
               <label class="col-md-3 control-label"> Stripe Currency Code : </label>

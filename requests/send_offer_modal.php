@@ -10,36 +10,24 @@ if(!isset($_SESSION['seller_user_name'])){
 	
 }
 
+$relevant_requests = $row_general_settings->relevant_requests;
+
 $login_seller_user_name = $_SESSION['seller_user_name'];
-
 $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
-
 $row_login_seller = $select_login_seller->fetch();
-
 $login_seller_id = $row_login_seller->seller_id;
-
 
 $request_id = $input->post('request_id');
 
-
 $get_requests = $db->select("buyer_requests",array("request_id" => $request_id));
-
 $row_requests = $get_requests->fetch();
-
 $request_title = $row_requests->request_title;
-
 $request_description = $row_requests->request_description;
-
 $child_id = $row_requests->child_id;
-
 $request_seller_id = $row_requests->seller_id;
 
-
-
 $select_request_seller = $db->select("sellers",array("seller_id" => $request_seller_id));
-
 $row_request_seller = $select_request_seller->fetch();
-
 $request_seller_image = $row_request_seller->seller_image;
 
 ?>
@@ -88,10 +76,15 @@ $request_seller_image = $row_request_seller->seller_image;
 
 				<div class="request-proposals-list">
                     
-                    <?php
+               <?php
 
-                    $get_proposals = $db->select("proposals",array("proposal_child_id"=>$child_id,"proposal_seller_id"=>$login_seller_id,"proposal_status"=>"active"));
 
+               if($relevant_requests == "yes"){
+               	$get_proposals = $db->select("proposals",array("proposal_child_id"=>$child_id,"proposal_seller_id"=>$login_seller_id,"proposal_status"=>"active"));
+               }else{
+               	$get_proposals = $db->select("proposals",array("proposal_seller_id"=>$login_seller_id,"proposal_status"=>"active"));
+               }
+               
 					while($row_proposals = $get_proposals->fetch()){
 
 					$proposal_id = $row_proposals->proposal_id;
@@ -100,7 +93,7 @@ $request_seller_image = $row_request_seller->seller_image;
 
 					$proposal_img1 = getImageUrl2("proposals","proposal_img1",$row_proposals->proposal_img1);
 
-                    ?>
+               ?>
 
 					<div class="proposal-picture">
 

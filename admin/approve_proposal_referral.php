@@ -36,6 +36,9 @@ if(isset($_GET['approve_proposal_referral'])){
 
    if($update_referral){
 
+      $n_date = date("F d, Y");
+      $insert_notification = $db->insert("notifications",array("receiver_id" => $referrer_id,"sender_id" => "admin_$admin_id","order_id" => $referral_id,"reason" => "proposal_referral_approved","date" => $n_date,"status" => "unread"));
+
       $insert_log = $db->insert_log($admin_id,"proposal_referral",$referral_id,"approved");
 
       echo "<script>alert('Referral approved successfully. Commission has be added to $referrer_user_name shopping balance.');</script>";

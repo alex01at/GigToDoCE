@@ -12,9 +12,11 @@ $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 $login_seller_email = $row_login_seller->seller_email;
+
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
 $enable_paypal = $row_payment_settings->enable_paypal;
+$paypal_client_id = $row_payment_settings->paypal_app_client_id;
 $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;
@@ -78,6 +80,7 @@ $proposal_title = $row_proposals->proposal_title;
 $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_settings->site_logo);
 
 ?>
+
 <div id="accept-offer-modal" class="modal">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -227,51 +230,23 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 			<button class="btn btn-secondary" data-dismiss="modal"> Close </button>
             <?php if($current_balance >= $amount){ ?>
 		    <form action="../shopping_balance" method="post" id="shopping-balance-form">
-				<button class="btn btn-success" type="submit" name="message_offer_submit_order" onclick="return confirm('Are you sure you want to pay the featured listing fee with your shopping balance ?')">
-					<?= $lang['button']['pay_with_shopping']; ?>
-				</button>
-			</form>
+				  <button class="btn btn-success" type="submit" name="message_offer_submit_order" onclick="return confirm('Are you sure you want to pay the featured listing fee with your shopping balance ?')">
+					 <?= $lang['button']['pay_with_shopping']; ?>
+				  </button>
+			   </form>
            <br>
+
          <?php } ?>
-		<?php if($enable_paypal == "yes"){ ?>
-		<form action="paypal_charge" method="post" id="paypal-form"><!--- paypal-form Starts --->
-		<button type="submit" name="paypal" class="btn btn-success"><?= $lang['button']['pay_with_paypal']; ?></button>
-		</form><!--- paypal-form Ends --->
+		
+      <?php if($enable_paypal == "yes"){ ?>
+         <div id="paypal-form" class="paypal-button-container"></div>
 		<?php } ?>
+
 		<?php if($enable_stripe == "yes"){ ?>
-		<?php 
-		require_once("../stripe_config.php");
-		$stripe_total_amount = $total * 100;
-		?>
 		<form action="stripe_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
-		<input
-		type="submit"
-		class="btn btn-success stripe-submit"
-		value="<?= $lang['button']['pay_with_stripe']; ?>"
-		data-dismiss="modal"
-		data-key="<?= $stripe['publishable_key']; ?>"
-		data-amount="<?= $stripe_total_amount; ?>"
-		data-currency="<?= $stripe['currency_code']; ?>"
-		data-email="<?= $login_seller_email; ?>"
-		data-name="<?= $site_name; ?>"
-		data-image="<?= $site_logo_image; ?>"
-		data-description="<?= $proposal_title; ?>"
-		data-allow-remember-me="false">
-		<script>
-		$(document).ready(function() {
-         $('.stripe-submit').on('click', function(event) {
-                event.preventDefault();
-                var $button = $(this),
-                    $form = $button.parents('form');
-                var opts = $.extend({}, $button.data(), {
-                    token: function(result) {
-                        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-                    }
-                });
-                StripeCheckout.open(opts);
-            });
-        });
-		</script>
+
+      <input name="stripe" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_stripe']; ?>"/>
+
 		</form><!--- credit-card-form Ends --->
 		<?php } ?>
 		<?php if($enable_2checkout == "yes"){ ?>
@@ -314,6 +289,13 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 </div><!-- accpet-offer-modal Ends -->
 
 <?php include("../includes/comp/mobile_money_modal.php"); ?>
+
+<script 
+   src="../js/paypal.js" 
+   id="paypal-js" 
+   data-base-url="<?= $site_url; ?>" 
+   data-payment-type="message_offer">
+</script>
 
 <script>
 $(document).ready(function(){
@@ -371,6 +353,7 @@ $(document).ready(function(){
    $('#shopping-balance').click(function(){
    	$('.total-price').html('<?= showPrice($amount); ?>');
    	$('.processing-fee').hide();
+    $('#mobile-money-form').hide();
    	$('#credit-card-form').hide();
    	$('#2checkout-form').hide();
    	$('#paypal-form').hide();
@@ -379,6 +362,7 @@ $(document).ready(function(){
    	$('#mercadopago-form').hide();
    	$('#paystack-form').hide();
    });
+
    $('#paypal').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
@@ -391,17 +375,20 @@ $(document).ready(function(){
    	$('#mercadopago-form').hide();
    	$('#paystack-form').hide();
    });
+
    $('#credit-card').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
    	$('#mobile-money-form').hide();
    	$('#credit-card-form').show();
+    $('#2checkout-form').hide();
    	$('#paypal-form').hide();
    	$('#shopping-balance-form').hide();
    	$('#coinpayments-form').hide();
    	$('#mercadopago-form').hide();
    	$('#paystack-form').hide();
    });
+
    $('#2checkout').click(function(){
    	$('.processing-fee').show();
    	$('#mobile-money-form').hide();
@@ -413,6 +400,7 @@ $(document).ready(function(){
    	$('#paystack-form').hide();
    	$('#mercadopago-form').hide();
    });
+
    $('#mercadopago').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
@@ -422,8 +410,9 @@ $(document).ready(function(){
    	$('#paystack-form').hide();
    	$('#mercadopago-form').show();
    	$('#shopping-balance-form').hide();
-      $('#2checkout-form').hide();
+    $('#2checkout-form').hide();
    });
+
    $('#coinpayments').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
@@ -431,11 +420,12 @@ $(document).ready(function(){
    	$('#credit-card-form').hide();
    	$('#2checkout-form').hide();
    	$('#paypal-form').hide();
-       $('#coinpayments-form').show();
-       $('#paystack-form').hide();
+    $('#coinpayments-form').show();
+    $('#paystack-form').hide();
    	$('#mercadopago-form').hide();
    	$('#shopping-balance-form').hide();
    });
+
    $('#paystack').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
@@ -448,6 +438,7 @@ $(document).ready(function(){
    	$('#paypal-form').hide();
    	$('#shopping-balance-form').hide();
    });
+
    $('#mobile-money').click(function(){
    	$('.total-price').html('<?= showPrice($total); ?>');
    	$('.processing-fee').show();
@@ -460,5 +451,6 @@ $(document).ready(function(){
    	$('#paystack-form').hide();
    	$('#mercadopago-form').hide();
    });
+
 });
 </script>

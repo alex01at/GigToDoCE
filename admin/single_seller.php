@@ -76,7 +76,7 @@ echo "<script>window.open('login','_self');</script>";
     <h4 class="h4">
 
         <i class="fa fa-info-circle text-success"></i>
-        <?= ucfirst($seller_user_name); ?>'s Info
+        <?= $seller_user_name; ?>'s Info
 
     </h4>
 
@@ -102,7 +102,7 @@ echo "<script>window.open('login','_self');</script>";
                 <div class="seller-info-title">
                     <!--- seller-info-title Starts --->
 
-                    <span class="seller-info-inner"> <?= $seller_user_name; ?> </span>
+                    <span class="seller-info-inner text-capitalize"> <?= $seller_user_name; ?> </span>
 
                     <span class="seller-info-type"> <?= $seller_country; ?> </span>
 
@@ -121,41 +121,35 @@ echo "<script>window.open('login','_self');</script>";
 
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Full Name : </span>
-                        <?= $seller_name; ?>
+                        <span class="font-weight-bold"> Full Name : </span> <?= $seller_name; ?>
 
                     </p>
 
 
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Username : </span>
-                        <?= $seller_user_name; ?>
+                        <span class="font-weight-bold"> Username : </span> <?= $seller_user_name; ?>
 
                     </p>
 
 
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Email : </span>
-                        <?= $seller_email; ?>
+                        <span class="font-weight-bold"> Email : </span> <?= $seller_email; ?>
 
                     </p>
 
 
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Level : </span>
-                        <?= $level_title; ?>
+                        <span class="font-weight-bold"> Level : </span> <?= $level_title; ?>
 
                     </p>
 
 
                     <p class="lead">
 
-                        <span class="font-weight-bold"> Main Conversational Language : </span>
-
-                        <?= $language_title; ?>
+                        <span class="font-weight-bold"> Main Conversational Language : </span> <?= $language_title; ?>
 
                     </p>
 
@@ -212,11 +206,9 @@ echo "<script>window.open('login','_self');</script>";
                     <?= $seller_headline; ?>
                 </p>
 
-            </div>
-            <!--- mb-3 Ends --->
+            </div><!--- mb-3 Ends --->
 
-            <div class="mb-3">
-                <!--- mb-3 Starts --->
+            <div class="mb-3"><!--- mb-3 Starts --->
 
                 <hr class="dotted">
 
@@ -224,17 +216,13 @@ echo "<script>window.open('login','_self');</script>";
 
                 <p><?= $seller_about; ?></p>
 
-            </div>
-            <!--- mb-3 Ends --->
+            </div><!--- mb-3 Ends --->
 
-        </div>
-        <!--- col-md-4 Ends --->
+        </div><!--- col-md-4 Ends --->
 
-        <div class="col-md-8">
-            <!--- col-md-8 Starts --->
+        <div class="col-md-8"><!--- col-md-8 Starts --->
 
-            <h3 class="pb-1">
-                <?= ucfirst($seller_user_name); ?>'s Orders </h3>
+            <h3 class="pb-1"><?= $seller_user_name; ?>'s Orders </h3>
 
             <div class="row box">
                 <!--- row box Starts --->
@@ -242,7 +230,7 @@ echo "<script>window.open('login','_self');</script>";
                 <div class="text-center border-box col-md-3">
                     <!--- text-center border-box col-md-3 Starts --->
 
-                    <p> Cancelled Orders </p>
+                    <p> Canceled Orders </p>
 
                     <?php
 
@@ -250,28 +238,24 @@ echo "<script>window.open('login','_self');</script>";
 
                     ?>
 
-                        <h2>
-                            <?= $count_orders; ?>
-                        </h2>
+                    <h2><?= $count_orders; ?></h2>
 
-                </div>
-                <!--- text-center border-box col-md-3 Ends --->
+                </div><!--- text-center border-box col-md-3 Ends --->
 
 
-                <div class="text-center border-box col-md-3">
-                    <!--- text-center border-box col-md-3 Starts --->
+                <div class="text-center border-box col-md-3"><!--- text-center border-box col-md-3 Starts --->
 
                     <p> Delivered Orders </p>
 
                     <?php
 
-                        $count_orders = $db->count("orders",["seller_id"=>$seller_id,"order_status"=>'delivered']);
+                    $count_orders = $db->count("orders",["seller_id"=>$seller_id,"order_status"=>'delivered']);
 
                     ?>
 
-                        <h2>
-                            <?= $count_orders; ?>
-                        </h2>
+                    <h2>
+                        <?= $count_orders; ?>
+                    </h2>
 
                 </div>
                 <!--- text-center border-box col-md-3 Ends --->
@@ -288,9 +272,9 @@ echo "<script>window.open('login','_self');</script>";
 
                     ?>
 
-                        <h2>
-                            <?= $count_orders; ?>
-                        </h2>
+                    <h2>
+                        <?= $count_orders; ?>
+                    </h2>
 
                 </div>
                 <!--- text-center border-box col-md-3 Ends --->
@@ -309,13 +293,13 @@ echo "<script>window.open('login','_self');</script>";
 
                     ?>
 
-                     <h2><?= $count_orders; ?></h2>
+                    <h2><?= $count_orders; ?></h2>
 
                 </div><!--- text-center border-box col-md-3 Ends --->
 
             </div><!--- row box Ends --->
 
-            <h3 class="pb-1"><?=  ucfirst($seller_user_name); ?>'s Earnings</h3>
+            <h3 class="pb-1"><?=  $seller_user_name; ?>'s Earnings</h3>
 
             <div class="row box"><!--- row box Starts --->
 
@@ -360,7 +344,7 @@ echo "<script>window.open('login','_self');</script>";
 
             </div><!--- row box Ends --->
 
-            <h2><?=  ucfirst($seller_user_name); ?>'s Proposals/Services</h2>
+            <h2><?=  $seller_user_name; ?>'s Proposals/Services</h2>
 
             <div class="table-responsive pt-1">
                 <!--- table-responsive mt-4 Starts --->
@@ -425,30 +409,29 @@ echo "<script>window.open('login','_self');</script>";
 
                         ?>
 
-                            <tr>
+                        <tr>
 
-                                <td>
-                                    <?= $proposal_title; ?>
-                                </td>
+                            <td>
+                                <?= $proposal_title; ?>
+                            </td>
 
-                                <td>
+                            <td>
 
-                                    <img src="<?= $proposal_img1; ?>" width="60" height="60">
+                                <img src="<?= $proposal_img1; ?>" width="60" height="60">
 
-                                </td>
+                            </td>
 
-                                <td>
-                                    <?= $proposal_price; ?>
-                                </td>
+                            <td>
+                                <?= $proposal_price; ?>
+                            </td>
 
-                                <td>
-                                    <?= $proposal_status; ?>
-                                </td>
+                            <td>
+                                <?= $proposal_status; ?>
+                            </td>
 
+                        </tr>
 
-                            </tr>
-
-                            <?php } ?>
+                        <?php } ?>
 
                     </tbody><!--- tbody Ends --->
 

@@ -26,14 +26,14 @@
     <script src="js/sweat_alert.js"></script>
     <style>
       body {
-      background-color: #001f3f;
+        background-color: #001f3f;
       }
       .control-label {
-      font-size: 16px;
-      margin-top: 5px;
+        font-size: 16px;
+        margin-top: 5px;
       }
       .card {
-      box-shadow: 0px 0px 1px 2px #cccc;
+        box-shadow: 0px 0px 1px 2px #cccc;
       }
     </style>
   </head>
@@ -143,7 +143,7 @@
                   <div class="col-md-7 control-label h5 mt-2"> </div>
                   <div class="col-md-4">
                     <button type="submit" name="install" class="btn btn-primary form-control">
-                    Install Script <i class="fa fa-arrow-right"></i>
+                      Install Script <i class="fa fa-arrow-right"></i>
                     </button>
                   </div>
                 </div>

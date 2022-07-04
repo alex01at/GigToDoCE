@@ -159,6 +159,33 @@ $slide_image = $row_slides->slide_image;
         </div>
         <?php } ?>
       </div>
+
+      <div class="space80 hidden-xs"></div>
+      <div class="space20 visible-xs"></div>
+      <div class="row space80">
+        <?php
+          $get_categories = $db->query("select * from categories where cat_featured='yes' ".($lang_dir == "right" ? 'order by 1 DESC LIMIT 4,8':' LIMIT 8,4')."");
+          while($row_categories = $get_categories->fetch()){
+          $cat_id = $row_categories->cat_id;
+          $cat_image = getImageUrl("categories",$row_categories->cat_image);
+          $cat_url = $row_categories->cat_url;
+
+          $get_meta = $db->select("cats_meta",array("cat_id" => $cat_id, "language_id" => $siteLanguage));
+          $row_meta = $get_meta->fetch();
+          $cat_title = $row_meta->cat_title;
+        ?>
+        <div class="col-md-3 col-6">
+          <a href="categories/<?= $cat_url; ?>">
+            <div class="grn_box">
+              <img src="<?= $cat_image; ?>" class="mx-auto d-block" />
+              <p><?= $cat_title; ?></p>
+            </div>
+          </a>
+        </div>
+        <?php } ?>
+      </div>
+
+
     </div>
   </div>
 </div>

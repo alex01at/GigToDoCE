@@ -12,10 +12,10 @@ $login_seller_id = $row_login_seller->seller_id;
 $login_seller_email = $row_login_seller->seller_email;
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
+
 $enable_paypal = $row_payment_settings->enable_paypal;
-$paypal_email = $row_payment_settings->paypal_email;
-$paypal_currency_code = $row_payment_settings->paypal_currency_code;
-$paypal_sandbox = $row_payment_settings->paypal_sandbox;
+$paypal_client_id = $row_payment_settings->paypal_app_client_id;
+
 $featured_fee = $row_payment_settings->featured_fee;
 $featured_duration = $row_payment_settings->featured_duration;
 $enable_dusupay = $row_payment_settings->enable_dusupay;
@@ -194,60 +194,32 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             </div>
 		</div>
 		<div class="modal-footer">
-            <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
-             <?php if($current_balance >= $featured_fee){ ?>
-            		<form action="../shopping_balance" method="post" id="shopping-balance-form">
-							<button class="btn btn-success" type="submit" name="pay_featured_proposal_listing" onclick="return confirm('Are you sure you want to pay for the feature listing with your shopping balance ?')">
-								<?= $lang['button']['pay_with_shopping']; ?>
-							</button>
-						</form>
-                    <br>
-                   <?php } ?>
-            <?php if($enable_paypal == "yes"){ ?>
-					<form action="paypal_listing_charge" method="post" id="paypal-form">
-                   <button type="submit" name="paypal" class="btn btn-success "><?= $lang['button']['pay_with_paypal']; ?></button>
-             	</form>
-            <?php } ?>
-            <?php if($enable_stripe == "yes"){ ?>
-            <?php
-            require_once("../stripe_config.php");
-            $stripe_total_amount = $total * 100;
-            ?>
-             <form action="stripe_listing_charge" method="post" id="credit-card-form">
-					<input
-					type="submit"
-					class="btn btn-success stripe-submit"
-					value="<?= $lang['button']['pay_with_stripe']; ?>"
-					data-dismiss="modal"
-					data-key="<?= $stripe['publishable_key']; ?>"
-					data-amount="<?= $stripe_total_amount; ?>"
-					data-currency="<?= $stripe['currency_code']; ?>"
-					data-email="<?= $login_seller_email; ?>"
-					data-name="<?= $site_name ?>"
-					data-image="<?= $site_logo_image; ?>"
-					data-description="<?= $proposal_title; ?>"
-					data-allow-remember-me="true">
-					<script>
-					$(document).ready(function() {
-						$('.stripe-submit').on('click', function(event) {
-							event.preventDefault();
-							var $button = $(this),
-							    $form = $button.parents('form');
-							var opts = $.extend({}, $button.data(), {
-							    token: function(result) {
-							        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-							    }
-						});
-						StripeCheckout.open(opts);
-						});
-					});
-					</script>
-           </form>
-        <?php } ?>
-        <?php if($enable_2checkout == "yes"){ ?>
-			<form action="../plugins/paymentGateway/proposals/2checkout_listing_charge" method="post" id="2checkout-form">
-	           <button type="submit" name="2Checkout" class="btn btn-success"><?= $lang['button']['pay_with_2checkout']; ?></button>
-	     	</form>
+         <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
+          <?php if($current_balance >= $featured_fee){ ?>
+         		<form action="../shopping_balance" method="post" id="shopping-balance-form">
+						<button class="btn btn-success" type="submit" name="pay_featured_proposal_listing" onclick="return confirm('Are you sure you want to pay for the feature listing with your shopping balance ?')">
+							<?= $lang['button']['pay_with_shopping']; ?>
+						</button>
+					</form>
+               <br>
+               <?php } ?>
+
+      <?php if($enable_paypal == "yes"){ ?>
+         <div id="paypal-form" class="paypal-button-container"></div>
+      <?php } ?>
+
+      <?php if($enable_stripe == "yes"){ ?>
+      <form action="stripe_listing_charge" method="post" id="credit-card-form">
+          
+        <input name="stripe" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_stripe']; ?>"/>
+        
+      </form>
+      <?php } ?>
+
+      <?php if($enable_2checkout == "yes"){ ?>
+		<form action="../plugins/paymentGateway/proposals/2checkout_listing_charge" method="post" id="2checkout-form">
+	     <button type="submit" name="2Checkout" class="btn btn-success"><?= $lang['button']['pay_with_2checkout']; ?></button>
+      </form>
 		<?php } ?>
 
       <?php if($enable_mercadopago == "1"){ ?>
@@ -286,6 +258,13 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 </div>
 
 <?php include("../includes/comp/mobile_money_modal.php"); ?>
+
+<script 
+   src="../js/paypal.js" 
+   id="paypal-js" 
+   data-base-url="<?= $site_url; ?>" 
+   data-payment-type="featured_listing">
+</script>
 
 <script>
 $(document).ready(function(){

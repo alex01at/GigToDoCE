@@ -86,6 +86,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
           <hr>
           <?php } ?>
           <?php } ?>
+          
           <?php if($enable_paypal == "yes"){ ?>
           <div class="payment-option">
             <input type="radio" name="payment_option" id="paypal" class="radio-custom" <?php if($current_balance < $amount){ echo "checked"; } ?>>
@@ -93,6 +94,7 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
             <img src="images/paypal.png" class="img-fluid">
           </div>
           <?php } ?>
+
           <?php if($enable_stripe == "yes"){ ?>
           <?php if($enable_paypal == "yes"){ ?>
           <hr>
@@ -194,49 +196,19 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
         </form>
         <br>
         <?php } ?>
+
         <?php if($enable_paypal == "yes"){ ?>
-        <form action="orderIncludes/charge/paypal" method="post" id="paypal-form">
-          <!--- paypal-form Starts --->
-          <button type="submit" name="paypal" class="btn btn-success"><?= $lang['button']['pay_with_paypal']; ?></button>
-        </form>
-        <!--- paypal-form Ends --->
+          <div id="paypal-form" class="paypal-button-container"></div>
         <?php } ?>
+
         <?php 
         if($enable_stripe == "yes"){
-          require_once("../../stripe_config.php");
-          $total = $amount+$processing_fee;
-          $stripe_total_amount = $total * 100;
         ?>
         <form action="orderIncludes/charge/stripe" method="post" id="credit-card-form">
-          <input
-            type="submit"
-            class="btn btn-success stripe-submit"
-            value="<?= $lang['button']['pay_with_stripe']; ?>"
-            data-dismiss="modal"
-            data-key="<?= $stripe['publishable_key']; ?>"
-            data-amount="<?= $stripe_total_amount; ?>"
-            data-currency="<?= $stripe['currency_code']; ?>"
-            data-email="<?= $login_seller_email; ?>"
-            data-name="<?= $site_name; ?>"
-            data-image="<?= $site_logo_image; ?>"
-            data-description="Order Tip Payment"
-            data-allow-remember-me="false">
+
+          <input name="stripe" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_stripe']; ?>"/>
+
         </form>
-        <script>
-         $(document).ready(function() {
-            $('.stripe-submit').on('click', function(event) {
-                event.preventDefault();
-                var $button = $(this),
-                    $form = $button.parents('form');
-                var opts = $.extend({}, $button.data(), {
-                    token: function(result) {
-                        $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-                    }
-                });
-                StripeCheckout.open(opts);
-            });
-         });
-         </script>
         <?php } ?>
         
         <?php if($enable_2checkout == "yes" AND $paymentGatewayVersion >= 1.2){ ?>
@@ -278,6 +250,13 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 </div>
 
 <?php include("../../includes/comp/mobile_money_modal.php"); ?>
+
+<script 
+   src="js/paypal.js" 
+   id="paypal-js" 
+   data-base-url="<?= $site_url; ?>" 
+   data-payment-type="orderTip">
+</script>
 
 <script>
   

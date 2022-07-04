@@ -19,23 +19,27 @@ $login_seller_vacation = $row_login_seller->seller_vacation;
 	<meta name="description" content="<?= $site_desc; ?>">
 	<meta name="keywords" content="<?= $site_keywords; ?>">
 	<meta name="author" content="<?= $site_author; ?>">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="../styles/bootstrap.css" rel="stylesheet">
-    <link href="../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+   <link href="../styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="../styles/styles.css" rel="stylesheet">
 	<link href="../styles/user_nav_styles.css" rel="stylesheet">
 	<link href="../font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="../styles/owl.carousel.css" rel="stylesheet">
 	<link href="../styles/owl.theme.default.css" rel="stylesheet">
 	<script type="text/javascript" src="../js/jquery.min.js"></script>
-    <link href="../styles/sweat_alert.css" rel="stylesheet">
-    <link href="../styles/animate.css" rel="stylesheet">
-    <script type="text/javascript" src="../js/ie.js"></script>
-    <script type="text/javascript" src="../js/sweat_alert.js"></script>
+   <link href="../styles/sweat_alert.css" rel="stylesheet">
+   <link href="../styles/animate.css" rel="stylesheet">
+   <script type="text/javascript" src="../js/ie.js"></script>
+   <script type="text/javascript" src="../js/sweat_alert.js"></script>
 	<script src="https://checkout.stripe.com/checkout.js"></script>
 	<?php if(!empty($site_favicon)){ ?>
-    <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-    <?php } ?>
+      <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+   <?php } ?>
+
+  <!-- Include the PayPal JavaScript SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+
 </head>
 <body class="is-responsive">
 <?php require_once("../includes/user_header.php"); ?>

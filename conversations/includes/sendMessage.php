@@ -70,7 +70,7 @@
   <p class="mb-2 mt-2 d-none files"></p>
   <div class="custom-file float-left"><!--- custom-file float-left Starts --->
   <!-- <i class="fa fa-smile-o fa-lg text-muted"></i> -->    
-  <input type="hidden" id="sendType" value="send-msg">
+  <input type="hidden" id="sendType" value="new-line">
   <input type="hidden" id="fileVal">
   <input type="file" class="custom-file-input d-none" id="file">
   <label class="custom-file-label btn pl-0 ml-0" for="file">
@@ -86,22 +86,30 @@
   </button>
   <button type="button" class="btn btn-outline-success arrow-drop float-right" data-html="true" data-toggle="popover" data-placement="top" data-content='
   <strong>Pressing Enter will :</strong>
+  
   <label class="fake-radio-green">
     <input type="radio" name="toggle-send" value="new-line">
     <span class="radio-img"></span>
     <div>Start a new line <small>Press Ctrl+Enter to send message.</small></div>
   </label>
+
   <label class="fake-radio-green">
     <input type="radio" name="toggle-send" value="send-msg"><span class="radio-img"></span>
     <div>Send message<small>Press Shift+Enter to start a new line.</small></div>
   </label>
+  
   <script>
+  
   var current = $("#sendType").val();
+  
   $("input[value=" + current + "]").prop("checked", true);
+  
   $(".fake-radio-green input").click(function(){
-  var val = $(this).val();
-  $("#sendType").val(val);
+    var val = $(this).val();
+    $("#sendType").val(val);
+  
   });
+
   </script>'> <i class="fa fa-chevron-down"></i>
   </button>
   </form>

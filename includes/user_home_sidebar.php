@@ -7,7 +7,7 @@
 		<img src="<?= $site_url; ?>/user_images/empty-image.png"  class="img-fluid rounded-circle mb-3">
 		<?php } ?>
 		</center>
-		<h5><?= $lang['welcome']; ?>, <span class="text-success"><?= ucfirst(strtolower($login_user_name)); ?></span> </h5>
+		<h5><?= $lang['welcome']; ?>, <span class="text-success"><?= ucfirst($login_user_name); ?></span> </h5>
 		<hr>
 		<div class="row m-0"><!--- row Starts --->
 			<div class="col-lg-6 m-0 p-0 pr-2 pb-lg-0 pr-lg-2 pb-md-2 pr-sm-2"><!--- col-md-6 Starts --->
@@ -21,7 +21,11 @@
 				<?php }else{ ?>
 				<h5><a href="<?= $site_url; ?>/buying_orders"><?= $lang['user_home']['view_purchases']; ?></a></h5>
 				<?php } ?>
-				<h5><a href="<?= $site_url; ?>/settings?profile_settings"><?= $lang['user_home']['edit_profile']; ?></a></h5>
+				<h5>
+               <a href="<?= $site_url; ?>/settings?profile_settings">
+                  <?= $lang['user_home']['edit_profile']; ?>
+               </a>
+            </h5>
 				<h5 class="mb-0"><a href="<?= $site_url; ?>/settings"><?= $lang['menu']['settings']; ?></a></h5>
 			</div><!--- col-md-6 Ends --->
 		</div><!--- row Ends --->

@@ -1,4 +1,11 @@
 <?php
+
+use PayPalCheckoutSdk\Core\PayPalHttpClient;
+use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use PayPalCheckoutSdk\Core\ProductionEnvironment;    
+use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
+use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+
 class Payment{
 
 public function insert_temp_order($data,$currency='',$method=''){
@@ -67,6 +74,7 @@ public function execute_payment($reference_no,$method){
   $count_order = $get_order->rowCount();
   if($count_order == 0){
     echo "<script> window.open('$site_url/index','_self'); </script>";
+    exit();
   }
 
   if($data->type == "proposal"){
@@ -89,10 +97,10 @@ public function execute_payment($reference_no,$method){
     $_SESSION['featured_listing'] = 1;
     $_SESSION['proposal_id'] = $data->content_id;
   }elseif($data->type == "view_offers"){
-    $_SESSION['offer_id'] = $data->offer_id;
+    $_SESSION['offer_id'] = $data->content_id;
     $_SESSION['offer_buyer_id'] = $login_seller_id;
   }elseif($data->type == "message_offer"){ 
-    $_SESSION['message_offer_id'] = $data->message_offer_id;
+    $_SESSION['message_offer_id'] = $data->content_id;
     $_SESSION['message_offer_buyer_id'] = $login_seller_id;
   }
 
@@ -114,105 +122,163 @@ public function execute_payment($reference_no,$method){
 
 /// Paypal Payment Code Starts ////
 public function paypal_api_setup(){
-	global $db;
+	
+  global $db;
 	global $dir;
+
 	$get_payment_settings = $db->select("payment_settings");
 	$row_payment_settings = $get_payment_settings->fetch();
 	$paypal_app_client_id = $row_payment_settings->paypal_app_client_id;
 	$paypal_app_client_secret = $row_payment_settings->paypal_app_client_secret;
 	$paypal_sandbox = $row_payment_settings->paypal_sandbox;
-	if($paypal_sandbox == "on"){
-    $mode = "sandbox";
-	}elseif($paypal_sandbox == "off"){
-    $mode = "live";
-	}
-	require_once "$dir/vendor/autoload.php";
-	$api = new PayPal\Rest\ApiContext(
-		new PayPal\Auth\OAuthTokenCredential(
-			$paypal_app_client_id,
-			$paypal_app_client_secret
-		)
-	);
-	$api->setConfig([
-    "mode" => $mode
-	]);
-	return $api;
+
+  require "$dir/vendor/autoload.php";
+
+  // Creating an environment
+  $clientId = $paypal_app_client_id;
+  $clientSecret = $paypal_app_client_secret;
+
+  if($paypal_sandbox == "on"){
+    $environment = new SandboxEnvironment($clientId,$clientSecret);
+  }else{
+    $environment = new ProductionEnvironment($clientId,$clientSecret);
+  }
+  $client = new PayPalHttpClient($environment);
+
+	return $client;
 }
 
 public function paypal($data,$processing_fee){
 	global $db;
-	global $site_url;
+	global $site_name;
+  global $site_url;
 	
-  $this->insert_temp_order($data,"","paypal");
-
   $get_payment_settings = $db->select("payment_settings");
 	$row_payment_settings = $get_payment_settings->fetch();
 	$paypal_currency_code = $row_payment_settings->paypal_currency_code;
 
-	$api = $this->paypal_api_setup();
-	$payer = new PayPal\Api\Payer();
-	$item1 = new PayPal\Api\Item();
-	$itemList = new PayPal\Api\ItemList();
-	$details = new PayPal\Api\Details();
-	$amount = new PayPal\Api\Amount();
-	$transaction = new PayPal\Api\Transaction();
-	$payment = new PayPal\Api\Payment();
-	$redirecturls = new PayPal\Api\RedirectUrls();
-	//Payer
-	$payer->setPaymentMethod("paypal");
-	// ### Itemized information
-	$item1->setName($data['name'])->setCurrency("$paypal_currency_code")->setQuantity($data['qty'])->setPrice($data['price']);
-	$itemList->setItems(array($item1));
-	// ### Additional payment details
-	$details->setShipping(0)->setTax($processing_fee)->setSubtotal($data['sub_total']);
-	//Amount
-	$amount->setCurrency("$paypal_currency_code")->setTotal($data['total'])->setDetails($details);
-	//Transaction
-	$transaction->setAmount($amount)->setItemList($itemList)->setDescription("");
-	//Redirect Urls
-	$redirecturls->setReturnUrl("{$data['redirect_url']}")->setCancelUrl("{$data['cancel_url']}");
-	//Payment
-	$payment->setIntent("sale")->setPayer($payer)->setRedirectUrls($redirecturls)->setTransactions([$transaction]);
-	try{
-		$payment->create($api);
-		//Generate Payment-id
-		$payment_id = $payment->getId();
-		$approvalUrl = $payment->getApprovalLink();
-		echo "<script>window.open('$approvalUrl','_self')</script>";
-	}catch (Exception $ex){
-		echo "there is an error connecting to paypal api.";
-	}
+	$client = $this->paypal_api_setup();
+
+  if(!isset($data['desc'])){
+    $data['desc'] = "";
+  }
+
+  // Construct a request object and set desired parameters
+  // Here, OrdersCreateRequest() creates a POST request to /v2/checkout/orders
+  $request = new OrdersCreateRequest();
+  $request->prefer('return=representation');
+  
+  // $request->body = [];
+
+  $request->body  = [
+    'intent' => 'CAPTURE',
+    'application_context' =>[
+      'return_url' => '',
+      'cancel_url' => $site_url."/cancel_payment",
+      'brand_name' => $site_name,
+      'locale' => 'en-US',
+      // 'landing_page' => 'BILLING',
+      // 'shipping_preference' => 'SET_PROVIDED_ADDRESS',
+      // 'user_action' => 'PAY_NOW',
+    ],
+    'purchase_units' => [
+      0 => [
+        'reference_id' => mt_rand(),
+        'description' => $data['desc'],
+        'amount' => [
+          'currency_code' => $paypal_currency_code,
+          'value' => $data['total'],
+          'breakdown' => [
+            'item_total' => [
+              'currency_code' => $paypal_currency_code,
+              'value' => $data['total'],
+            ],
+          ],
+        ],
+        'items' => [
+          0 => [
+            'name' => $data['name'],
+            'description' => '',
+            'unit_amount' => [
+              'currency_code' => $paypal_currency_code,
+              'value' => $data['price'],
+            ],
+            'quantity' => $data['qty'],
+            'category' => 'DIGITAL_GOODS',
+          ],
+          1 => [
+            'name' => 'Processing Fee',
+            'description' => '',
+            'unit_amount' => [
+              'currency_code' => $paypal_currency_code,
+              'value' => $processing_fee,
+            ],
+            'quantity' => '1',
+            'category' => 'DIGITAL_GOODS',
+          ],
+        ],
+      ],
+    ],
+  ];
+
+  // echo "<pre>";
+  //   print_r($request->body);
+  // echo "</pre>";
+
+  try {
+    // Call API with your client and get a response for your call
+    $response = $client->execute($request);
+    // If call returns body in response, you can get the deserialized version from the result attribute of the response
+    // print_r($response);
+
+    $data['reference_no'] = $response->result->id;
+
+    $this->insert_temp_order($data,"","paypal");
+
+    echo json_encode($response->result, JSON_PRETTY_PRINT), "\n";
+  }catch (HttpException $ex) {
+    echo $ex->statusCode;
+    print_r($ex->getMessage());
+  }
+
 }
 
-public function paypal_execute(){
+public function paypal_capture(){
   global $db;
   global $input;
   global $site_url;
+
   $login_seller_user_name = $_SESSION['seller_user_name'];
   $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
   $row_login_seller = $select_login_seller->fetch();
   $login_seller_id = $row_login_seller->seller_id;
-  // paypal api
-  $api = $this->paypal_api_setup();
-  //Get The Paypal Payment
-  $paymentId = $input->get("paymentId");
-  $PayerID = $input->get("PayerID");
-  $payment = PayPal\Api\Payment::get($paymentId, $api);
-  $execution = new PayPal\Api\PaymentExecution();
-  $execution->setPayerId($PayerID);
+
+  $orderId = $input->get("order_id");
+
+  /// Paypal api
+  $client = $this->paypal_api_setup();
+
+  $request = new OrdersCaptureRequest($orderId);
+  $request->prefer('return=representation');
+
   try {
-    // Execute the payment
-    $result = $payment->execute($execution, $api);
-    if($result){
 
-      $reference_no = $input->get("reference_no");
-      return $this->execute_payment($reference_no,"paypal");
+    $update_order = $db->update("temp_orders",["status"=>'completed'],["reference_no"=>$orderId]);
 
-    }
-  }catch(Exception $ex){
-    exit(1);
+    // Call API with your client and get a response for your call
+    $response = $client->execute($request);
+    // If call returns body in response, you can get the deserialized version from the result attribute of the response
+    // print_r($response);
+
+    echo json_encode($response->result, JSON_PRETTY_PRINT), "\n";
+
+  }catch (HttpException $ex) {
+    echo $ex->statusCode;
+    print_r($ex->getMessage());
   }
+
 }
+
 /// Paypal Payment Code Ends ////
 
 /// Stripe Payment Code Starts ////
@@ -225,79 +291,125 @@ public function stripe_api_setup(){
 	$stripe_secret_key = $row_payment_settings->stripe_secret_key;
 	$stripe_publishable_key = $row_payment_settings->stripe_publishable_key;
 	$stripe_currency_code = $row_payment_settings->stripe_currency_code;
-	$stripe = array(
-	  "secret_key"      => $stripe_secret_key,
-	  "publishable_key" => $stripe_publishable_key,
-	  "currency_code"   => $stripe_currency_code
-	);
-	\Stripe\Stripe::setApiKey($stripe["secret_key"]);
+  \Stripe\Stripe::setApiKey($stripe_secret_key);
 	return $stripe;
 }
 
 public function stripe($data){
 	global $site_url;
 	global $db;
-	$login_seller_user_name = $_SESSION['seller_user_name'];
+
+  $get_payment_settings = $db->select("payment_settings");
+  $row_payment_settings = $get_payment_settings->fetch();
+  $stripe_secret_key = $row_payment_settings->stripe_secret_key;
+  $stripe_publishable_key = $row_payment_settings->stripe_publishable_key;
+  $stripe_currency_code = $row_payment_settings->stripe_currency_code;
+
+  $login_seller_user_name = $_SESSION['seller_user_name'];
 	$select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
 	$row_login_seller = $select_login_seller->fetch();
 	$login_seller_id = $row_login_seller->seller_id;
 	$login_seller_email = $row_login_seller->seller_email;
-	$stripe = $this->stripe_api_setup();
-	$customer = \Stripe\Customer::create(array(
-		'email' => $login_seller_email,
-		'card'  => $data['stripeToken']
-	));
-	$charge = \Stripe\Charge::create(array(
-		'customer' => $customer->id,
-		'amount'   => intval($data['amount']) * 100,
-		'currency' => $stripe['currency_code'],
-		'description' => $data['desc']
-	));
-	if($charge){
+	
+  if(!isset($data['desc'])){
+    $data['desc'] = "";
+  }
 
-    // echo "<pre>";
-    //   print_r($data);
-    // echo "</pre>";
+  if(!isset($data['redirect_url'])){
+    $redirect_url = $site_url.'/stripe_order?session_id={CHECKOUT_SESSION_ID}';
+  }else{
+    $redirect_url = $data['redirect_url']."?session_id={CHECKOUT_SESSION_ID}";
+  }
 
-	  if($data['type'] == "proposal"){
-   	  $_SESSION['checkout_seller_id'] = $login_seller_id;
-   	  $_SESSION['proposal_id'] = $data['proposal_id'];
-   	  $_SESSION['proposal_qty'] = $data['proposal_qty'];
-   	  $_SESSION['proposal_price'] = $data['amount'];
-      $_SESSION['proposal_delivery'] = $data['proposal_delivery'];
-      $_SESSION['proposal_revisions'] = $data['proposal_revisions'];
-   	  if(isset($data['proposal_extras'])){
-   	    $_SESSION['proposal_extras'] = $data['proposal_extras'];
-   	  }
-   	  if(isset($data['proposal_minutes'])){
-        $_SESSION['proposal_minutes'] = $data['proposal_minutes'];
-   	  }
-	  }elseif ($data['type'] == "cart") {
-	     $_SESSION['cart_seller_id'] = $login_seller_id;
-       $_SESSION['reference_no'] = $data['reference_no'];
-	  }elseif($data['type'] == "featured_listing"){
-	     $_SESSION['proposal_id'] = $data['proposal_id'];
-	  }elseif($data['type'] == "request_offer"){
-   	  $offer_id = $data["offer_id"];
-   	  $_SESSION['offer_id'] = $data['offer_id'];
-   	  $_SESSION['offer_buyer_id'] = $data['offer_buyer_id'];
-	  }elseif($data['type'] == "message_offer"){ 
-   	  $_SESSION['message_offer_id'] = $data['message_offer_id'];
-   	  $_SESSION['message_offer_buyer_id'] = $data['message_offer_buyer_id'];
-	  }
-	  $_SESSION['method'] = "stripe";
-	  if($data['type'] == "featured_listing"){
-      echo "<script>window.open('$site_url/proposals/featured_proposal','_self');</script>";
-	  }elseif($data['type'] == "orderExtendTime"){
-	  	return true;
-	  }elseif($data['type'] == "orderTip"){
-      return true;
-    }else{
-      echo "<script>window.open('$site_url/order','_self');</script>";
-	  }
+  \Stripe\Stripe::setApiKey($stripe_secret_key);
 
-	}
+  $session = \Stripe\Checkout\Session::create([
+    'payment_method_types' => ['card'],
+    'customer_email' => $login_seller_email,
+    'line_items' => [
+      
+      [
+        'price_data' => [
+          'currency' => $stripe_currency_code,
+          'product_data' => [
+            'name' => $data['name'],
+          ],
+          'unit_amount' => $data['price']*100,
+        ],
+        'quantity' => $data['qty'],
+      ],
+
+      [
+        'price_data' => [
+          'currency' => $stripe_currency_code,
+          'product_data' => [
+            'name' => 'Processing Fee',
+          ],
+          'unit_amount' => $data['processing_fee']*100,
+        ],
+        'quantity' => 1,
+      ]
+
+    ],
+    'payment_intent_data' => [
+      'description' => $data['desc'],
+    ],
+    'mode' => 'payment',
+    'success_url' => $redirect_url,
+    'cancel_url' => $data['cancel_url'].'?reference_no={CHECKOUT_SESSION_ID}',
+  ]);
+
+  $sessionId = $session->id;
+
+  $data['reference_no'] = $sessionId;
+
+  $this->insert_temp_order($data,"","stripe");
+
+  echo "
+    <script src='https://js.stripe.com/v3/'></script>
+    <script>
+      var stripe = Stripe('$stripe_publishable_key');
+      stripe.redirectToCheckout({
+        sessionId: '$sessionId'
+      }).then(function(result){
+      });
+    </script>
+  ";
+
 }
+
+function stripe_execute(){
+
+  global $db;
+  global $input;
+  global $site_url;
+
+  $get_payment_settings = $db->select("payment_settings");
+  $row_payment_settings = $get_payment_settings->fetch();
+  $stripe_secret_key = $row_payment_settings->stripe_secret_key;
+
+  $sessionId = $input->get('session_id');
+
+  $stripe = new \Stripe\StripeClient($stripe_secret_key);
+
+  try {
+
+    $session = $stripe->checkout->sessions->retrieve($sessionId,[]);
+    $payment = $stripe->paymentIntents->retrieve($session->payment_intent,[]);
+
+    if($payment->status == "succeeded"){
+      return $this->execute_payment($sessionId,"stripe");
+    }else{
+      echo "<script>window.open('index','_self')</script>";
+    }
+
+  }catch(Exception $ex){
+    echo "<script>window.open('index','_self')</script>";
+  }
+
+
+}
+
 /// Stripe Payment Code Ends ////
 
 

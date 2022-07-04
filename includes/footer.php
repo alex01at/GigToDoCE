@@ -6,7 +6,7 @@
       <h3 data-toggle="collapse" data-target="#collapsecategories"><?= $lang['categories']; ?></h3>
       <ul class="collapse show list-unstyled" id="collapsecategories">
       <?php
-      $get_footer_links = $db->query("select * from footer_links where link_section='categories' AND language_id='$siteLanguage'  LIMIT 0,6");
+      $get_footer_links = $db->query("select * from footer_links where link_section='categories' AND language_id='$siteLanguage'");
       while($row_footer_links = $get_footer_links->fetch()){
       $link_id = $row_footer_links->link_id;
       $link_title = $row_footer_links->link_title;
@@ -58,8 +58,9 @@
           <li class="list-inline-item"><a href="<?= $link_url; ?>"><i class="fa <?= $icon_class; ?>"></i></a></li>
           <?php } ?>
           </ul>
-          <?php if($language_switcher == 1){ ?>
           <div class="form-group mt-0">
+
+          <?php if($language_switcher == 1){ ?>
 
             <select id="languageSelect" class="form-control">
               <?php 
@@ -75,6 +76,8 @@
               <?php } ?>
             </select>
 
+          <?php } ?>
+
           <?php if($enable_converter == 1){ ?>
 
             <div class="mt-2"></div>
@@ -86,14 +89,15 @@
               <?php
               $get_currencies = $db->select("site_currencies");
               while($row = $get_currencies->fetch()){
-              $id = $row->id;
-              $currency_id = $row->currency_id;
-              $position = $row->position;
+                
+                $id = $row->id;
+                $currency_id = $row->currency_id;
+                $position = $row->position;
 
-              $get_currency = $db->select("currencies",array("id" => $currency_id));
-              $row_currency = $get_currency->fetch();
-              $name = $row_currency->name;
-              $symbol = $row_currency->symbol;
+                $get_currency = $db->select("currencies",array("id" => $currency_id));
+                $row_currency = $get_currency->fetch();
+                $name = $row_currency->name;
+                $symbol = $row_currency->symbol;
 
               ?>
               <option data-url="<?= "$site_url/change_currency?id=$id"; ?>" <?php if($id == @$_SESSION["siteCurrency"]){ echo "selected"; } ?>>
@@ -105,7 +109,7 @@
           <?php } ?>
 
           </div>
-          <?php } ?>
+          
           <h5><?= $lang['mobile_apps']; ?></h5>
           <img src="<?= $site_url; ?>/images/google.png" class="pic">
           <img src="<?= $site_url; ?>/images/app.png" class="pic1">

@@ -10,25 +10,25 @@ require_once("functions/functions.php");
 <html lang="en" class="ui-toolkit">
 
 <head>
-<title> <?= $site_name; ?> - <?= $lang['featured_proposals']['title']; ?> </title>
-<meta name="description" content="">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="author" content="<?= $get_site_author; ?>">
-<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
-<link href="styles/bootstrap.css" rel="stylesheet">
-<link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
-<link href="styles/styles.css" rel="stylesheet">
-<link href="styles/categories_nav_styles.css" rel="stylesheet">
-<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
-<link href="styles/sweat_alert.css" rel="stylesheet">
-<!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-<script src="js/ie.js"></script>
-<script type="text/javascript" src="js/sweat_alert.js"></script>
-<script type="text/javascript" src="js/jquery.min.js"></script>
-<?php if(!empty($site_favicon)){ ?>
-<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-<?php } ?>
+  <title> <?= $site_name; ?> - <?= $lang['featured_proposals']['title']; ?> </title>
+  <meta name="description" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="<?= $get_site_author; ?>">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
+  <link href="styles/bootstrap.css" rel="stylesheet">
+  <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+  <link href="styles/styles.css" rel="stylesheet">
+  <link href="styles/categories_nav_styles.css" rel="stylesheet">
+  <link href="font_awesome/css/font-awesome.css" rel="stylesheet">
+  <link href="styles/sweat_alert.css" rel="stylesheet">
+  <!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
+  <script src="js/ie.js"></script>
+  <script type="text/javascript" src="js/sweat_alert.js"></script>
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <?php if(!empty($site_favicon)){ ?>
+  <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+  <?php } ?>
 </head>
 <body class="bg-white is-responsive">
 <?php require_once("includes/header.php"); ?>
@@ -55,7 +55,7 @@ require_once("functions/functions.php");
       <div class="row justify-content-center mb-5 mt-0"><!-- row justify-content-center Starts -->
         <nav><!-- nav Starts -->
           <ul class="pagination" id="featured_pagination">
-          <?php get_featured_pagination(); ?>
+            <?php get_featured_pagination(); ?>
           </ul>
         </nav><!-- nav Ends -->
       </div>
@@ -65,6 +65,7 @@ require_once("functions/functions.php");
 <?php require_once("includes/footer.php"); ?>
 <script>
 function get_featured_proposals(){
+  
   var sPath = '';
   var aInputs = Array();
   var aInputs = $('li').find('.get_online_sellers');
@@ -78,10 +79,10 @@ function get_featured_proposals(){
   iKey++;
   });
   if(aKeys.length>0){
-  var sPath = '';
-  for(var i = 0; i < aKeys.length; i++){
-  sPath = sPath + 'online_sellers[]=' + aKeys[i]+'&';
-  }
+    var sPath = '';
+    for(var i = 0; i < aKeys.length; i++){
+      sPath = sPath + 'online_sellers[]=' + aKeys[i]+'&';
+    }
   }
 
   var instant_delivery = $('.get_instant_delivery:checked').val();
@@ -138,7 +139,6 @@ function get_featured_proposals(){
   }
   }
 
-
   var aInputs = $('li').find('.get_cat_id');
   var aKeys   = Array();
   var aValues = Array();
@@ -154,6 +154,7 @@ function get_featured_proposals(){
   sPath = sPath + 'cat_id[]=' + aKeys[i]+'&';
   }
   }
+
   var aInputs = $('li').find('.get_delivery_time');
   var aKeys   = Array();
   var aValues = Array();
@@ -169,6 +170,7 @@ function get_featured_proposals(){
   sPath = sPath + 'delivery_time[]=' + aKeys[i]+'&';
   }
   }
+
   var aInputs = Array();
   var aInputs = $('li').find('.get_seller_level');
   var aKeys   = Array();
@@ -185,6 +187,7 @@ function get_featured_proposals(){
   sPath = sPath + 'seller_level[]=' + aKeys[i]+'&';
   }
   }
+
   var aInputs = Array();
   var aInputs = $('li').find('.get_seller_language');
   var aKeys   = Array();
@@ -201,6 +204,7 @@ function get_featured_proposals(){
   sPath = sPath + 'seller_language[]=' + aKeys[i]+'&';
   }
   }
+
   $('#wait').addClass("loader");
   $.ajax({  
   url:"featured_load",  
@@ -211,7 +215,8 @@ function get_featured_proposals(){
   $('#featured_proposals').html(data); 
   $('#wait').removeClass("loader");
   }  
-  });               
+  });    
+
   $.ajax({  
   url:"featured_load",  
   method:"POST",  
@@ -221,6 +226,7 @@ function get_featured_proposals(){
   $('#featured_pagination').html(data); 
   }  
   });
+
   }
 
   $('.get_instant_delivery').click(function(){ 

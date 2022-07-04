@@ -7,20 +7,19 @@ if(!isset($_SESSION['seller_user_name'])){
    echo "<script> window.open('index','_self'); </script>";
 }
 
-if(!isset($_GET['reference_no']) AND !isset($_GET['id'])){
+if(!isset($_GET['reference_no']) AND !isset($_GET['token']) AND !isset($_GET['id'])){
    echo "<script> window.open('index','_self'); </script>";
 }
 
 if(isset($_GET['reference_no'])){
-
    $reference_no = $input->get('reference_no');
    $get_order = $db->select("temp_orders",['reference_no'=>$reference_no,'buyer_id'=>$login_seller_id]);
-
+}if(isset($_GET['token'])){
+   $token = $input->get('token');
+   $get_order = $db->select("temp_orders",['reference_no'=>$token,'buyer_id'=>$login_seller_id]);
 }elseif(isset($_GET['id'])){
-
    $id = $input->get('id');
    $get_order = $db->select("temp_orders",['id'=>$id,'buyer_id'=>$login_seller_id]);
-
 }
 
 $row_order = $get_order->fetch();
@@ -77,9 +76,7 @@ if($type == "request_offer"){
 }
 
 if($type == "orderTip"){
-
    $c_url = "$site_url/order_details?order_id=$content_id";;
-
 }
 
 if($type == "cart"){

@@ -5,6 +5,9 @@
     echo "<script>window.open('login','_self')</script>";
   }
 ?>
+
+<?php if($enable_paypal == "yes"){ ?>
+
 <h5 class="mb-4"> <?= $lang['settings']['paypal_heading']; ?> </h5>
 <form method="post" class="clearfix mb-3">
   <div class="form-group row">
@@ -20,26 +23,28 @@
 <?php
 
 if(isset($_POST['submit_paypal_email'])){
+
   $seller_paypal_email = strip_tags($input->post('seller_paypal_email'));
-  $update_seller = $db->update("sellers",array("seller_paypal_email" => $seller_paypal_email),array("seller_id" => $login_seller_id));
+  
+  $update_seller = $db->update("sellers",["seller_paypal_email" => $seller_paypal_email],["seller_id" => $login_seller_id]);
+  
   if($update_seller){
-    echo "<script>
-    swal({
-    type: 'success',
-    text: 'PayPal email updated successfully!',
-    timer: 3000,
-    onOpen: function(){
-    swal.showLoading()
-    }
-    }).then(function(){
-      if (
-        // Read more about handling dismissals
+    echo "
+    <script>
+      swal({
+        type: 'success',
+        text: 'PayPal email updated successfully!',
+        timer: 3000,
+        onOpen: function(){
+          swal.showLoading()
+        }
+      }).then(function(){
         window.open('settings?account_settings','_self')
-      ) {
-        console.log('email updated successfully')
-      }
-    });</script>";
+      });
+    </script>";
   }
+}
+
 }
 
 if($paymentGateway == 1){ 
@@ -80,6 +85,9 @@ if(isset($_POST['submit_payoneer_email'])){
   }
 }
 ?>
+
+<?php if($enable_dusupay == 1){ ?>
+
 <hr>
 <h5 class="mb-4"> <?= $lang['settings']['mobile_money_heading']; ?> </h5>
 <form method="post" class="clearfix mb-3">
@@ -114,11 +122,14 @@ if(isset($_POST['submit_payoneer_email'])){
       swal.showLoading()
       }
       }).then(function(){
-      window.open('settings?account_settings','_self')
+        window.open('settings?account_settings','_self')
       });
       </script>";
     }
   }
+
+}
+
 ?>
 <hr>
 <h5 class="mb-4"> <?= $lang['settings']['bitcoin_wallet_heading']; ?> </h5>
@@ -292,7 +303,6 @@ if(isset($_POST['submit_payoneer_email'])){
             swal.showLoading();
           }
         }).then(function(){
-          // Read more about handling dismissals
           window.open('logout','_self')
         });
         </script>";
@@ -373,13 +383,9 @@ if(isset($_POST['deactivate_account'])){
         swal.showLoading()
         }
       }).then(function(){
-          if (
-            // Read more about handling dismissals
-            window.open('index','_self')
-          ) {
-            console.log('Account deactivated successfully')
-          }
-        })
+        window.open('settings?profile_settings','');
+        console.log('Account deactivated successfully');
+      })
       </script>";
   }
 

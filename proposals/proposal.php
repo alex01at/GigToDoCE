@@ -246,6 +246,7 @@ echo '<link href="../../styles/desktop_proposals.css" rel="stylesheet">';
 <link href="../../styles/owl.carousel.css" rel="stylesheet">
 <link href="../../styles/owl.theme.default.css" rel="stylesheet">
 <link href="../../styles/sweat_alert.css" rel="stylesheet">
+<link href="../../styles/green-audio-player.css" rel="stylesheet">
 <script type="text/javascript" src="../../js/sweat_alert.js"></script>
 <script type="text/javascript" src="../../js/jquery.min.js"></script>
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
@@ -257,19 +258,24 @@ echo '<link href="../../styles/desktop_proposals.css" rel="stylesheet">';
 <body class="is-responsive">
 <script src="//platform-api.sharethis.com/js/sharethis.js#property=5c812224d11c6a0011c485fd&product=inline-share-buttons"></script>
 <?php
-require_once("../includes/header.php");
 
-$show_img1 = getImageUrl2("proposals","proposal_img1",$proposal_img1);
-$show_img2 = getImageUrl2("proposals","proposal_img2",$proposal_img2);
-$show_img3 = getImageUrl2("proposals","proposal_img3",$proposal_img3);
-$show_img4 = getImageUrl2("proposals","proposal_img4",$proposal_img4);
-$show_video = getImageUrl2("proposals","proposal_video",$proposal_video);
+	require_once("../includes/header.php");
 
-if($deviceType == "phone"){
-	include("../screens/mobile_proposal.php");
-}else{
-	include("../screens/desktop_proposal.php"); 
-}
+	$show_img1 = getImageUrl2("proposals","proposal_img1",$proposal_img1);
+	$show_img2 = getImageUrl2("proposals","proposal_img2",$proposal_img2);
+	$show_img3 = getImageUrl2("proposals","proposal_img3",$proposal_img3);
+	$show_img4 = getImageUrl2("proposals","proposal_img4",$proposal_img4);
+	$show_video = getImageUrl2("proposals","proposal_video",$proposal_video);
+
+	$img_2_extension = pathinfo($proposal_img2,PATHINFO_EXTENSION);
+	$img_3_extension = pathinfo($proposal_img3,PATHINFO_EXTENSION);
+	$img_4_extension = pathinfo($proposal_img4,PATHINFO_EXTENSION);
+
+	if($deviceType == "phone"){
+		include("../screens/mobile_proposal.php");
+	}else{
+		include("../screens/desktop_proposal.php"); 
+	}
 
 ?>
 
@@ -309,16 +315,20 @@ if($deviceType == "phone"){
 			<br>
 			<br>
 			<div class="form-group mt-1 mb-3"><!--- form-group Starts --->
-			<label> Additional Information </label>
-			<textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
+				<label> Additional Information </label>
+				<textarea name="additional_information" rows="3" class="form-control" required=""></textarea>
 			</div><!--- form-group Ends --->
-			<button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">Submit Report</button>
+				<button type="submit" name="submit_report" class="float-right btn btn-sm btn-success">
+					Submit Report
+				</button>
 			</form>
 			<?php 
 			if(isset($_POST['submit_report'])){
+
 				$reason = $input->post('reason');
 				$additional_information = $input->post('additional_information');
 				$date = date("F d, Y");
+				
 				$insert = $db->insert("reports",array("reporter_id"=>$login_seller_id,"content_id"=>$proposal_id,"content_type"=>"proposal","reason"=>$reason,"additional_information"=>$additional_information,"date"=>$date));
 
 				$insert_notification = $db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $proposal_id,"reason" => "proposal_report","date" => $date,"status" => "unread"));
@@ -334,6 +344,24 @@ if($deviceType == "phone"){
 		</div><!-- modal-content Ends -->
 	</div><!-- modal-dialog Ends -->
 </div><!-- report-modal modal fade Ends -->
+
+<script type="text/javascript" src="../../js/green-audio-player.min.js"></script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+   	new GreenAudioPlayer('.audio-player .player-1', { showTooltips: true, showDownloadButton: false, enableKeystrokes: true });
+
+		<?php if(!empty($proposal_img3)){ ?>
+   	new GreenAudioPlayer('.audio-player .player-2', { showTooltips: true, showDownloadButton: false, enableKeystrokes: true });
+   	<?php } ?>
+
+   	<?php if(!empty($proposal_img4)){ ?>
+   	new GreenAudioPlayer('.audio-player .player-3', { showTooltips: true, showDownloadButton: false, enableKeystrokes: true });
+   	<?php } ?>
+
+	});
+</script>
+
 <script type="text/javascript">
 
 $(document).ready(function(){

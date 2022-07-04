@@ -32,6 +32,10 @@ if(isset($_GET['cancel_order'])){
 		$purchase_date = date("F d, Y");
 		$n_date = date("F d, Y");
 
+		$update_messages = $db->update("order_conversations",array("status"=>"message"),array("order_id"=>$order_id,"status"=>"revision"));
+
+		$update_messages = $db->update("order_conversations",array("status"=>"message"),array("order_id"=>$order_id,"status"=>"cancellation_request"));
+
 		$insert_purchase = $db->insert("purchases",array("seller_id" => $buyer_id,"order_id" => $order_id,"amount" => $order_price,"date" => $purchase_date,"method" => "order_cancellation"));
 
 		$insert_order_conversation = $db->insert("order_conversations",array("order_id" => $order_id,"sender_id" => $buyer_id,"message" => $message,"date" => $date,"status" => "cancelled_by_customer_support"));

@@ -242,253 +242,237 @@ $site_logo_image = getImageUrl2("general_settings","site_logo",$row_general_sett
 						<label for="mobile-money" class="radio-custom-label"></label>
 						<img src="../images/mobile-money.png" class="img-fluid">
 					</div>
-                    <?php } ?>
+               <?php } ?>
             </div>
 			</div>
 			<div class="modal-footer">
-            <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
-             <?php if($current_balance >= $amount){ ?>
-                <form action="../shopping_balance" method="post" id="shopping-balance-form">
-					<button class="btn btn-success" type="submit" name="view_offers_submit_order" onclick="return confirm('Are you sure you want to pay for this order with your shopping balance ?')">
-						<?= $lang['button']['pay_with_shopping']; ?>
-					</button>
-				</form>
-                <br>
-              <?php } ?>
-               <?php if($enable_paypal == "yes"){ ?>
-				<form action="paypal_charge" method="post" id="paypal-form"><!--- paypal-form Starts --->
-					<button type="submit" name="paypal" class="btn btn-success"><?= $lang['button']['pay_with_paypal']; ?></button>
-				</form><!--- paypal-form Ends --->
-               <?php } ?>
+
+         <button class="btn btn-secondary" data-dismiss="modal"> Close </button>
+
+            <?php if($current_balance >= $amount){ ?>
+               <form action="../shopping_balance" method="post" id="shopping-balance-form">
+   				  <button class="btn btn-success" type="submit" name="view_offers_submit_order" onclick="return confirm('Are you sure you want to pay for this order with your shopping balance ?')">
+                  <?= $lang['button']['pay_with_shopping']; ?>
+   				  </button>
+   			   </form>
+               <br>
+            <?php } ?>
+
+            <?php if($enable_paypal == "yes"){ ?>
+               <div id="paypal-form" class="paypal-button-container"></div>
+            <?php } ?>
+
             <?php if($enable_stripe == "yes"){ ?>
-            <?php
-                require_once("../stripe_config.php");
-                $stripe_total_amount = $total * 100;
-            ?>
             <form action="stripe_charge" method="post" id="credit-card-form">
-               <input
-               type="submit"
-               class="btn btn-success stripe-submit"
-               value="<?= $lang['button']['pay_with_stripe']; ?>"
-               data-dismiss="modal"
-               data-key="<?= $stripe['publishable_key']; ?>"
-               data-amount="<?= $stripe_total_amount; ?>"
-               data-currency="<?= $stripe['currency_code']; ?>"
-               data-email="<?= $login_seller_email; ?>"
-               data-name="<?= $site_name; ?>"
-               data-image="<?= $site_logo_image ?>"
-               data-description="<?= $proposal_title; ?>"
-               data-allow-remember-me="false">
-               <script>
-               $(document).ready(function() {
-                  $('.stripe-submit').on('click', function(event) {
-                      event.preventDefault();
-                      var $button = $(this),
-                          $form = $button.parents('form');
-                      var opts = $.extend({}, $button.data(), {
-                          token: function(result) {
-                              $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-                          }
-                      });
-                      StripeCheckout.open(opts);
-                  });
-               });
-               </script>
+
+              <input name="stripe" type="submit" class="btn btn-success" value="<?= $lang['button']['pay_with_stripe']; ?>"/>
+
             </form>
-        <?php } ?>
-		<?php if($enable_2checkout == "yes"){ ?>
-		<form action="../plugins/paymentGateway/requests/2checkout_charge" method="post" id="2checkout-form">
-      <button type="submit" name="2Checkout" class="btn btn-success"><?= $lang['button']['pay_with_2checkout']; ?></button>
-      </form>
-		<?php } ?>
+            <?php } ?>
 
-      <?php if($enable_mercadopago == "1"){ ?>
-      <form action="mercadopago_charge" method="post" id="mercadopago-form">
-         <input type="submit" name="mercadopago" class="btn btn-success" value="<?= $lang['button']['pay_with_mercadopago']; ?>">
-      </form>
-      <?php } ?>
+      		<?php if($enable_2checkout == "yes"){ ?>
+      		<form action="../plugins/paymentGateway/requests/2checkout_charge" method="post" id="2checkout-form">
+               <button type="submit" name="2Checkout" class="btn btn-success"><?= $lang['button']['pay_with_2checkout']; ?></button>
+            </form>
+      		<?php } ?>
 
-    <?php if($enable_coinpayments == "yes"){ ?>
+            <?php if($enable_mercadopago == "1"){ ?>
+            <form action="mercadopago_charge" method="post" id="mercadopago-form">
+               <input type="submit" name="mercadopago" class="btn btn-success" value="<?= $lang['button']['pay_with_mercadopago']; ?>">
+            </form>
+            <?php } ?>
 
-      <form action="crypto_charge" method="post" id="coinpayments-form">
-         <button type="submit" name="coinpayments" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_coinpayments']; ?></button>
-      </form>
+            <?php if($enable_coinpayments == "yes"){ ?>
 
-    <?php } ?>
-		<?php if($enable_paystack == "yes"){ ?>
-		<form action="paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
-			<button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
-		</form><!--- paystack-form Ends --->
-		<?php } ?>
+            <form action="crypto_charge" method="post" id="coinpayments-form">
+               <button type="submit" name="coinpayments" class="btn btn-success"><?= $lang['button']['pay_with_coinpayments']; ?></button>
+            </form>
 
-      <?php 
-         if($enable_dusupay == "yes"){
-            $main_modal = "offer-order-modal";
-            $form_action = "dusupay_charge";
-            include("../includes/comp/dusupay_method2.php");
-         }
-      ?>
+            <?php } ?>
 
-    </div>
+      		<?php if($enable_paystack == "yes"){ ?>
+      		<form action="paystack_charge" method="post" id="paystack-form"><!--- paystack-form Starts --->
+      			<button type="submit" name="paystack" class="btn btn-success btn-block"><?= $lang['button']['pay_with_paystack']; ?></button>
+      		</form><!--- paystack-form Ends --->
+      		<?php } ?>
+
+            <?php 
+               if($enable_dusupay == "yes"){
+                  $main_modal = "offer-order-modal";
+                  $form_action = "dusupay_charge";
+                  include("../includes/comp/dusupay_method2.php");
+               }
+            ?>
+
+         </div>
 		</div>
 	</div>
 </div>
 
 <?php include("../includes/comp/mobile_money_modal.php"); ?>
 
+<script 
+   src="../js/paypal.js" id="paypal-js" 
+   data-base-url="<?= $site_url; ?>" 
+   data-payment-type="request_offer">
+</script>
+
 <script>
 
 $(document).ready(function(){
 	
-$("#offer-order-modal").modal('show');
+   $("#offer-order-modal").modal('show');
 
-$(".offer-div").hide();
+   $(".offer-div").hide();
 
-$(".arrow").click(function(){
-  $(".offer-div").slideToggle();
-});
+   $(".arrow").click(function(){
+      $(".offer-div").slideToggle();
+   });
 
-$(".btn-close").click(function(){
-	$(".request-div").fadeOut().remove();
-	$(".offer-div").fadeOut().remove();
-});
+   $(".btn-close").click(function(){
+   	$(".request-div").fadeOut().remove();
+   	$(".offer-div").fadeOut().remove();
+   });
 
-<?php if($current_balance >= $amount){ ?>
+   <?php if($current_balance >= $amount){ ?>
 
-$('#coinpayments-form').hide();
-$('#paystack-form').hide();
-$('#paypal-form').hide();
-$('#credit-card-form').hide();
-$('#2checkout-form').hide();
-$('#mobile-money-form').hide();
-<?php }else{ ?>
-$('#shopping-balance-form').hide();
-<?php } ?>
-<?php if($current_balance < $amount){ ?>
-<?php if($enable_paypal == "yes"){ ?>
-<?php }else{ ?>
-$('#paypal-form').hide();
-<?php } ?>
-<?php } ?>
+      $('#paypal-form').hide();
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
 
-<?php if($current_balance < $amount){ ?>
-<?php if($enable_paypal == "yes"){ ?>
-$('#credit-card-form').hide();
-$('#2checkout-form').hide();
-$('#mobile-money-form').hide();
-$('#mercadopago-form').hide();
-$('#coinpayments-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "yes"){ ?>
-$('#2checkout-form').hide();
-$('#coinpayments-form').hide();
-$('#mercadopago-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
-$('#coinpayments-form').hide();
-$('#mercadopago-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
-$('#coinpayments-form').hide();
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
-$('#mobile-money-form').hide();
-$('#paystack-form').hide();
-<?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
-$('#mobile-money-form').hide();
-<?php } ?>
-<?php } ?>
+   <?php }else{ ?>
+      $('#shopping-balance-form').hide();
+   <?php } ?>
 
-$('#shopping-balance').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#mobile-money-form').hide();
-	$('#paypal-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#shopping-balance-form').show();
-});
+   <?php if($current_balance < $amount){ ?>
+      <?php if($enable_paypal == "yes"){ ?>
+      <?php }else{ ?>
+         $('#paypal-form').hide();
+      <?php } ?>
+   <?php } ?>
 
-$('#paypal').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').show();
-	$('#shopping-balance-form').hide();
-	$('#mobile-money-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-});
+   <?php if($current_balance < $amount){ ?>
+      <?php if($enable_paypal == "yes"){ ?>
+      $('#credit-card-form').hide();
+      $('#2checkout-form').hide();
+      $('#mobile-money-form').hide();
+      $('#mercadopago-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "yes"){ ?>
+      $('#2checkout-form').hide();
+      $('#coinpayments-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "yes") { ?>
+      $('#coinpayments-form').hide();
+      $('#mercadopago-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "1") { ?>
+      $('#coinpayments-form').hide();
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "yes") { ?>
+      $('#mobile-money-form').hide();
+      $('#paystack-form').hide();
+      <?php }elseif($enable_paypal == "no" and $enable_stripe == "no" and $enable_2checkout == "no" and $enable_mercadopago == "0" and $enable_coinpayments == "no" and $enable_paystack == "yes") { ?>
+         $('#mobile-money-form').hide();
+      <?php } ?>
+   <?php } ?>
 
-$('#credit-card').click(function(){
-	$('#credit-card-form').show();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-	$('#mobile-money-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-});
+   $('#shopping-balance').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#mobile-money-form').hide();
+   	$('#paypal-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#shopping-balance-form').show();
+   });
 
-$('#2checkout').click(function(){
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').show();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-   $('#mercadopago-form').hide();
-});
+   $('#paypal').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').show();
+   	$('#shopping-balance-form').hide();
+   	$('#mobile-money-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   });
 
-$('#mercadopago').click(function(){
-   $('#mobile-money-form').hide();
-   $('#paypal-form').hide();
-   $('#coinpayments-form').hide();
-   $('#paystack-form').hide();
-   $('#mercadopago-form').show();
-   $('#shopping-balance-form').hide();
-   $('#2checkout-form').hide();
-});
+   $('#credit-card').click(function(){
+   	$('#credit-card-form').show();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+   	$('#mobile-money-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   });
 
-$('#coinpayments').click(function(){
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-   $('#coinpayments-form').show();
-	$('#mercadopago-form').hide();
-	$('#paystack-form').hide();
-	$('#shopping-balance-form').hide();
-});
+   $('#2checkout').click(function(){
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').show();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+      $('#mercadopago-form').hide();
+   });
 
-$('#paystack').click(function(){
-	
-	$('#mobile-money-form').hide();
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').show();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-   $('#mercadopago-form').hide();
-});
+   $('#mercadopago').click(function(){
+      $('#mobile-money-form').hide();
+      $('#paypal-form').hide();
+      $('#coinpayments-form').hide();
+      $('#paystack-form').hide();
+      $('#mercadopago-form').show();
+      $('#shopping-balance-form').hide();
+      $('#2checkout-form').hide();
+   });
 
-$('#mobile-money').click(function(){
-	$('#credit-card-form').hide();
-	$('#2checkout-form').hide();
-	$('#paypal-form').hide();
-	$('#shopping-balance-form').hide();
-	$('#coinpayments-form').hide();
-	$('#paystack-form').hide();
-	$('#mercadopago-form').hide();
-	$('#mobile-money-form').show();
-});
+   $('#coinpayments').click(function(){
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+      $('#coinpayments-form').show();
+   	$('#mercadopago-form').hide();
+   	$('#paystack-form').hide();
+   	$('#shopping-balance-form').hide();
+   });
+
+   $('#paystack').click(function(){
+   	
+   	$('#mobile-money-form').hide();
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').show();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+      $('#mercadopago-form').hide();
+   });
+
+   $('#mobile-money').click(function(){
+   	$('#credit-card-form').hide();
+   	$('#2checkout-form').hide();
+   	$('#paypal-form').hide();
+   	$('#shopping-balance-form').hide();
+   	$('#coinpayments-form').hide();
+   	$('#paystack-form').hide();
+   	$('#mercadopago-form').hide();
+   	$('#mobile-money-form').show();
+   });
 	
 });
 

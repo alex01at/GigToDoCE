@@ -34,6 +34,8 @@
 
 </style>
 
+<?php $jwplayer_code = ""; ?>
+
 <div id="myCarousel" class="carousel slide">
   <ol class="carousel-indicators">
 		<?php if(!empty($proposal_video)){ ?>
@@ -57,10 +59,10 @@
 				<?php if(!empty($jwplayer_code)){ ?>
 				<script type="text/javascript" src="<?= $jwplayer_code; ?>"></script>
 				<div class="d-block w-100" id="player"></div>
-            <?php
-               $show_video = str_replace("\r", "", $show_video);
-               $show_video = str_replace("\n", "", $show_video);
-            ?>
+                <?php
+                   $show_video = str_replace("\r", "", $show_video);
+                   $show_video = str_replace("\n", "", $show_video);
+                ?>
 				<script type="text/javascript">
 					var player = jwplayer('player');
 					player.setup({
@@ -87,20 +89,62 @@
 		</div>
 		<?php if(!empty($proposal_img2)){ ?>
 		<div class="carousel-item">
-			<img class="d-block w-100" src="<?= $show_img2; ?>">
-			<div data-action="img-2" class="slide-fullscreen">Full Screen</div>
+
+            <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+        
+                <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
+                    <div class="player-1">
+                        <audio controls crossorigin class="d-none embed-responsive embed-responsive-16by9">
+                            <source src="<?= $show_img2; ?>" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+            <?php }else{ ?>
+                <img class="d-block w-100" src="<?= $show_img2; ?>" />
+                <div data-action="img-2" class="slide-fullscreen">Full Screen</div>
+            <?php } ?>
+
 		</div>
 		<?php } ?>
 		<?php if(!empty($proposal_img3)){ ?>
 		<div class="carousel-item"><!-- carousel-item Starts -->
-			<img class="d-block w-100" src="<?= $show_img3; ?>">
-			<div data-action="img-3" class="slide-fullscreen">Full Screen</div>
+
+            <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+
+                <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
+                    <div class="player-2">
+                        <audio controls crossorigin class="d-none embed-responsive embed-responsive-16by9">
+                            <source src="<?= $show_img3; ?>" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+            <?php }else{ ?>
+                <img class="d-block w-100" src="<?= $show_img3; ?>">
+                <div data-action="img-3" class="slide-fullscreen">Full Screen</div>
+            <?php } ?>
+
 		</div><!-- carousel-item Ends -->
 		<?php } ?>
 		<?php if(!empty($proposal_img4)){ ?>
 		<div class="carousel-item"><!-- carousel-item Starts -->
-			<img class="d-block w-100" src="<?= $show_img4; ?>">
-			<div data-action="img-4" class="slide-fullscreen">Full Screen</div>
+
+            <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+
+                <div class="audio-player" style="background:url('<?= $show_img1; ?>');">
+                    <div class="player-3">
+                        <audio controls crossorigin class="d-none embed-responsive embed-responsive-16by9">
+                            <source src="<?= $show_img4; ?>" type="audio/mpeg">
+                        </audio>
+                    </div>
+                </div>
+
+            <?php }else{ ?>
+                <img class="d-block w-100" src="<?= $show_img4; ?>">
+                <div data-action="img-4" class="slide-fullscreen">Full Screen</div>
+            <?php } ?>
+
 		</div><!-- carousel-item Ends -->
 		<?php } ?>
 	</div>
@@ -122,20 +166,53 @@
             <?php if(!empty($proposal_video)){ ?>
                 
                 <div class="item active" data-position="0">
-                <a href="#">
-                	<img src="../../images/youtube.jpg" alt="youtube.jpg">
-                </a>
+                   <a href="#">
+                   	<img src="../../images/youtube.jpg" alt="youtube.jpg">
+                   </a>
                 </div>
 
-                <div class="item" data-position="1"><a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a></div>
+                <div class="item" data-position="1">
+                    <a><img src="<?= $show_img1; ?>" alt="<?= $proposal_img1; ?>"></a>
+                </div>
+
                 <?php if(!empty($proposal_img2)){ ?>
-                <div class="item" data-position="2"><a ><img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>"></a></div>
+                <div class="item" data-position="2">
+                    <a>
+                        <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>">
+                        <?php } ?>
+                    </a>                    
+                </div>
                 <?php } ?>
+
                 <?php if(!empty($proposal_img3)){ ?>
-                <div class="item" data-position="3"><a><img src="<?= $show_img3; ?>" alt="<?= $proposal_img2; ?>"></a></div>
+                <div class="item" data-position="3">
+
+                    <a>
+                        <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img3; ?>" alt="<?= $proposal_img3; ?>">
+                        <?php } ?>
+                    </a>    
+
+                </div>
                 <?php } ?>
+
                 <?php if(!empty($proposal_img4)){ ?>
-                <div class="item" data-position="4"><a><img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>"></a></div>
+                <div class="item" data-position="4">
+
+                    <a>
+                        <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img4; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>">
+                        <?php } ?>
+                    </a>
+
+                </div>
                 <?php } ?>
 
             <?php }else{ ?>
@@ -146,19 +223,43 @@
                 
                 <?php if(!empty($proposal_img2)){ ?>
                 <div class="item" data-position="1">
-                  <a><img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>"></a>
+                  
+                    <a>
+                        <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img2; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img2; ?>" alt="<?= $proposal_img2; ?>">
+                        <?php } ?>
+                    </a>
+
                 </div>
                 <?php } ?>
                 
                 <?php if(!empty($proposal_img3)){ ?>
                 <div class="item" data-position="2">
-                  <a><img src="<?= $show_img3; ?>" alt="<?= $proposal_img3; ?>"></a>
+
+                    <a>
+                        <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img3; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img3; ?>" alt="<?= $proposal_img3; ?>">
+                        <?php } ?>
+                    </a>
+
                 </div>
                 <?php } ?>
                 
                 <?php if(!empty($proposal_img4)){ ?>
                 <div class="item" data-position="3">
-                  <a><img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>"></a>
+
+                    <a>
+                        <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+                            <img src="../proposal_files/audio.jpg" alt="<?= $proposal_img4; ?>">
+                        <?php }else{ ?>
+                            <img src="<?= $show_img4; ?>" alt="<?= $proposal_img4; ?>">
+                        <?php } ?>
+                    </a>
+
                 </div>
                 <?php } ?>
 
@@ -172,31 +273,31 @@
 	
 $(document).ready(function(){
 
-	$(".proposal-slider .owl-carousel").owlCarousel({
-      margin: 20,
-      nav: !0,
-      mouseDrag: !1,
-      touchDrag: !1,
-      responsive: {
-          0: {
+    $(".proposal-slider .owl-carousel").owlCarousel({
+        margin: 20,
+        nav: !0,
+        mouseDrag: !1,
+        touchDrag: !1,
+        responsive: {
+            0: {
               items: 2
-          },
-          600: {
+            },
+            600: {
               items: 4
-          },
-          900: {
+            },
+            900: {
               items: 5
-          },
-          1e3: {
+            },
+            1e3: {
               items: 6
-          }
-      }
-	});
+            }
+        }
+    });
 
 	/// Proposal Slider Code Starts ///
 	$(".proposal-slider .item").click(function(){
 		var eq = $(this).data('position');
-      $(".proposal-slider .item").removeClass("active");
+        $(".proposal-slider .item").removeClass("active");
 		$(".carousel-item").removeClass("active");
 		$(".carousel-item:eq("+ eq +")").addClass("active");
 		$(".proposal-slider .item:eq("+ eq +")").addClass("active");

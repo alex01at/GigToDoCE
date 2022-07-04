@@ -1,6 +1,6 @@
 <?php
-session_start();
 
+session_start();
 require_once("includes/db.php");
 require_once("functions/functions.php");
 if(strpos($_SERVER["REQUEST_URI"], 'index') !== false){
@@ -79,7 +79,10 @@ $site_title = $row_general_settings->site_title;
 			</div>
 			<div class="pull-left search-single">
 				<div class="breadcrumbs">
-					<a href="#" class="home-link" data-id=""><i class="fa fa-home"></i> <i class="fa fa-angle-right"></i> &nbsp;<span class="sm-category"></span></a>
+					<a href="#" class="home-link" data-id="">
+						<i class="fa fa-home"></i> <i class="fa fa-angle-right"></i> 
+						&nbsp;<span class="sm-category"></span>
+					</a>
 				</div>
 				<div class="sm-title"></div>
 				<div class="img imgtop"></div>

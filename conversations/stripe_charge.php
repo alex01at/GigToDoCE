@@ -1,30 +1,37 @@
 <?php 
-session_start();
-include("../includes/db.php");
-include("../functions/payment.php");
-include("../functions/processing_fee.php");
-if(!isset($_SESSION['seller_user_name'])){
-echo "<script>window.open('../login.php','_self');</script>";
-}
-include("../stripe_config.php");
+   
+   session_start();
+   include("../includes/db.php");
+   include("../functions/payment.php");
+   include("../functions/processing_fee.php");
 
-$login_seller_user_name = $_SESSION['seller_user_name'];
-$select_login_seller = $db->select("sellers",array("seller_user_name" => $login_seller_user_name));
-$row_login_seller = $select_login_seller->fetch();
-$login_seller_id = $row_login_seller->seller_id;
-$login_seller_email = $row_login_seller->seller_email;
+   if(!isset($_SESSION['seller_user_name'])){
+      echo "<script>window.open('../login.php','_self');</script>";
+   }
 
-$select_offers = $db->select("messages_offers",array("offer_id" => $_SESSION['c_message_offer_id']));
-$row_offers = $select_offers->fetch();
-$amount = $row_offers->amount;
-$processing_fee = processing_fee($amount);
+   $select_offers = $db->select("messages_offers",array("offer_id"=>$_SESSION['c_message_offer_id']));
+   $row_offers = $select_offers->fetch();
+   $proposal_id = $row_offers->proposal_id;
+   $amount = $row_offers->amount;
+   $processing_fee = processing_fee($amount);
 
-$data = [];
-$data['type'] = "message_offer";
-$data['message_offer_id'] = $_SESSION['c_message_offer_id'];
-$data['message_offer_buyer_id'] = $login_seller_id;
-$data['amount'] = $amount + $processing_fee;
-$data['desc'] = 'Message Offer Payment';
-$data['stripeToken'] = $input->post('stripeToken');
-$payment = new Payment();
-$payment->stripe($data);
+   $select_proposals = $db->select("proposals",array("proposal_id" => $proposal_id));
+   $row_proposals = $select_proposals->fetch();
+   $proposal_title = $row_proposals->proposal_title;
+
+   $payment = new Payment();
+
+   $data = [];
+   $data['type'] = "message_offer";
+   $data['content_id'] = $_SESSION['c_message_offer_id'];
+   $data['name'] = $proposal_title;
+   $data['desc'] = '';
+   $data['qty'] = 1;
+   $data['price'] = $amount;
+   $data['sub_total'] = $amount;
+   $data['processing_fee'] = $processing_fee;
+   $data['total'] = $amount+$processing_fee;
+
+   $data['cancel_url'] = "$site_url/cancel_payment";
+
+   $payment->stripe($data);

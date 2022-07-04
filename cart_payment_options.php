@@ -11,6 +11,7 @@ if(!isset($_SESSION['seller_user_name'])){
 $get_payment_settings = $db->select("payment_settings");
 $row_payment_settings = $get_payment_settings->fetch();
 $enable_paypal = $row_payment_settings->enable_paypal;
+$paypal_client_id = $row_payment_settings->paypal_app_client_id;
 $paypal_email = $row_payment_settings->paypal_email;
 $paypal_currency_code = $row_payment_settings->paypal_currency_code;
 $paypal_sandbox = $row_payment_settings->paypal_sandbox;
@@ -97,6 +98,10 @@ $total = $sub_total + $processing_fee;
   <?php if(!empty($site_favicon)){ ?>
   <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
+
+	<!-- Include the PayPal JavaScript SDK -->
+	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+
 </head>
 <body class="is-responsive">
 <?php 
@@ -300,61 +305,30 @@ if($seller_verification != "ok"){
 					</button>
 					</form>
 					<?php } ?>
+
 					<?php if($enable_paypal == "yes"){ ?>
-					<form action="cart_paypal_charge" method="post" id="paypal-form"><!--- paypal-form Starts --->
-					  <button type="submit" name="paypal" class="btn btn-lg btn-success btn-block">
-					  <?= $lang['button']['pay_with_paypal']; ?>
-					  </button>
-					</form><!--- paypal-form Ends --->
+						<div id="paypal-form" class="paypal-button-container"></div>
 					<?php } ?>
-			    <?php if($enable_stripe == "yes"){ ?>
-			    <?php
-			    require_once("stripe_config.php");
-			    $stripe_total_amount = $total * 100;
-			    ?>
-			    <form action="cart_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
-			      <input
-			      type="submit"
-			      class="btn btn-lg btn-success btn-block strip-submit"
-			      data-key="<?= $stripe['publishable_key']; ?>"
-			      value="<?= $lang['button']['pay_with_stripe']; ?>"
-			      data-amount="<?= $stripe_total_amount; ?>"
-			      data-currency="<?= $stripe['currency_code']; ?>"
-			      data-email="<?= $login_seller_email; ?>"
-			      data-name="<?= $site_name; ?>"
-			      data-image="<?= $site_logo_image; ?>"
-			      data-description="All Cart Payment"
-			      data-allow-remember-me="false">
-			      <script>
-			      $(document).ready(function() {
-			                  $('.strip-submit').on('click', function(event) {
-			                      event.preventDefault();
-			                      var $button = $(this),
-			                          $form = $button.parents('form');
-			                      var opts = $.extend({}, $button.data(), {
-			                          token: function(result) {
-			                              $form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-			                          }
-			                      });
-			                      StripeCheckout.open(opts);
-			                  });
-			              });
-			      </script>
-			    </form><!--- credit-card-form Ends --->
-			  	<?php } ?>
-			  	<?php if($enable_2checkout == "yes"){ ?>
-				<form action='plugins/paymentGateway/cart_2checkout_charge' id="2checkout-form" method='post'>
-				  <input name='2Checkout' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_2checkout']; ?>'/>
-				</form>
-				<?php } ?>
 
-				<?php if($enable_mercadopago == "1"){ ?>
-				<form action="cart_mercadopago_charge" method="post" id="mercadopago-form">
-					<input type="submit" name="mercadopago" class="btn btn-lg btn-success btn-block" value="<?= $lang['button']['pay_with_mercadopago']; ?>">
-				</form>
-				<?php } ?>
+				   <?php if($enable_stripe == "yes"){ ?>
+				   <form action="cart_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
+	  					<input name='stripe' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_stripe']; ?>'/>
+				   </form><!--- credit-card-form Ends --->
+				  	<?php } ?>
 
-				  
+				  	<?php if($enable_2checkout == "yes"){ ?>
+					<form action='plugins/paymentGateway/cart_2checkout_charge' id="2checkout-form" method='post'>
+					  <input name='2Checkout' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_2checkout']; ?>'/>
+					</form>
+					<?php } ?>
+
+					<?php if($enable_mercadopago == "1"){ ?>
+					<form action="cart_mercadopago_charge" method="post" id="mercadopago-form">
+						<input type="submit" name="mercadopago" class="btn btn-lg btn-success btn-block" value="<?= $lang['button']['pay_with_mercadopago']; ?>">
+					</form>
+					<?php } ?>
+
+					  
 				  <?php if($enable_coinpayments == "yes"){ ?>
 
 					<form action="cart_crypto_charge" method="post" id="coinpayments-form">
@@ -545,5 +519,6 @@ $('#mercadopago').click(function(){
 </script>
 <?php } ?>
 <?php require_once("includes/footer.php"); ?>
+<script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="cart"></script>
 </body>
 </html>

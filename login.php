@@ -108,17 +108,18 @@ if(isset($_SESSION['seller_user_name'])){
 
 				<div class="text-center">
 
+
+				<?php if(!empty($fb_app_id) & !empty($fb_app_secret)){ ?>
 				<a href="#" onclick="window.location='<?= $fLoginURL ?>';" class="btn btn-primary text-white" >
-
-				<i class="fa fa-facebook"></i> FACEBOOK
-
+					<i class="fa fa-facebook"></i> FACEBOOK
 				</a>
-
+				<?php } ?>
+					
+				<?php if(!empty($g_client_id) & !empty($g_client_secret)){ ?>
 				<a href="#" onclick="window.location = '<?= $gLoginURL ?>';" class="btn btn-danger text-white">
-
-				<i class="fa fa-google-plus"></i> GOOGLE
-
+					<i class="fa fa-google"></i> GOOGLE
 				</a>
+				<?php } ?>
 				
 				</div>			
 

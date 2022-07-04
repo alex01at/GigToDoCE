@@ -14,17 +14,19 @@ $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 
 function removeJava($html){
-	$attrs = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavaible', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragdrop', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterupdate', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmoveout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
-  $dom = new DOMDocument;
-  // @$dom->loadHTML($html);
-  @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
-  $nodes = $dom->getElementsByTagName('*');//just get all nodes, 
-  foreach($nodes as $node){
-    foreach ($attrs as $attr) { 
-    	if ($node->hasAttribute($attr)){  $node->removeAttribute($attr);  } 
-    }
-  }
-return strip_tags($dom->saveHTML(),"<div><img>");
+   $attrs = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavaible', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragdrop', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterupdate', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmoveout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+   $dom = new DOMDocument;
+   // @$dom->loadHTML($html);
+   @$dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+   $nodes = $dom->getElementsByTagName('*');//just get all nodes, 
+   foreach($nodes as $node){
+      foreach($attrs as $attr){ 
+         if($node->hasAttribute($attr)){ 
+            $node->removeAttribute($attr);
+         }
+      }
+   }
+   return strip_tags($dom->saveHTML(),"<div><img>");
 }
 
 $message_group_id = $input->post('single_message_id');
@@ -32,10 +34,11 @@ $get_inbox_sellers = $db->select("inbox_sellers",array("message_group_id" => $me
 $row_inbox_sellers = $get_inbox_sellers->fetch();
 $sender_id = $row_inbox_sellers->sender_id;
 $receiver_id = $row_inbox_sellers->receiver_id;
+
 if($login_seller_id == $sender_id){
-$receiver_seller_id = $receiver_id;
+   $receiver_seller_id = $receiver_id;
 }else{
-$receiver_seller_id = $sender_id;
+   $receiver_seller_id = $sender_id;
 }
 
 $message = removeJava($_POST['message']);
@@ -51,13 +54,14 @@ $last_message_id = $db->lastInsertId();
 $update_inbox_sellers = $db->update("inbox_sellers",array("sender_id" => $login_seller_id,"receiver_id" => $receiver_seller_id,"message_status" => $message_status,"time"=>$time,"message_id" => $last_message_id,'popup'=>'1'),array("message_group_id" => $message_group_id));
 
 if($update_inbox_sellers){
+
 	// New Spam Words Code Starts
 	$n_date = date("F d, Y");
 	$get_words = $db->select("spam_words");
 	while($row_words = $get_words->fetch()){
 		$name = $row_words->word;
 		if(preg_match("/\b($name)\b/i", $message)){
-			if($db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $message_group_id,"reason" => "message_spam","date" => $n_date,"status" => "unread"))) {
+			if($db->insert("admin_notifications",array("seller_id" => $login_seller_id,"content_id" => $message_group_id,"reason" => "message_spam","date" => $n_date,"status" => "unread"))){
 				break;
 			}
 		}
@@ -67,7 +71,7 @@ if($update_inbox_sellers){
 	$select_hide_seller_messages = $db->query("select * from hide_seller_messages where hider_id='$login_seller_id' AND hide_seller_id='$receiver_seller_id' or hider_id='$receiver_seller_id' AND hide_seller_id='$login_seller_id'");
 	$count_hide_seller_messages = $select_hide_seller_messages->rowCount();
 	if($count_hide_seller_messages == 1){
-		$delete_hide_seller_messages = $db->query("delete from hide_seller_messages where hider_id='$login_seller_id' and hide_seller_id='$receiver_seller_id' or hider_id='$receiver_seller_id' AND hide_seller_id='$login_seller_id'");
+      $delete_hide_seller_messages = $db->query("delete from hide_seller_messages where hider_id='$login_seller_id' and hide_seller_id='$receiver_seller_id' or hider_id='$receiver_seller_id' AND hide_seller_id='$login_seller_id'");
 	}
 
 	$get_seller = $db->select("sellers",array("seller_id" => $receiver_seller_id));
@@ -75,16 +79,16 @@ if($update_inbox_sellers){
 	$seller_user_name = $row_seller->seller_user_name;
 	$seller_email = $row_seller->seller_email;
 
-	$data = [];
-	$data['template'] = "new_message";
-	$data['to'] = $seller_email;
-	$data['subject'] = "You've received a message from $login_seller_user_name";
-	$data['user_name'] = $seller_user_name;
-	$data['sender_user_name'] = $login_seller_user_name;
-	$data['message'] = $message;
-	$data['attachment'] = $file;
-	$data['message_date'] = $message_date;
-	$data['message_group_id'] = $message_group_id;
-	send_mail($data);
+	// $data = [];
+	// $data['template'] = "new_message";
+	// $data['to'] = $seller_email;
+	// $data['subject'] = "You've received a message from $login_seller_user_name";
+	// $data['user_name'] = $seller_user_name;
+	// $data['sender_user_name'] = $login_seller_user_name;
+	// $data['message'] = $message;
+	// $data['attachment'] = $file;
+	// $data['message_date'] = $message_date;
+	// $data['message_group_id'] = $message_group_id;
+	// send_mail($data);
 
 }

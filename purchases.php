@@ -92,7 +92,7 @@ $login_seller_id = $row_login_seller->seller_id;
             
             <?php }elseif($method == "order_cancellation"){ ?>
             
-              Cancelled order payment refunded to your shopping  balance
+              Canceled order payment refunded to your shopping  balance
             
             <?php }else{ ?>
               

@@ -120,14 +120,11 @@ if(isset($_POST['continue'])){
 
 	if($val->run() == false){
 
-	Flash::add("g_errors",$val->get_all_errors());
-
-	Flash::add("form_data",$_POST);
-
-	echo "<script>window.open('g-register','_self')</script>";
+   	Flash::add("g_errors",$val->get_all_errors());
+   	Flash::add("form_data",$_POST);
+   	echo "<script>window.open('g-register','_self')</script>";
 
 	}else{
-
 
 	$name = $input->post('name');
 	$u_name = $input->post('u_name');

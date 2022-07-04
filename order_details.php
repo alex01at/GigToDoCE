@@ -129,6 +129,9 @@ function watermarkImage($image,$data){
     <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
   <?php } ?>
 
+  <!-- Include the PayPal JavaScript SDK -->
+  <script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+
   <script>
     function alert_success(text,url){
       swal({

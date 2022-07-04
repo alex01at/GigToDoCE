@@ -266,12 +266,16 @@ if(!isset($_COOKIE['close_announcement']) OR @$_COOKIE['close_announcement'] != 
         <hr class="">
         <div class="line mt-3"><span></span></div>
         <div class="text-center">
+          <?php if(!empty($fb_app_id) & !empty($fb_app_secret)){ ?>
           <a href="#" onclick="window.location = '<?= $fLoginURL ?>';" class="btn btn-primary btn-fb-connect" >
           <i class="fa fa-facebook"></i> FACEBOOK
           </a>
+          <?Php } ?>
+          <?php if(!empty($g_client_id) & !empty($g_client_secret)){ ?>
           <a href="#" onclick="window.location = '<?= $gLoginURL ?>';" class="btn btn-danger btn-gplus-connect " >
-          <i class="fa fa-google-plus"></i> GOOGLE
+          <i class="fa fa-google"></i> GOOGLE
           </a>
+          <?php } ?>
         </div>
         <div class="clearfix"></div>
         <?php } ?>
@@ -338,12 +342,19 @@ if(!isset($_COOKIE['close_announcement']) OR @$_COOKIE['close_announcement'] != 
         <hr class="">
         <div class="line mt-3"><span></span></div>
         <div class="text-center">
-          <a href="#" onclick="window.location = '<?= $fLoginURL ?>';" class="btn btn-primary btn-fb-connect" >
-          <i class="fa fa-facebook"></i> FACEBOOK
+
+          <?php if(!empty($fb_app_id) & !empty($fb_app_secret)){ ?>
+          <a href="#" onclick="window.location = '<?= $fLoginURL ?>';" class="btn btn-primary btn-fb-connect">
+            <i class="fa fa-facebook"></i> FACEBOOK
           </a>
-          <a href="#" onclick="window.location = '<?= $gLoginURL ?>';" class="btn btn-danger btn-gplus-connect " >
-          <i class="fa fa-google-plus"></i> GOOGLE
+          <?php } ?>
+
+          <?php if(!empty($g_client_id) & !empty($g_client_secret)){ ?>
+          <a href="#" onclick="window.location = '<?= $gLoginURL ?>';" class="btn btn-danger btn-gplus-connect">
+            <i class="fa fa-google"></i> GOOGLE
           </a>
+          <?php } ?>
+
         </div>
         <div class="clearfix"></div>
         <?php } ?>

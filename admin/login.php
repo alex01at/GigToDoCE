@@ -4,11 +4,11 @@ session_start();
 
 include("includes/db.php");
 
-if(isset($_SESSION['admin_email'])){
-	
-echo "<script>window.open('index?dashboard','_self');</script>";
-    
+if(isset($_SESSION['admin_email'])){	
+  echo "<script>window.open('index?dashboard','_self');</script>";
 }
+
+$_SESSION['adminLanguage'] = 1;
 
 ?>
 
@@ -180,9 +180,14 @@ if(isset($_POST['admin_login'])){
   	
   $select_admins = $db->query("select * from admins where admin_email=:a_email OR admin_user_name=:a_user_name",array("a_email"=>$admin_email,"a_user_name"=>$admin_email));
   $count_admins = $select_admins->rowCount();
-  $row_admins = $select_admins->fetch();
-  $hash_password = $row_admins->admin_pass;
-  $decrypt_password = password_verify($admin_pass, $hash_password);
+
+  if($count_admins != 0){
+    $row_admins = $select_admins->fetch();
+    $hash_password = $row_admins->admin_pass;
+    $decrypt_password = password_verify($admin_pass, $hash_password);
+  }else{
+    $decrypt_password = 0;
+  }
   	
   if($decrypt_password == 0){
   

@@ -37,7 +37,7 @@
             $d_message = $input->post('delivered_message');
             $d_file = $_FILES['delivered_file']['name'];
             $d_file_tmp = $_FILES['delivered_file']['tmp_name'];
-            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4', 'zip','rar','mp3','wav');
+            $allowed = array('jpeg','jpg','gif','png','tif','avi','mpeg','mpg','mov','rm','3gp','flv','mp4','zip','rar','mp3','wav','docx','csv','xls','pptx','pdf','txt');
             $file_extension = pathinfo($d_file, PATHINFO_EXTENSION);
             if(!in_array($file_extension,$allowed) & !empty($d_file)){
               echo "<script>alert('{$lang['alert']['extension_not_supported']}')</script>";

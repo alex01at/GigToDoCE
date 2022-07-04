@@ -1,14 +1,14 @@
 <?php
-session_start();
-require_once("includes/config.php");
-require_once("libs/input.php");
-if(!empty(DB_HOST) and !empty(DB_USER) and !empty(DB_NAME)){
-  echo "<script>window.open('index','_self'); </script>";
-  exit();
-}
-if(isset($_SESSION["db_host"])){
-  echo "<script>window.open('install2','_self'); </script>";
-}
+  session_start();
+  require_once("includes/config.php");
+  require_once("libs/input.php");
+  if(!empty(DB_HOST) and !empty(DB_USER) and !empty(DB_NAME)){
+    echo "<script>window.open('index','_self'); </script>";
+    exit();
+  }
+  if(isset($_SESSION["db_host"])){
+    echo "<script>window.open('install2','_self'); </script>";
+  }
 ?>
 <!DOCTYPE html>
 <html>

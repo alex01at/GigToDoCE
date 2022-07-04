@@ -67,8 +67,8 @@ $currency2 = $input->post('currency2');
 $status = intval($input->post('status'));
 $status_text = $input->post('status_text');
 
-$message = json_encode($input->post());
-$insert = $db->insert("temp_orders",array("content_id"=>$item_number,"message"=>$message));
+// $message = json_encode($input->post());
+// $insert = $db->insert("temp_orders",array("content_id"=>$item_number,"message"=>$message));
 
 $get_order = $db->select("temp_orders",['reference_no'=>$item_number,'method'=>'coinpayments']);
 $row_order = $get_order->fetch();
@@ -76,7 +76,7 @@ $count_order = $get_order->rowCount();
 
 if($count_order != 0){
 
-    $insert = $db->insert("temp_orders",array("content_id"=>$item_number,"message"=>"$status --- $status_text"));
+    // $insert = $db->insert("temp_orders",array("content_id"=>$item_number,"message"=>"$status --- $status_text"));
 
     $reference_no = $row_order->reference_no;
     $buyer_id = $row_order->buyer_id;

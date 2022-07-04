@@ -44,6 +44,8 @@ if(isset($_SESSION['cart_seller_id'])){
 		$row_delivery = $get_delivery->fetch();
 		$enable_delivery = $row_delivery->enable;
 		$delivery_message = $row_delivery->message;
+		$delivery_watermark = $row_delivery->watermark;
+		$delivery_watermark_file = $row_delivery->watermark_file;
 		$delivery_file = $row_delivery->file;
 		$isS3 = $row_delivery->isS3;
 
@@ -83,7 +85,7 @@ if(isset($_SESSION['cart_seller_id'])){
 
 			if($enable_delivery == 1){
 				$last_update_date = date("h:m: F d, Y");
-				$insert_delivered_message = $db->insert("order_conversations",array("order_id" => $insert_order_id,"sender_id" => $proposal_seller_id,"message" => $delivery_message,"file" => $delivery_file,"isS3"=>$isS3,"date" => $last_update_date,"status" => "delivered"));
+				$insert_delivered_message = $db->insert("order_conversations",array("order_id" => $insert_order_id,"sender_id" => $proposal_seller_id,"message" => $delivery_message,"watermark"=>$delivery_watermark,"watermark_file"=>$delivery_watermark_file,"file" => $delivery_file,"isS3"=>$isS3,"date" => $last_update_date,"status" => "delivered"));
 			}
 
 			$cart_extras = $db->select("temp_extras",array("reference_no"=>$reference_no,"buyer_id"=>$login_seller_id,"item_id"=>$item_id,"proposal_id"=>$proposal_id));

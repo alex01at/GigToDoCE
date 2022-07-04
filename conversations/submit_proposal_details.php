@@ -81,13 +81,15 @@ $proposal_title = $row_proposals->proposal_title;
 
 <label class="font-weight-bold"> Delivery Time :  </label>
 
-<select class="form-control float-right" name="delivery_time" required="">
+<select class="form-control float-right" name="delivery_time">
 
-<option value="1 Day"> 1 Day </option>
-
-<option value="2 Days"> 2 Days </option>
-
-<option value="3 Days"> 3 Days </option>
+<?php 
+	$get_delivery_times = $db->select("delivery_times");
+	while($row_delivery_times = $get_delivery_times->fetch()){
+		$delivery_proposal_title = $row_delivery_times->delivery_proposal_title;
+		echo "<option value='$delivery_proposal_title'> $delivery_proposal_title </option>";
+	}
+?>
 
 </select>
 

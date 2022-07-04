@@ -185,20 +185,24 @@ if(isset($_GET['remove_proposal'])){
 								$select_cart = $db->select("cart",array("proposal_id" => $coupon_proposal,"seller_id" => $login_seller_id,"coupon_used" => 0));
 								$count_cart = $select_cart->rowCount();
 								if($count_cart == 1){
-									if($coupon_type == "fixed_price"){
 
+									$row_cart = $select_cart->fetch();
+									$proposal_price = $row_cart->proposal_price;
+
+									if($coupon_type == "fixed_price"){
 										if($coupon_price > $proposal_price){
 											$coupon_price = 0;
 										}else{
 											$coupon_price = $proposal_price-$coupon_price;
 										}
-
 									}else{
-										$row_cart = $select_cart->fetch();
-										$proposal_price = $row_cart->proposal_price;
 										$numberToAdd = ($proposal_price / 100) * $coupon_price;
 										$coupon_price = $proposal_price - $numberToAdd;
+
+										$cart_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
+
 									}
+
 									$update_coupon = $db->query("update coupons set coupon_used=coupon_used+1 where coupon_code=:c_code",array("c_code"=>$coupon_code));
 
 									$update_cart = $db->update("cart",array("proposal_price" => $coupon_price,"coupon_used" => 1),array("proposal_id" => $coupon_proposal,"seller_id" => $login_seller_id));

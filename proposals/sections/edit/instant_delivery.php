@@ -47,9 +47,9 @@
   </div>
 
   <?php if(@$enable_watermark == 1){ ?>
-  <div class="form-group float-right d-none">
+  <div class="form-group float-right">
     <label for="">Enable Watermark : </label>
-    <input type="checkbox" name="enable_watermark" value="1" style="position: relative; top: 2px;">
+    <input type="checkbox" <?= ($delivery_watermark ==1)?"checked":""; ?> name="enable_watermark" value="1" style="position: relative; top: 2px;">
   </div>
   <?php } ?>
 
@@ -67,16 +67,16 @@
 <script>
 $(document).ready(function(){
 
-   $('.back-to-req').click(function(){
-      <?php if($d_proposal_status == "draft"){ ?>
-         $("input[type='hidden'][name='section']").val("overview");
-         $('#overview').addClass('show active');
-         $('#instant-delivery').removeClass('show active');
-         $('#tabs a[href="#instant-delivery"]').removeClass('active');
-      <?php }else{ ?>
-         $('.nav a[href="#overview"]').tab('show');
-      <?php } ?>
-   });
+  $('.back-to-req').click(function(){
+    <?php if($d_proposal_status == "draft"){ ?>
+      $("input[type='hidden'][name='section']").val("overview");
+      $('#overview').addClass('show active');
+      $('#instant-delivery').removeClass('show active');
+      $('#tabs a[href="#instant-delivery"]').removeClass('active');
+    <?php }else{ ?>
+      $('.nav a[href="#overview"]').tab('show');
+    <?php } ?>
+  });
 
   $('#deliveryFile').bind('change', function() {
 

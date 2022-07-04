@@ -1,8 +1,11 @@
 <?php
+
 session_start();
+
 include("includes/db.php");
 include("functions/payment.php");
 include("functions/processing_fee.php");
+
 if(!isset($_SESSION['seller_user_name'])){
 	echo "<script>window.open('login.php','_self');</script>";
 }
@@ -16,14 +19,16 @@ if(isset($_POST['dusupay'])){
 
    $reference_no = mt_rand();
    $sub_total = 0;
-      $select_cart =  $db->select("cart",array("seller_id" => $login_seller_id));
+   $select_cart =  $db->select("cart",array("seller_id" => $login_seller_id));
    $count_cart = $select_cart->rowCount();
    while($row_cart = $select_cart->fetch()){
+      
       $proposal_id = $row_cart->proposal_id;
       $proposal_price = $row_cart->proposal_price;
       $proposal_qty = $row_cart->proposal_qty;
       $delivery_id = $row_cart->delivery_id;
       $revisions = $row_cart->revisions;
+      
       if($videoPlugin == 1){
          $video = $row_cart->video;
       }

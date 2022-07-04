@@ -66,6 +66,7 @@ function send_mail($data,$temp_name=''){
       $mail = new PHPMailer();
       // $mail->SMTPDebug = 2;
       try {
+
          if($enable_smtp == "yes"){
             $mail->isSMTP();
             $mail->Host = $s_host;
@@ -75,6 +76,7 @@ function send_mail($data,$temp_name=''){
             $mail->Username = $s_username;
             $mail->Password = $s_password;
          }
+
          $mail->CharSet = 'UTF-8';
          $mail->setFrom($site_email,$site_name);
          $mail->addAddress($data['to']);

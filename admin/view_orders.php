@@ -55,7 +55,7 @@ echo "<script>window.open('login','_self');</script>";
                 <!--- text-center border-box col-md-3 Starts --->
                 <p> Completed Orders </p>
                 <?php
-                $count_orders = $db->count("orders",array("order_active" => "completed"));
+                $count_orders = $db->count("orders",array("order_status" => "completed"));
                 ?>
                     <h2>
                         <?= $count_orders; ?>
@@ -66,7 +66,7 @@ echo "<script>window.open('login','_self');</script>";
                 <!--- text-center border-box col-md-3 Starts --->
                 <p> Delivered Orders </p>
                 <?php
-                $count_orders = $db->count("orders",array("order_active" => "delivered"));
+                $count_orders = $db->count("orders",array("order_status" => "delivered"));
                 ?>
                     <h2>
                         <?= $count_orders; ?>
@@ -77,7 +77,7 @@ echo "<script>window.open('login','_self');</script>";
                 <!--- text-center border-box col-md-3 Starts --->
                 <p> Cancelled Orders </p>
                 <?php
-                $count_orders = $db->count("orders",array("order_active" => "cancelled"));
+                $count_orders = $db->count("orders",array("order_status" => "cancelled"));
                 ?>
                     <h2>
                         <?= $count_orders; ?>

@@ -53,6 +53,10 @@ $count_offers = $get_offers->rowCount();
 	<?php if(!empty($site_favicon)){ ?>
 	<link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 	<?php } ?>
+
+	<!-- Include the PayPal JavaScript SDK -->
+	<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&disable-funding=credit,card"></script>
+
 </head>
 <body class="is-responsive">
 <?php require_once("../includes/user_header.php"); ?>
@@ -72,7 +76,7 @@ $count_offers = $get_offers->rowCount();
 					</p>
 				</div>
 			</div>
-      <?php if($count_offers == "0"){ ?>
+      		<?php if($count_offers == "0"){ ?>
 			<div class="card rounded-0 mb-3">
 				<div class="card-body">
 					<h3 class="text-center"> <i class="fa fa-frown-o"></i> Unfortunately, no offers yet. Please wait a little longer.</h3>
@@ -108,7 +112,9 @@ $count_offers = $get_offers->rowCount();
 						</div>
 						<div class="col-md-7">
 							<h5 class="mt-md-0 mt-2">
-							<a href="../proposals/<?= $sender_user_name; ?>/<?= $proposal_url; ?>" class="text-success"> <?= $proposal_title; ?></a>
+								<a href="../proposals/<?= $sender_user_name; ?>/<?= $proposal_url; ?>" class="text-success"> 
+									<?= $proposal_title; ?>
+								</a>
 							</h5>
 							<p class="mb-1">
 								<?= $description; ?>
@@ -120,11 +126,15 @@ $count_offers = $get_offers->rowCount();
 						</div>
 						<div class="col-md-3 responsive-border pt-md-0 pt-3">
 							<div class="offer-seller-picture">
-								<?php if(!empty($sender_image)){ ?>
-                  <img src="../user_images/<?= $sender_image; ?>" class="rounded-circle" >
-                  <?php }else{ ?>
-                  <img src="../user_images/empty-image.png" class="rounded-circle" >
-                <?php } ?>
+								
+								<a href="../<?= $sender_user_name; ?>" target="_blank">
+									<?php if(!empty($sender_image)){ ?>
+	                  <img src="../user_images/<?= $sender_image; ?>" class="rounded-circle" >
+	                <?php }else{ ?>
+	                  <img src="../user_images/empty-image.png" class="rounded-circle" >
+	                <?php } ?>
+                </a>
+
                 <?php if($sender_level == 2){ ?>
                 <img src="../images/level_badge_1.png" class="level-badge" >
                 <?php }elseif($sender_level == 3){ ?>
@@ -138,7 +148,7 @@ $count_offers = $get_offers->rowCount();
 								<?= $sender_user_name; ?>  <small class="text-success"> <?= $sender_status; ?>  </small>
 								</p>
 								<p class="user-link">
-								<a href="../<?= $sender_user_name; ?>" class="text-success" target="blank"> User Profile </a>
+									<a href="../<?= $sender_user_name; ?>" class="text-success" target="blank"> User Profile </a>
 								</p>
 							</div>
 							<a href="../conversations/message?seller_id=<?= $sender_id; ?>&offer_id=<?= $offer_id; ?>" class="btn btn-sm btn-success rounded-0">

@@ -64,15 +64,21 @@ $count_active_proposals = $db->count("proposals",array("proposal_seller_id"=>$lo
 	<hr>
 	<h5 class="pb-0 p-2">About</h5>
 	<center class="mb-3">
-		<?php if(!empty($seller_image)){ ?>
-		<img src="<?= $seller_image; ?>" width="50" class="rounded-circle">
-		<?php }else{ ?>
-		<img src="../user_images/empty-image.png" width="50" class="rounded-circle">
-		<?php } ?>
+		
+		<a href="../<?= $seller_user_name; ?>">
+			<?php if(!empty($seller_image)){ ?>
+				<img src="<?= $seller_image; ?>" width="50" class="rounded-circle">
+			<?php }else{ ?>
+				<img src="../user_images/empty-image.png" width="50" class="rounded-circle">
+			<?php } ?>
+		</a>
+		
 		<a class="text-center" href="../<?= $seller_user_name; ?>">
 			<h6 class="mb-0 mt-2"><?= ucfirst($seller_user_name); ?></h6>
 		</a>
+		
 		<p class="text-muted text-center"><?= $level_title; ?></p>
+
 	</center>
 	<div class="row p-3">
 		<div class="col-md-6">

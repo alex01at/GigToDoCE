@@ -466,7 +466,7 @@ $i++;
 
 <?php
 	
-	$date = $input->get("date");
+	$date = @$input->get("date");
 
 	/// Now Select All From Proposals Table
 	$query = $db->query("select * from admin_logs $filter_query");

@@ -11415,10 +11415,10 @@ a.text-orange.text-orange:active,
     text-decoration: underline !important;
 }
 
-.sign-in-link a:hover {
+/*.sign-in-link a:hover {
     color: #222 !important;
 }
-
+*/
 .cat-nav a:not(:hover):not(:focus):not(:active),
 .vesta-hero a:not(:hover):not(:focus):not(:active),
 .ui-toolkit .v2-listing-card a:not(:hover):not(:focus):not(:active),

@@ -97,7 +97,11 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
 	$get_api = $db->select("currency_converter_settings");
 	$row_api = $get_api->fetch();
 	$enable_converter = $row_api->enable;
-	
+
+	$get_payment_settings = $db->select("payment_settings");
+	$row_payment_settings = $get_payment_settings->fetch();
+	$paypal_client_id = $row_payment_settings->paypal_app_client_id;
+
 	date_default_timezone_set($site_timezone);
 
 	$row_language = $db->select("languages",array("id"=>$siteLanguage))->fetch();

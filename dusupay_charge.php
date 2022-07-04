@@ -16,10 +16,11 @@ $processing_fee = processing_fee($_SESSION['c_sub_total']);
 if(isset($_POST['dusupay'])){
 
 	$payment = new Payment();
-	$data = [];
 
-	$data['type'] = "proposal";
+	$data = [];
 	
+	$data['type'] = "proposal";
+
 	if(isset($_POST['account_number'])){
 		$account_number = $input->post('account_number');
 		$data['account_number'] = $account_number;

@@ -13,44 +13,27 @@ $select_login_seller = $db->select("sellers",array("seller_user_name" => $login_
 $row_login_seller = $select_login_seller->fetch();
 $login_seller_id = $row_login_seller->seller_id;
 
-$processing_fee = processing_fee($_SESSION['c_sub_total']);
-
 if(isset($_POST['paypal'])){
-	$payment = new Payment();
-	$data = [];
-	$data['type'] = "proposal";
-	$select_proposals = $db->select("proposals",array("proposal_id" => $_SESSION['c_proposal_id']));
-	$row_proposals = $select_proposals->fetch();
-	$proposal_url = $row_proposals->proposal_url;
-	$proposal_seller_id = $row_proposals->proposal_seller_id;
 
-	$select_proposal_seller = $db->select("sellers",array("seller_id"=>$proposal_seller_id));
-	$row_proposal_seller = $select_proposal_seller->fetch();
-	$proposal_seller_user_name = $row_proposal_seller->seller_user_name;
+	$type = $input->post('type');
 
-	$reference_no = mt_rand();
-
-	$data['reference_no'] = $reference_no;
-	$data['content_id'] = $_SESSION['c_proposal_id'];
-	$data['name'] = $row_proposals->proposal_title;
-	$data['qty'] = $_SESSION['c_proposal_qty'];
-	$data['price'] = $_SESSION['c_proposal_price'];
-	$data['delivery_id'] = $_SESSION['c_proposal_delivery'];
-	$data['revisions'] = $_SESSION['c_proposal_revisions'];
-	$data['sub_total'] = $_SESSION['c_sub_total'];
-	$data['total'] = $_SESSION['c_sub_total'] + $processing_fee;
-
-	if(isset($_SESSION['c_proposal_extras'])){
-		$data['extras'] = base64_encode(serialize($_SESSION['c_proposal_extras']));
+	if($type == "proposal"){
+		include("paypal/proposal_charge.php");
+	}elseif($type == "cart") {
+		include("paypal/cart_charge.php");
+	}elseif($type == "message_offer") {
+		include("paypal/message_offer_charge.php");
+	}elseif($type == "message_offer") {
+		include("paypal/message_offer_charge.php");
+	}elseif($type == "request_offer") {
+		include("paypal/request_offer_charge.php");
+	}elseif($type == "featured_listing") {
+		include("paypal/featured_listing_charge.php");
+	}elseif($type == "orderTip") {
+		include("paypal/tip_charge.php");
 	}
-
-	if(isset($_SESSION['c_proposal_minutes'])){
-		$data['minutes'] = $_SESSION['c_proposal_minutes'];
-	}
-
-	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
-	$data['redirect_url'] = "$site_url/paypal_order?reference_no=$reference_no";
-
+   
+   $payment = new Payment();
 	$payment->paypal($data,$processing_fee);
 
 }else{

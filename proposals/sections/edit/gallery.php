@@ -27,50 +27,72 @@
     <?php } ?>
     </div><!--- col-md-3 Ends --->
     <div class="col-md-3"><!--- col-md-3 Starts --->
+
     <?php if(empty($d_proposal_img2)){ ?>
     <div class="pic">
-    <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>
-    <input type="hidden" name="proposal_img2" value="">
-    <input type="hidden" name="proposal_img2_s3" value="<?= $d_proposal_img2_s3; ?>">
+      <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
+      <input type="hidden" name="proposal_img2" value="">
+      <input type="hidden" name="proposal_img2_s3" value="<?= $d_proposal_img2_s3; ?>">
     </div>
     <?php }else{ ?>
     <div class="img">
-    <img src="<?= getImageUrl2("proposals","proposal_img2",$d_proposal_img2); ?>" class='img-fluid' alt="">
-    <span><?= $lang['proposals']['remove']; ?></span>
-    <input type="hidden" name="proposal_img2" value="<?= $d_proposal_img2; ?>">
-    <input type="hidden" name="proposal_img2_s3" value="<?= $d_proposal_img2_s3; ?>">
+      
+      <?php if($img_2_extension == "mp3" or $img_2_extension = "wav"){ ?>
+        <img src="proposal_files/audio.jpg" class='img-fluid'>
+      <?php }else{ ?>
+        <img src="<?= getImageUrl2("proposals","proposal_img2",$d_proposal_img2); ?>" class='img-fluid' alt="">
+      <?php } ?>
+
+      <span><?= $lang['proposals']['remove']; ?></span>
+      <input type="hidden" name="proposal_img2" value="<?= $d_proposal_img2; ?>">
+      <input type="hidden" name="proposal_img2_s3" value="<?= $d_proposal_img2_s3; ?>">
     </div>
     <?php } ?>
+
     </div><!--- col-md-3 Ends --->
+    
     <div class="col-md-3"><!--- col-md-3 Starts --->
     <?php if(empty($d_proposal_img3)){ ?>
     <div class="pic">
-    <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>
+    <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
     <input type="hidden" name="proposal_img3" value="">
     <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
     </div>
     <?php }else{ ?>
     <div class="img">
-    <img src="<?= getImageUrl2("proposals","proposal_img3",$d_proposal_img3); ?>" class='img-fluid' alt="">
-    <span><?= $lang['proposals']['remove']; ?></span>
-    <input type="hidden" name="proposal_img3" value="<?= $d_proposal_img3; ?>">
-    <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
+      
+      <?php if($img_3_extension == "mp3" or $img_3_extension = "wav"){ ?>
+        <img src="proposal_files/audio.jpg" class='img-fluid'>
+      <?php }else{ ?>
+        <img src="<?= getImageUrl2("proposals","proposal_img3",$d_proposal_img3); ?>" class='img-fluid' alt="">
+      <?php } ?>
+
+      <span><?= $lang['proposals']['remove']; ?></span>
+      <input type="hidden" name="proposal_img3" value="<?= $d_proposal_img3; ?>">
+      <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
     </div>
     <?php } ?>
     </div><!--- col-md-3 Ends --->
+
     <div class="col-md-3"><!--- col-md-3 Starts --->
     <?php if(empty($d_proposal_img4)){ ?>
     <div class="pic">
-    <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>
-    <input type="hidden" name="proposal_img4" value="">
-    <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
+      <i class="fa fa-picture-o fa-2x mb-2"></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>
+      <input type="hidden" name="proposal_img4" value="">
+      <input type="hidden" name="proposal_img3_s3" value="<?= $d_proposal_img3_s3; ?>">
     </div>
     <?php }else{ ?>
     <div class="img">
-    <img src="<?= getImageUrl2("proposals","proposal_img4",$d_proposal_img4); ?>" class='img-fluid' alt="">
-    <span><?= $lang['proposals']['remove']; ?></span>
-    <input type="hidden" name="proposal_img4" value="<?= $d_proposal_img4; ?>">
-    <input type="hidden" name="proposal_img4_s3" value="<?= $d_proposal_img4_s3; ?>">
+
+      <?php if($img_4_extension == "mp3" or $img_4_extension = "wav"){ ?>
+        <img src="proposal_files/audio.jpg" class='img-fluid'>
+      <?php }else{ ?>
+        <img src="<?= getImageUrl2("proposals","proposal_img4",$d_proposal_img4); ?>" class='img-fluid' alt="">
+      <?php } ?>
+
+      <span><?= $lang['proposals']['remove']; ?></span>
+      <input type="hidden" name="proposal_img4" value="<?= $d_proposal_img4; ?>">
+      <input type="hidden" name="proposal_img4_s3" value="<?= $d_proposal_img4_s3; ?>">
     </div>
     <?php } ?>
     </div><!--- col-md-3 Ends --->
@@ -205,18 +227,73 @@ $(document).ready(function(){
   });
 
   function crop(data){
-    var reader = new FileReader();
-    reader.onload = function (event) {
-      $image_crop.croppie('bind',{
-        url: event.target.result
-      }).then(function(){
-        console.log('jQuery bind complete');
+
+    var extension = $(data).val().replace(/^.*\./, '');
+
+    if(extension == "mp3" || extension == "wav"){
+
+      // alert("audio");
+      var img_type = $(data).attr('name');
+      var img_name = data.files[0].name;
+
+      if(img_type == "proposal_img1"){
+        alert("First Slide Must Need To Be An Image Not Audio.");
+      }else{
+
+      $('#wait').addClass("loader");
+
+      var form_data = new FormData();
+      var name = data.files[0];
+      form_data.append("file", name);
+      $.ajax({
+        url:"upload_file",
+        method:"POST",
+        data:form_data,
+        contentType:false,
+        cache:false,
+        processData:false,
+      }).done(function(data){
+        
+        $('#wait').removeClass("loader");
+
+        data = $.parseJSON(data);
+
+        if(data.message == "Your File Format Extension Is Not Supported."){
+          alert(data.message);
+        }else{
+
+          // alert(img_type);
+
+          $('input[type=hidden][name='+ img_type +']').val(data.name);
+          $('input[type=hidden][name='+ img_type +'_s3]').val(<?= $enable_s3; ?>);
+          
+          main = $('input[type=hidden][name='+ img_type +']').parent();
+          main.children("i,br,span").remove();
+          main.addClass("img").removeClass("pic");
+          main.prepend("<img src='proposal_files/audio.jpg' class='img-fluid'> <span><?= $lang['proposals']['remove']; ?></span>");
+
+        }
       });
+
+      }
+
+    }else{
+
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        $image_crop.croppie('bind',{
+          url: event.target.result
+        }).then(function(){
+          console.log('jQuery bind complete');
+        });
+      }
+      reader.readAsDataURL(data.files[0]);
+      $('#insertimageModal').modal('show');
+      $('input[type=hidden][name=img_type]').val($(data).attr('name'));
+      $('input[type=hidden][name=img_name]').val(data.files[0].name);
+
     }
-    reader.readAsDataURL(data.files[0]);
-    $('#insertimageModal').modal('show');
-    $('input[type=hidden][name=img_type]').val($(data).attr('name'));
-    $('input[type=hidden][name=img_name]').val(data.files[0].name);
+
   }
 
   $('.crop_image').click(function(event){
@@ -229,12 +306,15 @@ $(document).ready(function(){
         url:"crop_upload", type: "POST",
         data:{image: response,name: $('input[type=hidden][name=img_name]').val() },
         success:function(data){
+          
           data = $.parseJSON(data);
 
           $('#wait').removeClass("loader");
           $('#insertimageModal').modal('hide');
-          $('input[type=hidden][name='+ name +']').val(data.name);
-          $('input[type=hidden][name='+ name +'_s3]').val(<?= $enable_s3; ?>);
+          
+          $('input[type=hidden][name='+name+']').val(data.name);
+          $('input[type=hidden][name='+name+'_s3]').val(<?= $enable_s3; ?>);
+          
           main = $('input[type=hidden][name='+ name +']').parent();
           main.children("i,br,span").remove();
           main.addClass("img").removeClass("pic");
@@ -249,11 +329,21 @@ $(document).ready(function(){
   });
 
   var gallery = $('.gallery');
-  gallery.on('click', '.img', function () {
+  
+  gallery.on('click', '.img',function(){
+
+    var attr = $(this).children("input[type=hidden]").attr('name');
+      
     $(this).children("img,span").remove();
     $(this).children("input[type=hidden]").val("");
     $(this).addClass("pic").removeClass("img");
-    $(this).prepend("<i class='fa fa-picture-o fa-2x mb-2'></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>");
+
+    if(attr == 'proposal_img1'){
+      $(this).prepend("<i class='fa fa-picture-o fa-2x mb-2'></i><br> <span><?= $lang['proposals']['browse_image']; ?></span>");
+    }else{
+      $(this).prepend("<i class='fa fa-picture-o fa-2x mb-2'></i><br> <span><?= $lang['proposals']['browse_image/audio']; ?></span>");
+    }
+
   });
 
   gallery.on('click', '.pic:not(.add-video,.video-added,.disable)',function(){
@@ -261,11 +351,11 @@ $(document).ready(function(){
     if(userbrowser == "Edge" || userbrowser == "Safari"){
       $("input[type=file]").click();
       $("input[type=file]").attr('name',name); 
-      $("input[type=file]").attr('accept','image/*');
+      $("input[type=file]").attr('accept','image/*,audio/mpeg,audio/wav');
       $("input[type=file]").removeAttr('multiple');
       $("input[type=file]").on('change',function(){ crop(this); });
     }else{
-      var uploader = $('<input type="file" name="'+name+'" accept="image/*" />');
+      var uploader = $('<input type="file" name="'+name+'" accept="image/*,audio/mpeg,audio/wav" />');
       uploader.click();
       uploader.on('input', function(){ crop(this); });
     }
@@ -275,7 +365,9 @@ $(document).ready(function(){
     <?php if($paymentGateway == 1){ ?>
       $("#video-modal").modal("show");
     <?php }else{ ?>
+      
       var uploader = $('<input class="d-none" type="file" name="proposal_video" accept="video/mp4,video/x-m4v,video/*"/>');
+      
       span = $(this);
       uploader.click();
       uploader.on('change', function(){ 
@@ -284,7 +376,7 @@ $(document).ready(function(){
           type: 'success',
           text: 'File Is Uploading.',
           onOpen: function(){
-           swal.showLoading();
+            swal.showLoading();
           }
         });
 

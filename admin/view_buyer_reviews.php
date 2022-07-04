@@ -178,7 +178,7 @@ $count_seller_reviews = $db->count("seller_reviews");
 
                     if($order_id == "0"){
 
-                    echo "Review Instered By Admin  <small class='text-primary'>No Order Number</small>";
+                    echo "Review Inserted By Admin  <small class='text-primary'>No Order Number</small>";
 
                     }else{
 

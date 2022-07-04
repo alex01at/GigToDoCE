@@ -208,7 +208,7 @@ display: none;
     align-self: center;
     text-align: center;
     padding: 22px 0;
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     color: #848EA1;
     font-size: 12px;
     cursor: pointer;

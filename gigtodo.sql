@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2020 at 07:00 PM
+-- Generation Time: Aug 24, 2020 at 05:52 PM
 -- Server version: 10.4.6-MariaDB
 -- PHP Version: 7.2.22
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `gigtodo-empty`
+-- Database: `gigtodo`
 --
 
 -- --------------------------------------------------------
@@ -193,7 +193,7 @@ CREATE TABLE `app_info` (
 --
 
 INSERT INTO `app_info` (`id`, `version`, `r_date`) VALUES
-(1, '1.5.1', '9 May 2020');
+(1, '1.5.2', '20 August 2020');
 
 -- --------------------------------------------------------
 
@@ -1482,6 +1482,8 @@ CREATE TABLE `instant_deliveries` (
   `proposal_id` int(10) NOT NULL,
   `enable` int(10) NOT NULL,
   `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `watermark` int(10) NOT NULL,
+  `watermark_file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `file` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `isS3` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -1736,6 +1738,7 @@ CREATE TABLE `payment_settings` (
   `enable_stripe` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `stripe_secret_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `stripe_publishable_key` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_webhook_key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `stripe_currency_code` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `enable_dusupay` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `dusupay_sandbox` text COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -1771,8 +1774,8 @@ CREATE TABLE `payment_settings` (
 -- Dumping data for table `payment_settings`
 --
 
-INSERT INTO `payment_settings` (`id`, `min_proposal_price`, `comission_percentage`, `days_before_withdraw`, `withdrawal_limit`, `featured_fee`, `featured_duration`, `featured_proposal_while_creating`, `processing_feeType`, `processing_fee`, `enable_paypal`, `paypal_email`, `paypal_currency_code`, `paypal_app_client_id`, `paypal_app_client_secret`, `paypal_sandbox`, `enable_payoneer`, `enable_stripe`, `stripe_secret_key`, `stripe_publishable_key`, `stripe_currency_code`, `enable_dusupay`, `dusupay_sandbox`, `dusupay_currency_code`, `dusupay_api_key`, `dusupay_secret_key`, `dusupay_webhook_hash`, `dusupay_method`, `dusupay_provider_id`, `dusupay_payout_method`, `dusupay_payout_provider_id`, `enable_payza`, `payza_email`, `payza_currency_code`, `payza_test`, `enable_coinpayments`, `coinpayments_merchant_id`, `coinpayments_currency_code`, `coinpayments_withdrawal_fee`, `coinpayments_public_key`, `coinpayments_private_key`, `coinpayments_ipn_secret`, `enable_paystack`, `paystack_public_key`, `paystack_secret_key`, `enable_mercadopago`, `mercadopago_access_token`, `mercadopago_currency`, `mercadopago_sandbox`) VALUES
-(1, 5, 12, 1, 5, 10, 1, 1, 'fixed', 2, 'no', '', '', '', '', 'on', 1, 'no', '', '', '', 'no', 'on', '', '', '', '', '', '', '', '', 'no', '', 'USD', 'off', 'no', '', '', 'sender', '', '', '', 'no', '', '', 0, '', '', 0);
+INSERT INTO `payment_settings` (`id`, `min_proposal_price`, `comission_percentage`, `days_before_withdraw`, `withdrawal_limit`, `featured_fee`, `featured_duration`, `featured_proposal_while_creating`, `processing_feeType`, `processing_fee`, `enable_paypal`, `paypal_email`, `paypal_currency_code`, `paypal_app_client_id`, `paypal_app_client_secret`, `paypal_sandbox`, `enable_payoneer`, `enable_stripe`, `stripe_secret_key`, `stripe_publishable_key`, `stripe_webhook_key`, `stripe_currency_code`, `enable_dusupay`, `dusupay_sandbox`, `dusupay_currency_code`, `dusupay_api_key`, `dusupay_secret_key`, `dusupay_webhook_hash`, `dusupay_method`, `dusupay_provider_id`, `dusupay_payout_method`, `dusupay_payout_provider_id`, `enable_payza`, `payza_email`, `payza_currency_code`, `payza_test`, `enable_coinpayments`, `coinpayments_merchant_id`, `coinpayments_currency_code`, `coinpayments_withdrawal_fee`, `coinpayments_public_key`, `coinpayments_private_key`, `coinpayments_ipn_secret`, `enable_paystack`, `paystack_public_key`, `paystack_secret_key`, `enable_mercadopago`, `mercadopago_access_token`, `mercadopago_currency`, `mercadopago_sandbox`) VALUES
+(1, 5, 12, 1, 5, 10, 1, 1, 'fixed', 2, 'no', '', '', '', '', 'on', 1, 'no', '', '', '', '', 'no', 'on', '', '', '', '', '', '', '', '', 'no', '', 'USD', 'off', 'no', '', '', 'sender', '', '', '', 'no', '', '', 0, '', '', 0);
 
 -- --------------------------------------------------------
 

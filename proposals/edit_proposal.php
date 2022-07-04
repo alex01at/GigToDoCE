@@ -94,6 +94,9 @@ $get_delivery = $db->select("instant_deliveries",['proposal_id'=>$proposal_id]);
 $row_delivery = $get_delivery->fetch();
 $enable_delivery = $row_delivery->enable;
 $delivery_message = $row_delivery->message;
+
+$delivery_watermark = $row_delivery->watermark;
+
 $delivery_file = $row_delivery->file;
 
 $get_payment_settings = $db->select("payment_settings");
@@ -101,6 +104,10 @@ $row_payment_settings = $get_payment_settings->fetch();
 $min_proposal_price = $row_payment_settings->min_proposal_price;
 $edited_proposals = $row_general_settings->edited_proposals;
 $disable_local_video = $row_general_settings->disable_local_video;
+
+$img_2_extension = pathinfo($d_proposal_img2,PATHINFO_EXTENSION);
+$img_3_extension = pathinfo($d_proposal_img3,PATHINFO_EXTENSION);
+$img_4_extension = pathinfo($d_proposal_img4,PATHINFO_EXTENSION);
 
 ?>
 <!DOCTYPE html>
@@ -197,9 +204,9 @@ require_once("sections/editProposalNav.php");
 <div id="featured-proposal-modal"></div>
 
 <?php 
-if($paymentGateway == 1){
-  include("../plugins/paymentGateway/proposals/addVideoModal.php");
-}
+  if($paymentGateway == 1){
+    include("../plugins/paymentGateway/proposals/addVideoModal.php");
+  }
 ?>
 
 <script>

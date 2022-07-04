@@ -32,6 +32,7 @@ if(empty(DB_HOST) and empty(DB_USER) and empty(DB_NAME)){
    $site_currency = $row_general_settings->site_currency;
    $currency_position = $row_general_settings->currency_position;
    $currency_format = $row_general_settings->currency_format;
+   $site_timezone = $row_general_settings->site_timezone;
 
    $get_currencies = $db->select("currencies",array( "id" => $site_currency));
    $row_currencies = $get_currencies->fetch();

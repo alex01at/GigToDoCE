@@ -8,44 +8,16 @@
 <?php } ?>
 
 <?php if($enable_paypal == "yes"){ ?>
-<form action="paypal_charge" method="post" id="paypal-form"><!--- paypal-form Starts --->
- <button type="submit" name="paypal" class="btn btn-lg btn-success btn-block"><?= $lang['button']['pay_with_paypal']; ?></button>
-</form>
+
+<div id="paypal-form" class="paypal-button-container"></div>
+
 <?php } ?>
 
-<?php 
-if($enable_stripe == "yes"){
-require_once("stripe_config.php");
-$stripe_total_amount = $total * 100;
-?>
+<?php if($enable_stripe == "yes"){ ?>
 <form action="checkout_charge" method="post" id="credit-card-form"><!--- credit-card-form Starts --->
-	<input
-	type="submit"
-	class="btn btn-lg btn-success btn-block stripe-submit"
-	value="<?= $lang['button']['pay_with_stripe']; ?>"
-	data-key="<?= $stripe['publishable_key']; ?>"
-	data-amount="<?= $stripe_total_amount; ?>"
-	data-currency="<?= $stripe['currency_code']; ?>"
-	data-email="<?= $login_seller_email; ?>"
-	data-name="<?= $site_name; ?>"
-	data-image="<?= $site_logo_image; ?>"
-	data-description="<?= $proposal_title; ?>"
-	data-allow-remember-me="false">
-	<script>
-	$(document).ready(function() {
-		$('.stripe-submit').on('click', function(event) {
-			event.preventDefault();
-			var $button = $(this),
-			$form = $button.parents('form');
-			var opts = $.extend({},$button.data(),{
-				token: function(result) {
-					$form.append($('<input>').attr({ type: 'hidden', name: 'stripeToken', value: result.id })).submit();
-				}
-			});
-			StripeCheckout.open(opts);
-		});
-	});
-	</script>
+
+  <input name='stripe' type='submit' class="btn btn-lg btn-success btn-block" value='<?= $lang['button']['pay_with_stripe']; ?>'/>
+
 </form>
 <?php } ?>
 

@@ -100,9 +100,7 @@
         }
       ?>
       <ul class="account-nav apply-nav-height">
-        <?php 
-          require_once("comp/UserMenu.php");
-        ?>
+        <?php require_once("comp/UserMenu.php"); ?>
       </ul>
     </div>
   </header>

@@ -16,14 +16,17 @@ if(isset($_POST['paystack'])){
 
    $reference_no = mt_rand();
    $sub_total = 0;
-      $select_cart =  $db->select("cart",array("seller_id" => $login_seller_id));
+   
+   $select_cart =  $db->select("cart",array("seller_id" => $login_seller_id));
    $count_cart = $select_cart->rowCount();
    while($row_cart = $select_cart->fetch()){
+   
       $proposal_id = $row_cart->proposal_id;
       $proposal_price = $row_cart->proposal_price;
       $proposal_qty = $row_cart->proposal_qty;
       $delivery_id = $row_cart->delivery_id;
       $revisions = $row_cart->revisions;
+   
       if($videoPlugin == 1){
          $video = $row_cart->video;
       }
@@ -60,25 +63,33 @@ if(isset($_POST['paystack'])){
 
       $get_extras = $db->select("cart_extras",array("seller_id"=>$login_seller_id,"proposal_id"=>$proposal_id));
       while($row_extra = $get_extras->fetch()){
+
          $name = $row_extra->name;
          $price = $row_extra->price;
+
          $insert_extra = $db->insert("temp_extras",array("reference_no"=>$reference_no,"buyer_id"=>$login_seller_id,"item_id"=>$insert_id,"proposal_id"=>$proposal_id,"name"=>$name,"price"=>$price));
+
       }
       
    }
+
 	$processing_fee = processing_fee($sub_total);
+
+   $reference_no2 = mt_rand();
 
 	$data = [];
 	$data['type'] = "cart";
-   $reference_no2 = mt_rand();
 	$data['reference_no'] = $reference_no2;
 	$data['content_id'] = $reference_no;
 	$data['sub_total'] = $sub_total;
 	$data['total'] = $sub_total+$processing_fee;
 	$data['redirect_url'] = "$site_url/paystack_order?reference_no=$reference_no2";
-	$payment = new Payment();
+	
+   $payment = new Payment();
 	$payment->paystack($data);
 
 }else{
+
 	echo "<script>window.open('index','_self')</script>";
+
 }

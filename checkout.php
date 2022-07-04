@@ -1,4 +1,5 @@
 <?php
+
 	session_start();
 	require_once("includes/db.php");
 	require_once("functions/processing_fee.php");
@@ -14,6 +15,8 @@
 	$get_payment_settings = $db->select("payment_settings");
 	$row_payment_settings = $get_payment_settings->fetch();
 	$enable_paypal = $row_payment_settings->enable_paypal;
+	$enable_paypal = $row_payment_settings->enable_paypal;
+	$paypal_client_id = $row_payment_settings->paypal_app_client_id;
 	$paypal_email = $row_payment_settings->paypal_email;
 	$paypal_currency_code = $row_payment_settings->paypal_currency_code;
 	$paypal_sandbox = $row_payment_settings->paypal_sandbox;
@@ -177,6 +180,10 @@
 <script type="text/javascript" src="js/sweat_alert.js"></script>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script src="https://checkout.stripe.com/checkout.js"></script>
+
+<!-- Include the PayPal JavaScript SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=<?= $paypal_client_id; ?>&commit=true&disable-funding=credit,card"></script>
+
 <?php if(!empty($site_favicon)){ ?>
 <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
 <?php } ?>
@@ -184,8 +191,6 @@
 <body class="is-responsive">
 <?php
 require_once("includes/header.php");
-
-// print_r($_SESSION);
 
 if($seller_verification != "ok"){
 echo "
@@ -525,6 +530,7 @@ if(isset($_POST['code'])){
 		</div>
 	</div>
 </div>
+
 <script>
 $(document).ready(function(){	
 <?php if($current_balance >= $sub_total){ ?>	
@@ -683,6 +689,9 @@ $('#mercadopago').click(function(){
 </script>
 <?php } ?>
 <?php require_once("includes/footer.php"); ?>
+
+<script src="js/paypal.js" id="paypal-js" data-base-url="<?= $site_url; ?>" data-payment-type="proposal"></script>
+
 </body>
 </html>
 <?php

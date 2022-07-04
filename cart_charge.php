@@ -69,10 +69,16 @@ $processing_fee = processing_fee($sub_total);
 
 $data = [];
 $data['type'] = 'cart';
-$data['reference_no'] = $reference_no;
-$data['amount'] = $sub_total+$processing_fee;
-$data['desc'] = 'All Cart Proposals Payment';
-$data['stripeToken'] = $input->post('stripeToken');
+$data['content_id'] = $reference_no;
+$data['name'] = 'All Cart Proposals Payment';
+$data['desc'] = '';
+$data['qty'] = '1';
+$data['price'] = $sub_total;
+$data['sub_total'] = $sub_total;
+$data['processing_fee'] = $processing_fee;
+$data['total'] = $sub_total+$processing_fee;
+
+$data['cancel_url'] = "$site_url/cancel_payment";
 
 $payment = new Payment();
 $payment->stripe($data);

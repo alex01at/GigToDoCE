@@ -6,10 +6,11 @@
 	$count_reviews = $select_buyer_reviews->rowCount();
 	if($count_reviews == 0){
 	$rtl = ($lang_dir == "right" ? 'text-right':'');
-	echo "<li>
-	<h3 class='$rtl' align='center'> 
-	<i class='fa fa-frown-o'></i> This proposal/service has no reviews yet. Be the first to post in a review.
-	</h3>
+	echo "
+	<li>
+		<h3 class='$rtl' align='center'> 
+			<i class='fa fa-frown-o'></i> {$lang['proposal']['no_reviews']}
+		</h3>
 	</li>";
 	}
 	while($row_buyer_reviews = $select_buyer_reviews->fetch()){

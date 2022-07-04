@@ -7,6 +7,10 @@
 ?>
 <style type="text/css">
 
+  .paypal-button.paypal-button-color-blue {
+    background: <?= $site_color; ?> !important;
+  }
+
   .btn_search, 
   .btn_join,
   .gnav-header .search-button-wrapper .btn-primary,
@@ -21,6 +25,13 @@
   .nav-pills .nav-link.active, 
   .nav-pills .show > .nav-link{
     background: <?= $site_color; ?> !important;
+  }
+
+  .ui-toolkit .btn-primary.btn-primary:active,
+  .ui-toolkit .btn-primary.btn-primary:hover,
+  .ds-reduced-colors .ui-toolkit .btn-primary.btn-primary:active,
+  .ds-reduced-colors .ui-toolkit .btn-primary.btn-primary:hover {
+    background: <?= $site_hover_color; ?> !important;
   }
 
   .breadcrumb a:before{
@@ -63,7 +74,9 @@
   }
 
   .btn_join:hover{
-  background: white !important;
+    background: <?= $site_hover_color; ?> !important;
+    border: 0px solid <?= $site_color; ?> !important;
+    color:white !important;
   }
 
   .input-group-addon{
@@ -73,6 +86,10 @@
 
   .input-group-append{
     background: <?= $site_color; ?> !important;
+  }
+
+  .input-group-append:hover{
+    background: <?= $site_hover_color; ?> !important;
   }
 
   .btn-order.primary {
@@ -131,7 +148,8 @@
   }
 
   .card_user .get_btn:hover{
-    background: <?= $site_color; ?>;
+    border-color: <?= $site_hover_color; ?>;
+    background: <?= $site_hover_color; ?>;
   }
 
   .page-item.active .page-link {

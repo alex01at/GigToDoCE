@@ -30,7 +30,10 @@ if(isset($_POST['register'])){
 		$error_array = array();
 		$name = strip_tags($input->post('name'));
 		$name = strip_tags($name);
-		$name = ucfirst(strtolower($name));
+		// $name = ucfirst(strtolower($name));
+		
+		$name = $name;
+
 		$_SESSION['name']= $name;
 		$u_name = strip_tags($input->post('u_name'));
 		$u_name = strip_tags($u_name);

@@ -16,7 +16,7 @@ $login_seller_id = $row_login_seller->seller_id;
 $processing_fee = processing_fee($_SESSION['c_sub_total']);
 
 if(isset($_POST['coinpayments'])){
-	$payment = new Payment();
+		
 	$data = [];
 	$data['type'] = "proposal";
 	$select_proposals = $db->select("proposals",array("proposal_id" => $_SESSION['c_proposal_id']));
@@ -51,6 +51,7 @@ if(isset($_POST['coinpayments'])){
 
 	$data['cancel_url'] = "$site_url/cancel_payment?reference_no=$reference_no";
 
+	$payment = new Payment();
 	$payment->coinpayments($data,$processing_fee);
 
 }else{

@@ -88,8 +88,8 @@ $method = @$input->post('method');
                   <div class="col-md-6">
                     <select name="method" class="form-control" required="">
                       <option value="MOBILE_MONEY"> Mobile Money </option>
-                      <option value="CARD" <?= ($method == "card")?'selected':''; ?>> Card </option>
-                      <option value="BANK" <?= ($method == "bank")?'selected':''; ?>> Bank </option>
+                      <option value="CARD" <?= ($method == "CARD")?'selected':''; ?>> Card </option>
+                      <option value="BANK" <?= ($method == "BANK")?'selected':''; ?>> Bank </option>
                     </select>
                   </div>
                 </div><!--- form-group row Ends --->

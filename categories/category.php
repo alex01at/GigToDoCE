@@ -1,7 +1,9 @@
 <?php
+
   session_start();
   require_once("../includes/db.php");
   require_once("../functions/functions.php");
+
   if(isset($_GET['cat_url'])){
     if(isset($_GET['cat_child_url'])){
       $array = explode("/",$input->get('cat_url'));
@@ -22,12 +24,14 @@
     unset($_SESSION['cat_id']);
     $get_cat = $db->select("categories",array('cat_url' => urlencode($cat_url)));
     $cat_id = $get_cat->fetch()->cat_id;
+
     $get_child = $db->select("categories_children",array('child_parent_id'=>$cat_id,'child_url'=>urlencode($input->get('cat_child_url'))));
     $count_child = $get_child->rowCount();
     if($count_child == 0){
       echo "<script>window.open('$site_url/index?not_available','_self');</script>";
     }
     $_SESSION['cat_child_id']= $get_child->fetch()->child_id;
+  
   }
 ?>
 <!DOCTYPE html>
@@ -139,9 +143,7 @@
   var sPath = ''; 
   
   var aInputs = $('li').find('.get_online_sellers');
-  
   var aKeys   = Array();
-  
   var aValues = Array();
   
   iKey = 0;
@@ -149,9 +151,7 @@
   $.each(aInputs,function(key,oInput){
   
   if(oInput.checked){
-  	
-  aKeys[iKey] =  oInput.value
-  
+    aKeys[iKey] =  oInput.value
   };
   
   iKey++;
@@ -171,7 +171,7 @@
   }
 
   var instant_delivery = $('.get_instant_delivery:checked').val();
-  sPath = sPath + 'instant_delivery[]=' + instant_delivery +'&'; 
+  sPath = sPath + 'instant_delivery[]='+instant_delivery+'&'; 
 
   var order = $('.get_order:checked').val();
   sPath = sPath + 'order[]=' + order +'&';
@@ -507,14 +507,17 @@ $(document).ready(function(){
     $('.get_cat_id').prop('checked',false);
     get_category_proposals();
   }
+
   function clearDelivery(){
     $('.get_delivery_time').prop('checked',false);
     get_category_proposals();
   }
+
   function clearLevel(){
     $('.get_seller_level').prop('checked',false);
     get_category_proposals();
   }
+
   function clearLanguage(){
     $('.get_seller_language').prop('checked',false);
     get_category_proposals();

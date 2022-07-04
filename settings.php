@@ -36,6 +36,11 @@ $select_seller_accounts = $db->select("seller_accounts",array("seller_id" => $lo
 $row_seller_accounts = $select_seller_accounts->fetch();
 $current_balance = $row_seller_accounts->current_balance;
 
+$get_payment_settings = $db->select("payment_settings");
+$row_payment_settings = $get_payment_settings->fetch();
+$enable_paypal = $row_payment_settings->enable_paypal;
+$enable_dusupay = $row_payment_settings->enable_dusupay;
+
 if($lang_dir == "right"){
 	$floatRight = "";
 }else{
@@ -54,26 +59,26 @@ if($lang_dir == "right"){
 	<meta name="author" content="<?= $site_author; ?>">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100" rel="stylesheet">
 	<link href="styles/bootstrap.css" rel="stylesheet">
-  <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
+   <link href="styles/custom.css" rel="stylesheet"> <!-- Custom css code from modified in admin panel --->
 	<link href="styles/styles.css" rel="stylesheet">
 	<link href="styles/user_nav_styles.css" rel="stylesheet">
 	<link href="font_awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="styles/owl.carousel.css" rel="stylesheet">
 	<link href="styles/owl.theme.default.css" rel="stylesheet">
-  <link href="styles/sweat_alert.css" rel="stylesheet">
-  <link href="styles/animate.css" rel="stylesheet">
+   <link href="styles/sweat_alert.css" rel="stylesheet">
+   <link href="styles/animate.css" rel="stylesheet">
 	<link href="styles/croppie.css" rel="stylesheet">
 	<!-- Optional: include a polyfill for ES6 Promises for IE11 and Android browser -->
-  <script src="js/ie.js"></script>
-  <script type="text/javascript" src="js/sweat_alert.js"></script>
+   <script src="js/ie.js"></script>
+   <script type="text/javascript" src="js/sweat_alert.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>
 	<script type="text/javascript" src="js/croppie.js"></script>
 	<?php if($paymentGateway == 1){ ?>
-	<script src="plugins/paymentGateway/javascript/script.js"></script>
+      <script src="plugins/paymentGateway/javascript/script.js"></script>
 	<?php } ?>
 	<?php if(!empty($site_favicon)){ ?>
-  <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
-  <?php } ?>
+      <link rel="shortcut icon" href="<?= $site_favicon; ?>" type="image/x-icon">
+   <?php } ?>
 	<script src="<?= $site_url; ?>/js/jquery.easy-autocomplete.min.js"></script>
 	<link href="<?= $site_url; ?>/styles/easy-autocomplete.min.css" rel="stylesheet">
 </head>
