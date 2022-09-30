@@ -114,7 +114,7 @@
                 </div>
 
                 <div class="form-group row ">
-                  <!-- form-group row Starts -->
+                  <!-- form-group row Starts 
                   <div class="col-md-3 control-label h5 mt-2"> Purchase Code <small class="text-danger">(Required)</small> </div>
                   <div class="col-md-8">
                     <input type="text" name="purchase_code" class="form-control" placeholder="Purchase Code" value="<?= @$form_data['purchase_code']; ?>"/>
@@ -123,7 +123,7 @@
                     </small>
                   </div>
                 </div>
-                <!-- form-group row Ends -->
+               form-group row Ends -->
                 <h3>Admin Panel</h3>
                 <hr>
                 <div class="form-group row ">
@@ -204,6 +204,7 @@
 
       // Check if we are in a local environment
       function is_localhost(){
+        return true;
         
         // set the array for testing the local environment
         $whitelist = array( '127.0.0.1', '::1' );
